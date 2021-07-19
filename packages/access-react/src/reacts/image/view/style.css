@@ -1,0 +1,171 @@
+.syl-image-fixer {
+  display: inline-block;
+  position: relative;
+  margin: auto;
+  text-align: center;
+}
+
+.syl-editor .image-wrapper {
+  display: inline-block;
+  left: 0;
+  top: 0;
+  position: relative;
+  z-index: 0;
+}
+
+.syl-image-fixer .align-menu {
+  display: inline-block;
+  position: absolute;
+  top: -32px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 28px;
+  background: #fff;
+  white-space: nowrap;
+  border-radius: 2px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
+
+.syl-image-fixer .align-menu .align-icon {
+  display: inline-block;
+  margin: 0 6px;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.syl-image-fixer .align-menu .align-icon.active path,
+.syl-image-fixer .align-menu .align-icon:hover path {
+  stroke: #98ccfd;
+}
+
+.syl-image-fixer .align-menu .align-icon svg {
+  vertical-align: middle;
+}
+
+.syl-image-fixer img {
+  max-width: 100%;
+  height: auto;
+}
+.syl-image-caption-input {
+  padding: 6px 7px;
+  width: 375px;
+  text-align: center;
+  font-size: 12px;
+  color: #666;
+  background-color: #fff;
+  border: 0;
+  border-radius: 4px;
+  margin: auto;
+  margin-top: 2px;
+}
+.syl-image-caption-input:focus {
+  outline: none;
+}
+.syl-image-caption {
+  height: 32px;
+  bottom: 0;
+}
+
+.syl-image-resize-box-control {
+  height: 20px;
+  position: absolute;
+  width: 20px;
+  z-index: 2;
+}
+
+.syl-resizable-container .syl-image-resize-box-control.top_left {
+  cursor: nw-resize;
+  left: -10px;
+  top: -10px;
+  cursor: nwse-resize;
+}
+
+.syl-resizable-container .syl-image-resize-box-control.top_right {
+  cursor: ne-resize;
+  right: -10px;
+  top: -10px;
+  cursor: nesw-resize;
+}
+
+.syl-resizable-container .syl-image-resize-box-control.bottom_right {
+  cursor: se-resize;
+  bottom: -10px;
+  right: -10px;
+  cursor: nwse-resize;
+}
+
+.syl-resizable-container .syl-image-resize-box-control.bottom_left {
+  cursor: sw-resize;
+  bottom: -10px;
+  left: -10px;
+  cursor: nesw-resize;
+}
+
+.syl-image-resize-box-control::after {
+  background-color: #98ccfd;
+  border: solid 1px #fff;
+  box-sizing: border-box;
+  content: '';
+  height: 10px;
+  left: 5px;
+  position: absolute;
+  top: 5px;
+  width: 10px;
+}
+
+.syl-image-resize-box-control::before {
+  bottom: -10px;
+  content: '';
+  left: -10px;
+  position: absolute;
+  right: -10px;
+  top: -10px;
+}
+
+.syl-image-uploading-wrapper {
+  position: absolute;
+  width: 100%;
+  height: calc(100% + 30px);
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 2;
+}
+
+.syl-image-uploading-wrapper .syl-uploading-percent-base {
+  position: absolute;
+  width: 80%;
+  background: #e6e6e6;
+  border-radius: 4px;
+  height: 8px;
+  top: 50%;
+  margin-top: -4px;
+  overflow: hidden;
+  left: 10%;
+}
+
+.syl-uploading-percent-base .syl-uploading-percent {
+  display: block;
+  height: 8px;
+  background-color: rgba(152, 204, 253, 0.8);
+}
+
+.syl-editor .image-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.syl-image-wrapper .syl-image-caption {
+  display: block;
+}
+
+.ProseMirror[contenteditable='false'] .syl-image-caption input:not(:focus) {
+  pointer-events: none;
+}
+
+.ProseMirror[contenteditable='false'] .syl-image-caption input[value='']::selection {
+  background-color: transparent;
+  color: transparent;
+}
+
+.ProseMirror[contenteditable='false'] .syl-image-caption input[value='']::-webkit-input-placeholder {
+  color: transparent;
+}

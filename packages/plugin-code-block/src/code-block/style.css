@@ -1,0 +1,61 @@
+.syl-editor .CodeMirror {
+  height: auto;
+  padding: 16px;
+  background: #fafafa;
+  border: 1px solid #e8e8e8;
+  font-size: 14px;
+  line-height: 22px;
+  font-family: Monaco;
+  color: #222;
+}
+
+.syl-editor .CodeMirror-linenumber {
+  padding-left: 0;
+  padding-right: 12px;
+  background-color: #fafafa;
+  color: #cacaca;
+  text-align: right;
+  line-height: 26px;
+  margin-top: -1px;
+}
+
+.syl-editor .CodeMirror-gutters {
+  background-color: #fafafa;
+  border-right: none;
+}
+
+.syl-editor .cm-s-default .cm-keyword {
+  color: #114ba6;
+}
+
+.syl-editor .cm-s-default .cm-atom {
+  color: #219;
+}
+
+.syl-editor .cm-s-default .cm-number {
+  color: #561a99;
+}
+
+.syl-editor .cm-s-default .cm-def {
+  color: #a82e2e;
+}
+
+.syl-editor .cm-s-default .cm-type {
+  color: #114ba6;
+}
+
+.syl-editor .cm-s-default .cm-comment {
+  color: #00753b;
+}
+
+.syl-editor .cm-s-default .cm-string {
+  color: #a82e2e;
+}
+
+.syl-editor .cm-s-default .cm-tag {
+  color: #a82e2e;
+}
+
+.syl-editor .cm-s-default .cm-attribute {
+  color: #00753b;
+}

@@ -1,0 +1,14 @@
+{
+  "name": "example-adapter",
+  "version": "1.0.0",
+  "private": true,
+  "description": "start up with syl adapter",
+  "main": "src/index.tsx",
+  "scripts": {
+    "start": "vite --force --open"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@syllepsis/adapter": "*"
+  }
+}

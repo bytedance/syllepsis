@@ -1,0 +1,62 @@
+.syl-modal:focus {
+  outline: none;
+}
+
+.syl-modal-title {
+  padding: 16px 24px;
+  font-size: 20px;
+  font-family: PingFangSC-Regular;
+  font-weight: 500;
+  line-height: 32px;
+  letter-spacing: 0.15px;
+}
+
+.syl-modal-content {
+  padding: 8px 24px;
+}
+
+.syl-modal-footer {
+  padding: 8px;
+  text-align: right;
+}
+
+.syl-modal-footer button {
+  border: none;
+  padding: 0;
+  width: auto;
+  overflow: visible;
+  background: transparent;
+  color: #3f51b5;
+  padding: 6px 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.syl-modal-footer button {
+  outline: none;
+}
+
+.syl-modal-content input {
+  font-family: PingFangSC-Regular;
+  font-size: 16px;
+  width: 100%;
+  border: 0;
+  height: 20px;
+  margin: 0;
+  display: block;
+  padding: 6px 0 7px;
+  min-width: 0;
+  background: none;
+  box-sizing: content-box;
+  -webkit-tap-highlight-color: transparent;
+  border-bottom: 1px solid #666;
+}
+
+.syl-modal-content input:focus {
+  outline: none;
+}
+
+.syl-modal-content input::placeholder {
+  color: #999;
+}

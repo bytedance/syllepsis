@@ -1,0 +1,8 @@
+.syl-toolbar-disable {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+syl-inline * {
+  text-indent: initial;
+}

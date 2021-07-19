@@ -1,0 +1,7 @@
+.syl-dropdown-panel {
+  padding: 8px 4px;
+  border-radius: 4px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px 0 rgb(0 0 0 / 15%);
+  overflow: auto;
+}

@@ -1,0 +1,44 @@
+{
+  "name": "@syllepsis/plugin-code-block",
+  "author": "wangmou <wangmou@bytedance.com>",
+  "description": "code block plugin of syllepsis editor",
+  "version": "0.0.0",
+  "main": "dist/lib/index.js",
+  "module": "dist/es/index.js",
+  "umd": "dist/umd/index.js",
+  "typings": "dist/es/index.d.ts",
+  "license": "MIT",
+  "keywords": [
+    "syllepsis",
+    "editor",
+    "plugin",
+    "code"
+  ],
+  "files": [
+    "dist",
+    "src"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bytedance/syllepsis.git"
+  },
+  "scripts": {
+    "prebuild": "rimraf ./dist",
+    "build:es": "cross-env NODE_ENV=production && tsc --target es5 && copyfiles \"./src/**/*.css\" ./dist/es -u 1",
+    "build:cjs": "cross-env NODE_ENV=production && tsc  --target es5 --module commonjs --outDir 'dist/lib' && copyfiles \"./src/**/*.css\" ./dist/lib -u 1",
+    "build:umd": "cross-env NODE_ENV=production && vite build",
+    "build": "yarn build:es && yarn build:cjs && yarn build:umd",
+    "watch": "cross-env NODE_ENV=development && copyfiles \"./src/**/*.css\" ./dist/es -u 1 && tsc -w",
+    "prepublish": "yarn build"
+  },
+  "dependencies": {
+    "@syllepsis/adapter": "*",
+    "@types/codemirror": "^5.60.2",
+    "@types/lodash.debounce": "^4.0.0",
+    "codemirror": "^5.54.0",
+    "lodash.debounce": "^4.0.0"
+  }
+}
