@@ -2,7 +2,7 @@
   "name": "@syllepsis/plugin-table",
   "author": "wangmou <wangmou@bytedance.com>",
   "description": "table plugin of syllepsis editor",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": "dist/lib/index.js",
   "module": "dist/es/index.js",
   "umd": "dist/umd/index.js",
@@ -35,13 +35,13 @@
     "prepublish": "yarn build"
   },
   "dependencies": {
-    "@syllepsis/adapter": "*",
+    "@syllepsis/adapter": "^0.0.1",
     "@types/lodash.clonedeep": "^4.0.0",
     "@types/lodash.debounce": "^4.0.0",
     "@types/lodash.merge": "^4.0.0",
-    "prosemirror-tables": "^1.1.1",
     "lodash.clonedeep": "^4.0.0",
     "lodash.debounce": "^4.0.0",
-    "lodash.merge": "^4.0.0"
+    "lodash.merge": "^4.0.0",
+    "prosemirror-tables": "^1.1.1"
   }
 }
