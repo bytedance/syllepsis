@@ -1,0 +1,96 @@
+{
+  "name": "root",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
+  "scripts": {
+    "initialize": "lerna clean --yes && lerna bootstrap && lerna link",
+    "create:package": "node ./scripts/create-package.js",
+    "build": "lerna exec --no-private --stream -- yarn build",
+    "build:adapter": "lerna exec --scope @syllepsis/adapter yarn build",
+    "build:editor": "lerna exec --scope @syllepsis/editor yarn build",
+    "build:plugin": "lerna exec --scope @syllepsis/plugin-* yarn build",
+    "build:react": "lerna exec --scope @syllepsis/access-react yarn build",
+    "watch:adapter": "lerna exec --scope @syllepsis/adapter yarn watch & sleep 2s",
+    "watch:editor": "lerna exec --scope @syllepsis/editor yarn watch & sleep 1s",
+    "watch:plugin": "lerna exec --parallel --scope @syllepsis/plugin-* yarn watch & sleep 3s",
+    "watch:react": "lerna exec --scope @syllepsis/access-react yarn watch & sleep 5s",
+    "start:adapter": "yarn watch:adapter & lerna exec --scope example-adapter yarn start",
+    "start:react": "yarn watch:adapter && yarn watch:editor && yarn watch:plugin && yarn watch:react && lerna exec --scope example-react yarn start",
+    "start:doc": "anywhere -d docs",
+    "test": "jest --config jest.config.js ./test/index.test.ts",
+    "lint": "eslint --fix 'packages/**/src/**/*.{ts,tsx}'",
+    "postversion": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 -n ./changelog/config.js && node ./scripts/commit-change.js"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^12.1.4",
+    "@commitlint/config-conventional": "^12.1.4",
+    "@types/jest": "^26.0.23",
+    "@types/node": "^10.11.0",
+    "@types/orderedmap": "^1.0.0",
+    "@types/prosemirror-schema-basic": "^1.0.1",
+    "@types/prosemirror-test-builder": "^1.0.1",
+    "@types/puppeteer": "^5.4.3",
+    "@types/react": "^16.7.13",
+    "@types/react-dom": "^16.0.11",
+    "@typescript-eslint/eslint-plugin": "^4.28.1",
+    "@typescript-eslint/eslint-plugin-tslint": "^4.28.1",
+    "@typescript-eslint/parser": "^4.28.1",
+    "anywhere": "^1.5.0",
+    "commitizen": "^3.0.7",
+    "conventional-changelog": "^3.1.12",
+    "conventional-changelog-cli": "^2.0.25",
+    "copyfiles": "^2.2.0",
+    "cross-env": "^5.2.0",
+    "cz-conventional-changelog": "^2.1.0",
+    "eslint": "^7.29.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "husky": "^1.0.1",
+    "inquirer": "^8.1.1",
+    "jest": "^26.6.3",
+    "jest-config": "^26.6.3",
+    "jest-environment-puppeteer": "^5.0.4",
+    "jest-puppeteer": "^5.0.4",
+    "lerna": "^4.0.0",
+    "lint-staged": "^7.3.0",
+    "prettier": "^1.14.3",
+    "prosemirror-test-builder": "^1.0.1",
+    "puppeteer": "^10.0.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "rimraf": "^3.0.2",
+    "ts-jest": "26.5.5",
+    "typescript": "^4.3.4",
+    "vite": "^2.3.7"
+  },
+  "dependencies": {
+    "@syllepsis/access-react": "file:packages/access-react",
+    "@syllepsis/adapter": "file:packages/adapter",
+    "@syllepsis/editor": "file:packages/editor",
+    "@syllepsis/plugin-basic": "file:packages/plugin-basic",
+    "@syllepsis/plugin-code-block": "file:packages/plugin-code-block",
+    "@syllepsis/plugin-table": "file:packages/plugin-table"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "*.{ts, tsx}": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "version": "0.0.0"
+}

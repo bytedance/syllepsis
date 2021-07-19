@@ -1,0 +1,190 @@
+.syl-editor .ProseMirror-hideselection *::selection {
+  background: transparent;
+}
+
+.syl-editor .ProseMirror-hideselection *::-moz-selection {
+  background: transparent;
+}
+
+.syl-editor .ProseMirror-hideselection {
+  caret-color: transparent;
+}
+
+.syl-editor .tableWrapper {
+  padding-left: 8px;
+  padding-top: 8px;
+  overflow-x: auto;
+}
+
+.syl-editor .tableWrapper th,
+.syl-editor .tableWrapper td {
+  position: relative;
+  min-width: 1em;
+  border: 1px solid #d8d8d8;
+  padding: 3px 5px;
+  vertical-align: top;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.syl-editor .tableWrapper .column-resize-handle {
+  position: absolute;
+  right: -1px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  z-index: 50;
+  background-color: #1a74ff;
+  pointer-events: none;
+}
+
+.syl-editor table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  overflow: hidden;
+}
+
+.syl-editor .resize-cursor {
+  cursor: col-resize !important;
+}
+
+.syl-editor .selectedCell:after {
+  z-index: 2;
+  position: absolute;
+  content: '';
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(200, 200, 255, 0.4);
+  pointer-events: none;
+}
+
+.table-context-wrap {
+  z-index: 10;
+}
+
+.table-context-wrap .table-context-menu {
+  width: 168px;
+  padding: 8px 0;
+  padding-left: 0;
+  background: #ffffff;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.table-context-wrap .table-context-menu li {
+  cursor: pointer;
+  list-style-type: none;
+  font-size: 14px;
+  line-height: 20px;
+  padding: 8px 0 8px 28px;
+  font-family: PingFang SC;
+  color: #222222;
+}
+.table-context-wrap .table-context-menu li:hover {
+  background: #f5f5f5;
+}
+
+.table-context-wrap .table-context-menu li[disable='1'] {
+  color: #bfbfbf;
+  background: transparent;
+  cursor: not-allowed;
+}
+
+.table-context-wrap .table-context-menu .menu-split {
+  height: 1px;
+  background: #e8e8e8;
+}
+
+.syl-menu-cell {
+  position: relative;
+}
+
+.syl-menu-cell[class*='pop-tip-']::before,
+.syl-menu-cell[class*='pop-tip-'] span {
+  visibility: hidden;
+  opacity: 0;
+  transform: translate3d(0, 0, 0);
+  transition: all 0.3s ease 0.05s;
+}
+.syl-menu-cell[class*='pop-tip-']:hover::before,
+.syl-menu-cell[class*='pop-tip-']:hover span {
+  visibility: visible;
+  opacity: 1;
+}
+.syl-menu-cell[class*='pop-tip-']::before {
+  border: solid transparent;
+  content: '';
+  height: 8px;
+  width: 8px;
+  position: absolute;
+  display: block;
+  box-sizing: border-box;
+  -webkit-transform-origin: 50% 50% 0;
+  transform-origin: 50% 50% 0;
+  background-color: #fff;
+}
+
+.syl-menu-cell[class*='pop-tip-'] span {
+  position: absolute;
+  background: #ffffff;
+  font-size: 14px;
+  line-height: 20px;
+  color: #666666;
+  padding: 8px 12px;
+  white-space: nowrap;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* left && right */
+.syl-menu-cell[class*='pop-tip-right']::before,
+.syl-menu-cell[class*='pop-tip-left']::before {
+  top: calc(50% - 4px);
+}
+.syl-menu-cell[class*='pop-tip-left'] span,
+.syl-menu-cell[class*='pop-tip-left'] span {
+  top: 50%;
+  transform: translateY(-50%);
+}
+.syl-menu-cell[class*='pop-tip-right']::before {
+  right: -3px;
+  border-left: none;
+  border-bottom: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.syl-menu-cell[class*='pop-tip-right']:hover::before {
+  transform: translateX(10px) translateY(0%) rotate(45deg);
+}
+
+.syl-menu-cell[class*='pop-tip-right'] span {
+  left: 100%;
+  margin-left: -1px;
+}
+
+.syl-menu-cell[class*='pop-tip-right']:hover span {
+  transform: translateX(10px) translateY(-50%);
+}
+
+.syl-menu-cell[class*='pop-tip-left']::before {
+  left: -3px;
+  border-right: none;
+  border-top: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.syl-menu-cell[class*='pop-tip-left']:hover::before {
+  transform: translateX(-10px) translateY(0%) rotate(45deg);
+}
+
+.syl-menu-cell[class*='pop-tip-left'] span {
+  right: 100%;
+  margin-right: -1px;
+}
+
+.syl-menu-cell[class*='pop-tip-left']:hover span {
+  transform: translateX(-10px) translateY(-50%);
+}

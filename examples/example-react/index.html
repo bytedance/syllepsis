@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Syl React Editor</title>
+  <style>
+    #editor .ProseMirror {
+      min-height: 300px;
+      padding: 16px;
+      overflow: hidden;
+      border: 1px solid #666;
+      border-radius: 4px;
+    }
+
+    #editor .ProseMirror p {
+      margin: 0
+    }
+
+    #editor .ProseMirror:focus {
+      outline: none;
+    }
+
+    #editor .syl-placeholder {
+      color: #999;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Syl React Editor</h1>
+  <div id="editor" style="white-space: pre-wrap;"></div>
+  <script type="module" src="./src/index.tsx"></script>
+</body>
+
+</html>

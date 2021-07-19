@@ -1,0 +1,41 @@
+.table-menu-button-before{
+  position: relative;
+}
+.table-menu-button-before::before{
+  content: '';
+  display: block;
+  position: absolute;
+  width: 120%;
+  height: 120%;
+  left: -10%;
+  top: -10%;
+}
+.syl-table-menu-wrapper {
+  box-sizing: content-box;
+  padding: 8px 12px 12px;
+  background: #ffffff;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.07);
+  border-radius: 4px;
+}
+
+.syl-table-menu-wrapper .syl-table-menu-tip-wrapper {
+  font-size: 12px;
+  line-height: 20px;
+  color: #666666;
+  margin-bottom: 8px;
+}
+
+.syl-table-menu-wrapper .syl-table-menu-tip {
+  display: inline-block;
+}
+
+.syl-table-menu-wrapper .syl-table-menu-size-tip {
+  float: right;
+  font-size: 12px;
+  line-height: 20px;
+  color: #222222;
+}
+
+.syl-table-menu-wrapper .syl-table-menu-list {
+  position: relative;
+}

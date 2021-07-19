@@ -1,0 +1,58 @@
+{
+  "name": "@syllepsis/access-react",
+  "version": "0.0.0",
+  "description": "react access layer of the syllepsis editor",
+  "umd": "dist/umd/index.js",
+  "main": "dist/lib/index.js",
+  "module": "dist/es/index.js",
+  "typings": "dist/es/index.d.ts",
+  "keywords": [
+    "syllepsis",
+    "editor",
+    "react"
+  ],
+  "files": [
+    "dist",
+    "src"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "author": "wangmou <wangmou@bytedance.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bytedance/syllepsis.git"
+  },
+  "scripts": {
+    "prebuild": "rimraf ./dist",
+    "build:es": "cross-env NODE_ENV=production && tsc --target es5 && copyfiles \"./src/**/*.css\" ./dist/es -u 1",
+    "build:cjs": "cross-env NODE_ENV=production && tsc --target es5 --module commonjs --outDir 'dist/lib' && copyfiles \"./src/**/*.css\" ./dist/lib -u 1",
+    "build:umd": "cross-env NODE_ENV=production && vite build",
+    "build": "yarn build:es && yarn build:cjs && yarn build:umd",
+    "watch": "cross-env NODE_ENV=development && copyfiles \"./src/**/*.css\" ./dist/es -u 1 && tsc -w",
+    "prepublish": "yarn build"
+  },
+  "peerDependencies": {
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3"
+  },
+  "dependencies": {
+    "@icon-park/react": "^1.3.3",
+    "@syllepsis/adapter": "*",
+    "@syllepsis/editor": "*",
+    "@syllepsis/plugin-basic": "*",
+    "@types/classnames": "^2.2.6",
+    "@types/emoji-mart": "<2.11.2",
+    "@types/lodash.debounce": "^4.0.0",
+    "@types/react-color": "^2.14.0",
+    "@types/react-modal": "^3.10.5",
+    "classnames": "^2.2.6",
+    "emoji-mart": "<2.11.2",
+    "lodash.debounce": "^4.0.0",
+    "react-color": "^2.17.0",
+    "react-modal": "^3.11.2",
+    "react-tooltip-lite": "^1.12.0"
+  },
+  "gitHead": "5e25b2a305717359add415b62ef696ad8beda121"
+}

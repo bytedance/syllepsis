@@ -1,0 +1,41 @@
+.syl-toolbar-inline {
+  width: fit-content;
+  white-space: nowrap;
+  visibility: hidden;
+  user-select: none;
+  padding: 0 8px;
+  background: #ffffff;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  transform: scale(0.9);
+  transition: transform 0.2s linear;
+}
+
+.syl-toolbar-inline.visible {
+  transform: scale(1);
+  visibility: visible;
+}
+
+.syl-toolbar-inline .syl-toolbar-divider {
+  padding: 0;
+  margin: 0;
+}
+
+.syl-toolbar-inline > *:not(:last-child) {
+  margin-right: 12px;
+}
+
+.syl-toolbar-inline .syl-toolbar-button {
+  margin: 0;
+  border-radius: 4px;
+}
+
+.syl-popper .syl-toolbar-menu.inline {
+  white-space: nowrap;
+  padding: 0 12px;
+  font-size: 0;
+}
+
+.syl-toolbar-menu.inline .syl-toolbar-tool-horizon:not(:last-child) {
+  margin-right: 8px;
+}

@@ -1,0 +1,15 @@
+{
+  "packages": ["packages/*"],
+  "useWorkspaces": true,
+  "version": "independent",
+  "npmClient": "yarn",
+  "command": {
+    "publish": {
+      "ignoreChanges": ["*.md", "*.config.ts", "tsconfig.json"]
+    },
+    "version": {
+      "private": false,
+      "message": "chore(release): publish %s"
+    }
+  }
+}

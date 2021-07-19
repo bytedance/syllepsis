@@ -1,0 +1,122 @@
+*[role='tooltip'] {
+  z-index: 6;
+}
+
+.syl-tooltip-container {
+  position: relative;
+}
+
+.syl-toolbar-divider {
+  border-left: 1px solid #d8d8d8;
+  height: 20px;
+  display: inline-block;
+  vertical-align: middle;
+  padding-left: 5px;
+  margin-left: 5px;
+}
+
+.syl-toolbar-menu {
+  min-width: 60px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+  border-radius: 2px;
+  z-index: 999;
+}
+
+.syl-popper .syl-toolbar-menu,
+.syl-toolbar .syl-toolbar-menu {
+  padding: 8px 0;
+}
+
+.syl-popper .syl-toolbar-menu,
+.syl-toolbar .syl-toolbar-menu {
+  padding-left: 0;
+  list-style: none;
+}
+
+.syl-popper button {
+  font-family: PingFangSC-Regular;
+}
+
+.syl-popper .syl-toolbar-menu {
+  position: relative;
+  opacity: 0;
+  transition: opacity ease-out 0.2s;
+}
+
+.syl-popper.visible .syl-toolbar-menu {
+  opacity: 1;
+}
+
+.syl-tooltip {
+  display: block;
+  font-family: PingFangSC-Regular;
+  line-height: 22px;
+}
+
+.syl-tooltip * {
+  vertical-align: middle;
+}
+
+.syl-tooltip .react-tooltip-lite {
+  background-color: #666;
+  border-radius: 4px;
+  color: #fff;
+  padding: 8px 12px;
+  font-size: 14px;
+  line-height: 20px;
+  box-sizing: content-box !important;
+  width: fit-content !important;
+}
+
+.syl-tooltip .right-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: -6px;
+  display: block;
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-left: 6px solid #666;
+  border-bottom: 6px solid transparent;
+}
+
+.syl-tooltip .react-tooltip-lite-down-arrow {
+  border-bottom-color: #666;
+}
+
+.syl-tooltip .react-tooltip-lite-left-arrow {
+  border-left-color: #666;
+}
+
+.syl-tooltip .react-tooltip-lite-right-arrow {
+  border-right-color: #666;
+}
+
+.syl-tooltip .react-tooltip-lite-up-arrow {
+  border-top-color: #666;
+}
+
+.syl-tooltip .top-arrow {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -6px;
+  display: block;
+  width: 0;
+  height: 0;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid #666;
+  border-left: 6px solid transparent;
+}
+
+.emoji-mart-scroll ul.emoji-mart-category-list {
+  padding-left: 0;
+}
+
+.emoji-mart-anchor:focus,
+.emoji-mart-anchor-selected:focus,
+.emoji-mart-emoji:focus {
+  outline: none;
+}

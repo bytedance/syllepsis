@@ -1,0 +1,202 @@
+.syl-toolbar-tool {
+  display: inline-block;
+  position: relative;
+  user-select: none;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.syl-toolbar-tool.active .syl-toolbar-button {
+  background: #e8e8e8;
+}
+
+.syl-toolbar-button {
+  border: none;
+  padding: 0;
+  width: auto;
+  overflow: visible;
+  background: transparent;
+  vertical-align: middle;
+  font-size: 0;
+  line-height: 26px;
+  cursor: pointer;
+  min-width: 26px;
+  min-height: 26px;
+  margin: 12px 8px;
+  border: 1px transparent solid;
+  border-radius: 4px;
+}
+
+.syl-toolbar-button > div {
+  font-size: 0;
+}
+
+.syl-toolbar-button > div span {
+  font-size: initial;
+  vertical-align: middle;
+}
+
+.syl-toolbar-button > div {
+  font-size: 0;
+}
+
+.syl-toolbar-button > div span {
+  font-size: initial;
+  vertical-align: middle;
+}
+
+.syl-toolbar-button svg {
+  margin: auto;
+  display: block;
+  font-size: initial;
+}
+
+.syl-toolbar-tool.disable .syl-toolbar-button {
+  border-color: transparent;
+}
+
+.syl-toolbar-tool:hover .syl-toolbar-button {
+  border-color: #d8d8d8;
+  background-color: #f5f5f5;
+}
+
+.syl-toolbar-tool.active:hover .syl-toolbar-button {
+  border-color: #d8d8d8;
+  background-color: #d8d8d8;
+}
+
+.syl-toolbar-button:focus {
+  outline: none;
+}
+
+.syl-toolbar-tool-horizon.active .syl-toolbar-tool-horizon-content {
+  background-color: #e8e8e8;
+}
+
+.syl-toolbar-tool.disable,
+.syl-toolbar-tool.disable .syl-toolbar-button,
+.syl-toolbar-tool.disable,
+.syl-toolbar-tool-horizon.disable,
+.syl-toolbar-tool-horizon.disable .syl-toolbar-tool-horizon-content {
+  cursor: not-allowed;
+  opacity: 0.6;
+  background-color: unset;
+}
+
+.syl-toolbar-tool-horizon {
+  min-width: 100%;
+  line-height: 36px;
+  height: 46px;
+  cursor: pointer;
+  text-align: left;
+  border-radius: 0;
+  list-style: none;
+  position: relative;
+  font-size: 0;
+  user-select: none;
+}
+
+.syl-toolbar-tool-horizon-content {
+  box-sizing: border-box;
+  white-space: nowrap;
+  display: inline-block;
+  width: 100%;
+  padding: 0;
+  -webkit-appearance: none;
+  border: none;
+  text-align: left;
+  background-color: transparent;
+  vertical-align: middle;
+  cursor: inherit;
+  line-height: 40px;
+  font-size: 0;
+}
+
+.syl-toolbar-tool-horizon-content:active,
+.syl-toolbar-tool-horizon-content:focus {
+  outline: none;
+}
+
+.syl-toolbar-tool-horizon.active:hover .syl-toolbar-tool-horizon-content {
+  background-color: #d8d8d8;
+}
+
+.syl-toolbar-tool-horizon:hover .syl-toolbar-tool-horizon-content {
+  background-color: #f5f5f5;
+}
+
+.syl-toolbar-tool-horizon-content svg:first-child {
+  margin-right: 14px;
+  vertical-align: middle;
+}
+.syl-toolbar-tool-horizon-content > *:first-child {
+  box-sizing: content-box;
+  padding-left: 16px;
+}
+.syl-toolbar-tool-horizon-content > *:last-child {
+  box-sizing: content-box;
+  padding-right: 16px;
+}
+
+.syl-toolbar-tool-horizon .tool-name {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+  font-size: 13px;
+  font-family: PingFangSC;
+  color: #666666;
+  vertical-align: middle;
+}
+
+.syl-toolbar-tool.inline {
+  padding: 8px 0;
+}
+
+.syl-toolbar-tool-horizon.inline {
+  display: inline-block;
+  min-width: unset;
+  height: auto;
+}
+
+.syl-toolbar-tool-horizon.inline .syl-toolbar-tool-horizon-content {
+  padding: 0 4px;
+  line-height: 26px;
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.syl-toolbar-tool-horizon.inline:not(.active):hover .syl-toolbar-tool-horizon-content {
+  border-color: #d8d8d8;
+  background-color: #f5f5f5;
+}
+
+.syl-toolbar-tool-horizon.inline:last-child {
+  margin-right: unset;
+}
+
+.syl-toolbar-tool-horizon.inline svg:first-child {
+  padding: 0;
+}
+
+.syl-toolbar-tool-horizon.inline .syl-toolbar-tool-horizon-content svg:first-child {
+  margin-right: 0;
+}
+.syl-toolbar-tool-horizon.inline .syl-toolbar-tool-horizon-content > *:first-child {
+  padding-left: 0;
+}
+.syl-toolbar-tool-horizon.inline .syl-toolbar-tool-horizon-content > *:last-child {
+  padding-right: 0;
+}
+
+.syl-toolbar-tool-horizon.inline .tool-name {
+  padding: 0;
+  line-height: unset;
+  font-size: 0;
+  width: 0;
+}
+
+.syl-toolbar-tool-horizon.inline .syl-toolbar-tool-horizon-content svg:first-child {
+  margin-right: unset;
+}
