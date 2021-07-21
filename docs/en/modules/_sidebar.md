@@ -2,6 +2,8 @@
 - [Install](/en/install.md)
 - [Example](/en/chapters/README.md)
 - [Module](/en/modules/README.md)
+  - [Static Toolbar](/en/modules/toolbar.md)
+  - [Float Toolbar](/en/modules/toolbar-inline.md)
 - [Plugin](/en/plugins/README.md)
 - [Editor Props](/en/props.md)
 - [API interface](/en/api.md)

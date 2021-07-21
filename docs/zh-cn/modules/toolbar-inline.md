@@ -9,7 +9,7 @@
 > - 拖动选中，鼠标松开的位置与选区差距过大时，优先在鼠标松开的位置显示，并保持左右位置
 > - 其他有选区但是没有工具栏的情况，移动鼠标出现，以鼠标位置为中心显示
 
-- 跟随式工具栏的构造函数`Ctor`由`SylEditor`提供，从`@syl-editor/editor`引入
+- 跟随式工具栏的构造函数`Ctor`由`SylEditor`提供，从`@syllepsis/editor`引入
 
 ```typescript
 import { ToolbarInlineLoader } from '@syllepsis/editor';

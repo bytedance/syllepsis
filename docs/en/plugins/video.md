@@ -1,0 +1,21 @@
+# VideoPlugin <!-- {docsify-ignore-all} -->
+
+> [Type](/en/plugins/types)
+
+```typescript
+import {VideoPlugin} from'@syllepsis/plugin-basic';
+
+plugins: [
+   new VideoPlugin({
+     // Upload video file, return video address, width and height information
+     uploader: (file: File) => Promise.resolve({ src: string, width: number, height: number }),
+     // Note that after configuring this, you need to configure `layers` to take over rendering, 
+     // otherwise it will not be rendered in `dom`
+     addAttributes: IUserAttrsConfig; // Extend default attrs
+   })
+]
+```
+
+## Example
+
+[video](https://codesandbox.io/embed/plugin-video-qr40c?hidenavigation=1 ':include :type=iframe width=100% height=500px')

@@ -1,7 +1,5 @@
 # Syllepsis <!-- {docsify-ignore-all} -->
 
-> 若发现 Syllepsis 存在文档、代码不符情景，期望得到[反馈](https://github.com/bytedance/syllepsis/issues)
-
 ## 简介
 
 **Syllepsis** 是一款开箱即用的的富文本编辑器，兼容主流现代浏览器。
