@@ -1,5 +1,3 @@
-![logo](_media/logo.png)
-
 # Syllepsis
 
 > A magical rich-text editor <small>0.0.1</small>
