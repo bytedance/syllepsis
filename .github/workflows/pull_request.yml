@@ -1,0 +1,29 @@
+name: pull_request
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: setup node
+        uses: actions/setup-node@v2.2.0
+
+      - name: checkout
+        uses: actions/checkout@master
+
+      - name: init
+        run: npm i install yarn lerna typescript
+
+      - name: install
+        run: yarn initialize
+
+      - name: build
+        run: yarn build
+
+      - name: test
+        run: yarn test
