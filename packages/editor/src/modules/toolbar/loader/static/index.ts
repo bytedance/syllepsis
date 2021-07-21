@@ -5,9 +5,9 @@ import { IRenderer } from '../../../../renderer';
 import { IToolbarOption } from '../../..';
 import { ToolbarLib } from '../..';
 
-declare module '@syl-editor/adapter' {
+declare module '@syllepsis/adapter' {
   interface ISylApiCommand {
-    toolbar: {
+    toolbar?: {
       getAvailable: () => boolean;
       enable: () => void;
       disable: () => void;
