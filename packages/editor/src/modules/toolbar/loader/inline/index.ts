@@ -8,9 +8,9 @@ import { IRenderer } from '../../../../renderer';
 import { IToolbarOption } from '../../..';
 import { ToolbarLib } from '../..';
 
-declare module '@syl-editor/adapter' {
+declare module '@syllepsis/adapter' {
   interface ISylApiCommand {
-    toolbarInline: {
+    toolbarInline?: {
       show: () => void;
       hide: () => void;
       getVisible: () => boolean;
