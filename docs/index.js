@@ -1,10 +1,14 @@
 const puppeteer = require('puppeteer');
 
 /**
+ * check if there has 404 pages
+ *
  * how to use
  *
  * ```bash
- * node ./index
+ * # cd ${project path}
+ * # docsify serve ./docs
+ * node ./docs/index.js
  * ```
  */
 const config = {

@@ -21,7 +21,7 @@ import { ToolbarLoader } from '@syllepsis/editor';
 | ------------- | ---------------------------------------------- | ----------------------------------------------------------------------------------- |
 | mount         | `HTMLElement`                                  | 可选，工具栏挂载的节点                                                              |
 | Component     | `any`                                          | 可选，渲染函数                                                                      |
-| tools         | `Array<string \| '\|'>`                        | 工具栏显示的插件，顺序对应位置<br>- 值为 plugins 的 name 属性<br>- “\|”为显示分割线 |
+| tools         | `Array<string \| '\|'>`                        | 工具栏显示的插件，顺序对应位置<br>- 值为 plugins 的 name 属性<br>- `\|`为显示分割线 |
 | className     | `string`                                       | 可选，工具栏样式名                                                                  |
 | tooltips      | `{ name: string }`                             | 可选，hover 到按钮时显示的 tip                                                      |
 | icons         | `Types.StringMap<any>`                         | 可选，按钮的图标组件, key 为插件名称                                                |

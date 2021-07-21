@@ -1,10 +1,15 @@
+![logo](_media/logo.png)
+
 # Syllepsis
 
-> 基于 ProseMirror 的 易用可扩展 的 富文本编辑器。
+> A magical rich-text editor <small>0.0.1</small>
 
-[尝试一下](/zh-cn/playground.md)
-[快速开始](/zh-cn/about.md)
+- Basic on Prosemirror
+- Lots of built-in plugins
+- Easy to customize
+
+
+[GitHub](https://github.com/bytedance/syllepsis)
+[Getting Started](/en/about.md)
 
 <!--[Quick Start](/en/about.md)-->
-
-![color](#ffffff)

@@ -407,5 +407,5 @@ EventChannel: {
 
 若`SylApi`不能满足需求，可以通过以下途径：
 
-- 通过 Issues，提供需求及应用场景，确认支持后由我们排期开发或者由需求方通过`Pull Request`的方式来满足。
+- 通过 [Issues](https://github.com/bytedance/syllepsis/issues)，提供需求及应用场景，确认支持后由我们排期开发或者由需求方通过`Pull Request`的方式来满足。
 - 可以通过挂载在编辑器实例上的`view`属性拿到原生`EditorView`对象，进行更底层的操作，具体参考[Prosemirror](https://prosemirror.net/docs/ref/)。

@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Syllepsis is an out-of-the-box rich text editor compatible with mainstream modern browsers.We re-encapsulate Prosemirror to provide more concise APIs, a large number of basic plugins and custom plugins to simplify the customization of editors.
+Syllepsis is an out-of-the-box rich text editor compatible with mainstream modern browsers. We re-encapsulate Prosemirror to provide more concise APIs, a large number of basic plugins and custom plugins to simplify the customization of editors.
 
 ## Features
 
