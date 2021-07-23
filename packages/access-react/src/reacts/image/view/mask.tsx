@@ -114,7 +114,7 @@ class ImageMask extends React.PureComponent<IViewMapProps<ImageAttrs>, any> {
     const { active } = this.state;
     return (
       <span className="image-wrapper" ref={ref => this.isInline && (this.imageWrapDom = ref)}>
-        <img src={src} alt={alt || ''} width={width} height={height || 'auto'} />
+        <img src={src} {...(alt ? { alt } : {})} {...(width ? { width } : {})} {...(height ? { height } : {})} />
         {editor.editable && !config.disableResize && active ? (
           <ImageResizeBox
             height={height || DEFAULT_IMG_SIZE.height}
