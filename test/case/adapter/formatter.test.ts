@@ -673,6 +673,19 @@ describe('setFormat -- other', () => {
     expect(html).toEqual('<p><strong>12345678</strong></p>');
   });
 
+  test('can set multi format when the type is mark', async () => {
+    const html = await page.evaluate(() => {
+      editor.setHTML('<p>123</p>');
+      editor.setSelection({
+        index: 1,
+        length: 3,
+      });
+      editor.setFormat({ bold: true, underline: true });
+      return editor.getHTML();
+    });
+    expect(html).toEqual('<p><u><strong>123</strong></u></p>');
+  });
+
   test('can update mark attrs', async () => {
     const html1 = await page.evaluate(() => {
       editor.setHTML('<p><strong>123</strong></p>');

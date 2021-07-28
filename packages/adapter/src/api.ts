@@ -193,7 +193,13 @@ class SylApi {
       if (option.index !== undefined && option.length !== undefined) {
         range = { from: option.index, to: option.index + option.length };
       }
-      Object.keys(format).map(type => formatSelection(type, format[type], range)(state, dispatch));
+
+      let tr = state.tr;
+      Object.keys(format).map(type => {
+        tr = formatSelection(type, format[type], range)(state, tr);
+      });
+      if (!tr.steps.length) return;
+      dispatch(tr);
 
       option.focus !== false && this.focus();
     } catch (err) {
