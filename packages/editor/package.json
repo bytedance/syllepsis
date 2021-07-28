@@ -2,7 +2,7 @@
   "name": "@syllepsis/editor",
   "version": "0.0.2-alpha.0",
   "description": "middle layer of syllepsis editor",
-  "umd": "dist/umd/index.umd.js",
+  "umd": "dist/umd/index.js",
   "main": "dist/lib/index.js",
   "module": "dist/es/index.js",
   "typings": "dist/es/index.d.ts",
