@@ -10,8 +10,8 @@ const InlineImageComponent = (props: IViewMapProps<ImageAttrs>) => {
       // @ts-ignore
       name={name}
       alt={alt || ''}
-      width={+width.toFixed(2) || 'auto'}
-      height={+height.toFixed(2) || 'auto'}
+      {...(width ? { width: width.toFixed(2).replace(/\.?0+$/, '') } : {})}
+      {...(height ? { height: height.toFixed(2).replace(/\.?0+$/, '') } : {})}
     />
   );
 };

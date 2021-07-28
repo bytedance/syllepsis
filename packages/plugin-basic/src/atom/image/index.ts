@@ -1,9 +1,9 @@
-import { BlockAtom, INodeInfo, SylApi, SylController, SylPlugin } from '@syllepsis/adapter';
+import { BlockAtom, getPx, INodeInfo, SylApi, SylController, SylPlugin } from '@syllepsis/adapter';
 import { DOMOutputSpecArray, Node, Node as ProsemirrorNode } from 'prosemirror-model';
 import { TextSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 
-import { addAttrsByConfig, getFromDOMByConfig, isObjectURL, setDOMAttrByConfig } from '../../utils';
+import { addAttrsByConfig, getFixSize, getFromDOMByConfig, isObjectURL, setDOMAttrByConfig } from '../../utils';
 import { ImageAttrs, ImageProps, TUploadDataType } from './types';
 import {
   checkDomain,
@@ -296,7 +296,13 @@ class Image extends BlockAtom<ImageAttrs> {
       tag: 'img',
       getAttrs: (dom: HTMLImageElement) => {
         if (!dom.src) return false;
-        let { width = DEFAULT_WIDTH, height = 0 } = dom;
+
+        let width = getPx(dom.style.width || dom.getAttribute('width') || '', 16);
+        let height = getPx(dom.style.height || dom.getAttribute('height') || '', 16);
+
+        if (!width || isNaN(width)) width = 0;
+        if (!height || isNaN(height)) height = 0;
+
         if (width > maxWidth) {
           if (height) height = height / (width / maxWidth);
           width = maxWidth;
@@ -317,8 +323,12 @@ class Image extends BlockAtom<ImageAttrs> {
     },
   ];
   public toDOM = (node: Node) => {
-    const { align, ...attrs } = node.attrs;
+    const { align, width, height, ...attrs } = node.attrs;
     setDOMAttrByConfig(this.props.addAttributes, node, attrs);
+
+    if (width) attrs.width = getFixSize(width);
+    if (height) attrs.height = getFixSize(height);
+
     const renderSpec = ['img', attrs] as DOMOutputSpecArray;
     if (this.inline) return renderSpec;
 
