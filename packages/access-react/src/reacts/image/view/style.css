@@ -20,6 +20,7 @@
   left: 50%;
   transform: translateX(-50%);
   height: 28px;
+  line-height: 20px;
   background: #fff;
   white-space: nowrap;
   border-radius: 2px;
