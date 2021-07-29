@@ -6,7 +6,6 @@ import { EditorView } from 'prosemirror-view';
 import { doLiftNode } from '../basic/keymap/behavior';
 import { removeMark, Types } from '../libs';
 
-type Dispatch = EditorView['dispatch'];
 type TSelectedNodes = {
   node: ProseMirrorNode;
   topPos: number;
@@ -590,14 +589,13 @@ const formatSelection = (
   formatType: string,
   formatValue: Types.StringMap<any> | boolean,
   formatRange?: { from: number; to: number },
-) => (state: EditorState, dispatch: Dispatch) => {
+) => (state: EditorState, tr: Transaction) => {
   const {
     schema,
     doc,
     selection: { from, to, ranges, anchor, head },
   } = state;
 
-  let { tr } = state;
   let reSelect = (_tr: Transaction) => _tr;
 
   // if `formatRange` is specified, keep the same selected content after setting
@@ -616,20 +614,20 @@ const formatSelection = (
     };
 
     // reset the selection according to the `formatRange`
-    tr = tr.setSelection(TextSelection.create(doc, formatRange.from, formatRange.to));
+    tr.setSelection(TextSelection.create(doc, formatRange.from, formatRange.to));
   }
 
   if (schema.marks[formatType]) {
     if (typeof formatValue === 'boolean') {
-      tr = toggleMark(schema.marks[formatType], formatValue, tr, state.storedMarks);
+      toggleMark(schema.marks[formatType], formatValue, tr, state.storedMarks);
     } else {
-      tr = replaceMark(schema.marks[formatType], formatValue, tr);
+      replaceMark(schema.marks[formatType], formatValue, tr);
     }
   } else if (schema.nodes[formatType]) {
     const nodeType = schema.nodes[formatType];
     const selectedInfos = getSelectedInfos(tr);
 
-    if (!selectedInfos.length) return;
+    if (!selectedInfos.length) return tr;
 
     let resultFrom = doc.nodeSize;
     let resultTo = 0;
@@ -680,10 +678,10 @@ const formatSelection = (
       };
     }
 
-    tr = tr.setSelection(TextSelection.create(tr.doc, resultFrom, resultTo));
+    tr.setSelection(TextSelection.create(tr.doc, resultFrom, resultTo));
   }
 
-  dispatch(reSelect(tr));
+  return reSelect(tr);
 };
 
 export { clearFormat, formatSelection, getFormat };
