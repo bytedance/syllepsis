@@ -35,6 +35,23 @@ describe('Test builtin plugin props config', () => {
     expect(html1).toEqual('<ul><li style="margin-bottom: 10px;margin-left: 8px; margin-right: 8px;">123</li></ul>');
   });
 
+  test('ListItemPlugin can parse style right when matched inner tags', async () => {
+    const html = await page.evaluate(() => {
+      editor.setHTML(`
+        <ul>
+          <li><section style="text-align: center;">123</section></li>
+          <li style="text-align: center;"><p>123</p></li>
+          <li style="text-align: right;"><strong>123</strong></li>
+        </ul>
+      `);
+      return editor.getHTML();
+    });
+
+    expect(html).toBe(
+      '<ul><li style="text-align: center;list-style-position: inside;">123</li><li style="text-align: center;list-style-position: inside;">123</li><li style="text-align: right;list-style-position: inside;"><strong>123</strong></li></ul>',
+    );
+  });
+
   test('recognize ImagePlugin support configs', async () => {
     const html = await page.evaluate(() => {
       editor.setHTML(`<img src="test" image="image">`);

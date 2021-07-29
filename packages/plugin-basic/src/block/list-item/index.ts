@@ -80,10 +80,21 @@ class ListItem extends Block<IListItemAttrs> {
           tag: tagName,
           priority: 30,
           getAttrs: (dom: HTMLElement) => {
-            const parentElement = dom.parentElement;
+            let parentElement = dom.parentElement;
+            let style = dom.getAttribute('style') || '';
+            let matchList = false;
 
-            if (!parentElement) return false;
-            if (parentElement.tagName !== 'LI') return false;
+            while (parentElement) {
+              style = parentElement.getAttribute('style') || '' + style;
+              if (parentElement.tagName.toUpperCase() === 'LI') {
+                matchList = true;
+                break;
+              }
+              parentElement = parentElement.parentElement;
+            }
+
+            if (!matchList) return false;
+            dom.setAttribute('style', style);
 
             return parseRule.getAttrs(dom);
           },
@@ -123,12 +134,10 @@ class ListItem extends Block<IListItemAttrs> {
       tag: 'li',
       priority: 25,
       getAttrs: (dom: HTMLElement) => {
-        if (dom.tagName === 'LI') {
-          const childNodes = Array.prototype.slice.call(dom.children).filter(node => node.nodeName !== 'BR');
-
-          if (childNodes.length === 1) return false;
+        if (dom.tagName.toUpperCase() === 'LI' && this.props.matchInnerTags && this.props.matchInnerTags.length) {
+          const childNode = dom.querySelector(this.props.matchInnerTags.join(','));
+          if (childNode) return false;
         }
-
         const style = dom.getAttribute('style') || '';
         return this.formatAttrs(parseTypesetStyle(style, undefined, this.defaultFontSize), dom);
       },
