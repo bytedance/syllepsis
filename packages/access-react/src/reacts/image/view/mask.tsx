@@ -13,7 +13,7 @@ enum DEFAULT_IMG_SIZE {
   height = 300,
 }
 
-class ImageMask extends React.PureComponent<IViewMapProps<ImageAttrs>, any> {
+class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
   public imageWrapDom: any;
   public MAX_WIDTH: number;
   public state = {
@@ -33,14 +33,10 @@ class ImageMask extends React.PureComponent<IViewMapProps<ImageAttrs>, any> {
     this.MAX_WIDTH = editor.view.dom.scrollWidth - 40;
   }
 
-  componentWillReceiveProps(nextProps: IViewMapProps<ImageAttrs>): void {
-    if (this.props.attrs.src !== nextProps.attrs.src) {
-      this.updateImageUrl(nextProps);
-    }
-
-    if (nextProps.attrs.alt !== this.state.caption) {
+  componentDidUpdate() {
+    if (this.props.attrs.alt !== this.state.caption) {
       this.setState({
-        caption: nextProps.attrs.alt || '',
+        caption: this.props.attrs.alt || '',
       });
     }
   }
@@ -113,15 +109,16 @@ class ImageMask extends React.PureComponent<IViewMapProps<ImageAttrs>, any> {
     const config = editor.command.image!.getConfiguration();
     const { active } = this.state;
     return (
-      <span className="image-wrapper" ref={ref => this.isInline && (this.imageWrapDom = ref)}>
+      <span className="syl-image-atom-wrapper" ref={ref => this.isInline && (this.imageWrapDom = ref)}>
         <img src={src} {...(alt ? { alt } : {})} {...(width ? { width } : {})} {...(height ? { height } : {})} />
         {editor.editable && !config.disableResize && active ? (
           <ImageResizeBox
-            height={height || DEFAULT_IMG_SIZE.height}
+            height={height}
             onResizeEnd={this._onResizeEnd}
             editorDOM={editor.view.dom as HTMLElement}
             src={src}
             width={width}
+            targetDOM={this.imageWrapDom}
           />
         ) : null}
       </span>

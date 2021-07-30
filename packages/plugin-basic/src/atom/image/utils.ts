@@ -37,17 +37,15 @@ const getInputImageFiles = (event: any) => {
 };
 
 // calculate the height or width value according to the original image's aspect ratio
-const getSizeByRatio = (ratio: number, defaultWith: number, width?: number, height?: number) => {
+const getSizeByRatio = (ratio: number, width?: number, height?: number) => {
   const res: { width?: number; height?: number } = {};
 
-  if (!width && !height) {
-    res.width = defaultWith;
-    res.height = getFixSize(defaultWith / ratio);
-  } else if (!width && height) {
+  if (!width && height) {
     res.width = getFixSize(height * ratio);
   } else if (width) {
     res.height = getFixSize(width / ratio);
   }
+
   return res;
 };
 
@@ -75,28 +73,27 @@ const transformBlobFromObjectURL = async (url: string): Promise<Blob> =>
 // deal with the lack of width and height of the paste, obtain the original image's aspect ratio and then calculate
 const correctSize = (
   attrs: ImageAttrs,
-  defaultWidth: number,
 ): { width?: number; height?: number } | Promise<{ width?: number; height?: number }> => {
   const { src, width, height } = attrs;
 
-  if (width && height) return { width, height };
+  if (width || height) return { width, height };
   return new Promise(async resolve => {
     const { naturalWidth, naturalHeight } = await getImageSize(src);
     if (!naturalWidth || !naturalHeight) resolve({});
     else {
       const ratio = naturalWidth / naturalHeight;
-      const res = getSizeByRatio(ratio, defaultWidth, width, height);
+      const res = getSizeByRatio(ratio, width, height);
       resolve(res);
     }
   });
 };
 
 // keep the aspect ratio after uploading
-const constructAttrs = (oAttrs: Partial<ImageAttrs>, nAttrs: Partial<ImageAttrs>, defaultWidth: number) => {
+const constructAttrs = (oAttrs: Partial<ImageAttrs>, nAttrs: Partial<ImageAttrs>) => {
   let attrs: { width?: number; height?: number } = {};
   if ((!nAttrs.width || !nAttrs.height) && oAttrs.height && oAttrs.width) {
     const ratio = oAttrs.width / oAttrs.height;
-    attrs = getSizeByRatio(ratio, defaultWidth, nAttrs.width, nAttrs.height);
+    attrs = getSizeByRatio(ratio, nAttrs.width, nAttrs.height);
   }
   return { ...oAttrs, ...nAttrs, ...attrs };
 };

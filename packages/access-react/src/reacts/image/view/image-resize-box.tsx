@@ -16,6 +16,7 @@ interface IProps {
   onResizeEnd: (w: number, height: number) => void;
   width: number;
   src: string;
+  targetDOM: HTMLElement;
   editorDOM: HTMLElement;
 }
 
@@ -156,7 +157,15 @@ class ImageResizeBoxControl extends React.PureComponent<IResizeProps, any> {
 
 class ImageResizeBox extends React.PureComponent<IProps, any> {
   render() {
-    const { onResizeEnd, width, height } = this.props;
+    const { onResizeEnd, targetDOM } = this.props;
+    let { width, height } = this.props;
+
+    let imgDOM: HTMLElement | null = null;
+    if ((!width || !height) && (imgDOM = targetDOM.querySelector('img'))) {
+      const rect = imgDOM.getBoundingClientRect();
+      width = rect.width;
+      height = rect.height;
+    }
 
     const controls = (Object.keys(ResizeDirection) as Array<keyof typeof ResizeDirection>).map(key => (
       <ImageResizeBoxControl
@@ -170,7 +179,11 @@ class ImageResizeBox extends React.PureComponent<IProps, any> {
       />
     ));
 
-    return <span className="syl-resizable-container">{controls}</span>;
+    return (
+      <span className="syl-resizable-container" style={{ width, height }}>
+        {controls}
+      </span>
+    );
   }
 }
 

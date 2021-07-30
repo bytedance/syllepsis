@@ -32,6 +32,7 @@
   margin: 0 6px;
   cursor: pointer;
   vertical-align: middle;
+  color: #000000;
 }
 
 .syl-image-fixer .align-menu .align-icon.active path,
@@ -72,6 +73,18 @@
   position: absolute;
   width: 20px;
   z-index: 2;
+}
+
+.syl-image-atom-wrapper {
+  display: inline-block;
+  position: relative;
+}
+
+.syl-resizable-container {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .syl-resizable-container .syl-image-resize-box-control.top_left {
@@ -121,32 +134,6 @@
   position: absolute;
   right: -10px;
   top: -10px;
-}
-
-.syl-image-uploading-wrapper {
-  position: absolute;
-  width: 100%;
-  height: calc(100% + 30px);
-  background-color: rgba(0, 0, 0, 0.6);
-  z-index: 2;
-}
-
-.syl-image-uploading-wrapper .syl-uploading-percent-base {
-  position: absolute;
-  width: 80%;
-  background: #e6e6e6;
-  border-radius: 4px;
-  height: 8px;
-  top: 50%;
-  margin-top: -4px;
-  overflow: hidden;
-  left: 10%;
-}
-
-.syl-uploading-percent-base .syl-uploading-percent {
-  display: block;
-  height: 8px;
-  background-color: rgba(152, 204, 253, 0.8);
 }
 
 .syl-editor .image-wrapper {
