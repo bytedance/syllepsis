@@ -147,7 +147,7 @@ const updateImageUrl = async (editor: SylApi, props: IUpdateImageProps, config: 
   try {
     // upload state, only one upload request is allowed in the same instance at the same time
     if (state.uploading || (!isObjectURL(src) && checkDomain(src, config))) {
-      const newAttrs = await correctSize(props.attrs, DEFAULT_WIDTH);
+      const newAttrs = await correctSize(props.attrs);
       if ((Object.keys(newAttrs) as Array<keyof typeof newAttrs>).some(key => newAttrs[key] !== props.attrs[key])) {
         editor.updateCardAttrs(props.getPos(), newAttrs);
       }
@@ -159,8 +159,8 @@ const updateImageUrl = async (editor: SylApi, props: IUpdateImageProps, config: 
     state.uploading = false;
     if (!attrs) return;
 
-    const imgSize = await correctSize({ ...props.attrs, ...attrs }, DEFAULT_WIDTH);
-    const imageAttrs = constructAttrs({ ...props.attrs, ...imgSize }, attrs, DEFAULT_WIDTH);
+    const imgSize = await correctSize({ ...props.attrs, ...attrs });
+    const imageAttrs = constructAttrs({ ...props.attrs, ...imgSize }, attrs);
 
     if (src !== attrs.src) {
       editor.updateCardAttrs(props.getPos(), imageAttrs);

@@ -113,11 +113,12 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
         <img src={src} {...(alt ? { alt } : {})} {...(width ? { width } : {})} {...(height ? { height } : {})} />
         {editor.editable && !config.disableResize && active ? (
           <ImageResizeBox
-            height={height || DEFAULT_IMG_SIZE.height}
+            height={height}
             onResizeEnd={this._onResizeEnd}
             editorDOM={editor.view.dom as HTMLElement}
             src={src}
             width={width}
+            targetDOM={this.imageWrapDom}
           />
         ) : null}
       </span>
