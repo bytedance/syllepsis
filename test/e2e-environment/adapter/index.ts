@@ -50,6 +50,7 @@ const editor = createEditor(
       allowedSpaceBefores: [4, { default: true, value: 8 }, 16],
       allowedSpaceAfters: { default: true, value: 20 },
       allowedSpaceBoths: [4, 8, 16],
+      allowedAligns: ['left', 'center', 'right', 'justify'],
     }),
     new ImagePlugin({
       uploader: async (url: any) => {
