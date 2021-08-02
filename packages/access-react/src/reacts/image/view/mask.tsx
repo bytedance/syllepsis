@@ -22,6 +22,7 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
   };
   private isInline = false;
   private imageMount = false;
+  private inputting = false;
 
   constructor(props: any) {
     super(props);
@@ -34,14 +35,14 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
   }
 
   componentDidUpdate() {
-    if (this.props.attrs.alt !== this.state.caption) {
+    if (!this.inputting && this.props.attrs.alt !== this.state.caption) {
       this.setState({
         caption: this.props.attrs.alt || '',
       });
     }
   }
 
-  componentDidMount(): void {
+  componentDidMount() {
     document.addEventListener('click', this._handleCheckStatus);
     this.props.editor.on(EventChannel.LocalEvent.LOCALE_CHANGE, this.localeUpdate);
     this.imageMount = true;
@@ -71,11 +72,17 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
     }
   };
 
+  public focusCaption = () => {
+    this.props.editor.disable();
+    this.inputting = true;
+  };
+
   public updateCaptionValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { caption } = this.state;
     const { editor, attrs } = this.props;
     editor.enable();
     if (caption !== attrs.alt) this.dispatchUpdate({ alt: caption });
+    this.inputting = false;
   };
 
   public dispatchUpdate = (attrs: Partial<ImageAttrs>) => {
@@ -176,7 +183,7 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
                     e.clipboardData.setData('text/html', selection.toString());
                   }
                 }}
-                onFocus={() => editor.disable()}
+                onFocus={this.focusCaption}
                 onChange={this._changeAlt}
                 onMouseUp={e => e.nativeEvent.stopImmediatePropagation()}
                 onBlur={this.updateCaptionValue}
