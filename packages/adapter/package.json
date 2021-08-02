@@ -1,6 +1,6 @@
 {
   "name": "@syllepsis/adapter",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "prosemirror adapter of syllepsis editor",
   "umd": "dist/umd/index.js",
   "main": "dist/lib/index.js",
