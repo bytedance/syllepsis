@@ -1,3 +1,12 @@
+## [0.0.4](https://github.com/bytedance/syllepsis/compare/v0.0.3...v0.0.4) (2021-08-02)
+
+
+### 🐞 Bug Fixers
+
+* **access-react:** ImagePlugin: can't input caption, closes [#11](https://github.com/bytedance/syllepsis/issues/11)
+* **access-react:** ImagePlugin: resize container  can exceed the target
+* **plugin-basic:** ImagePlugin: click on the image but sometimes get the wrong text selection
+
 ## [0.0.3](https://github.com/bytedance/syllepsis/compare/v0.0.2...v0.0.3) (2021-07-30)
 
 
