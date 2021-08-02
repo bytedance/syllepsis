@@ -1,6 +1,6 @@
 import { BlockAtom, getPx, INodeInfo, SylApi, SylController, SylPlugin } from '@syllepsis/adapter';
 import { DOMOutputSpecArray, Node, Node as ProsemirrorNode } from 'prosemirror-model';
-import { TextSelection } from 'prosemirror-state';
+import { NodeSelection, TextSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 
 import { addAttrsByConfig, getFixSize, getFromDOMByConfig, isObjectURL, setDOMAttrByConfig } from '../../utils';
@@ -219,10 +219,9 @@ class ImageController extends SylController<ImageProps> {
       event: MouseEvent,
     ) {
       if (node.type.name === PLUGIN_NAME) {
-        const caption = (event.target as HTMLElement).closest('.syl-image-caption');
+        const caption = (event.target as HTMLElement).closest('input');
         if (caption) {
-          const input = caption.querySelector('input');
-          if (input) input.focus();
+          if (caption) caption.focus();
           const newTextSelection = TextSelection.create(view.state.doc, nodePos);
           view.dispatch(view.state.tr.setSelection(newTextSelection));
           return true;
@@ -231,14 +230,8 @@ class ImageController extends SylController<ImageProps> {
         const { state, dispatch } = view;
         const curSelection = window.getSelection();
         if (curSelection && curSelection.type === 'Caret') {
-          const truePos = view.posAtCoords({
-            left: event.screenX,
-            top: event.screenY,
-          });
-          if (truePos) {
-            dispatch(state.tr.setSelection(TextSelection.create(view.state.doc, truePos.pos)));
-            return true;
-          }
+          dispatch(state.tr.setSelection(NodeSelection.create(view.state.doc, nodePos)));
+          return true;
         }
         return false;
       }
