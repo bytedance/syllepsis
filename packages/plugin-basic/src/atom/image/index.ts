@@ -45,7 +45,6 @@ const parseSylDOM = (dom: HTMLElement, fixClass: string, captionClass: string) =
     if (className.includes('left')) align = 'left';
     else if (className.includes('right')) align = 'right';
   }
-
   return { src, alt, width, height, align, name } as ImageAttrs;
 };
 
@@ -328,7 +327,12 @@ class Image extends BlockAtom<ImageAttrs> {
     if (this.inline) return renderSpec;
 
     const alignAttrs = this.props.disableAlign ? {} : { align: align || 'center' };
-    return ['div', { class: 'syl-image-wrapper', ...alignAttrs }, renderSpec] as DOMOutputSpecArray;
+    return [
+      'div',
+      { class: 'syl-image-wrapper', ...alignAttrs },
+      renderSpec,
+      attrs.alt && ['p', { class: 'syl-image-caption' }, attrs.alt],
+    ] as DOMOutputSpecArray;
   };
 
   public attrs = {
