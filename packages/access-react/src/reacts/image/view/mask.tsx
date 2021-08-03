@@ -30,7 +30,7 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
     const { schema } = editor.view.state;
     this.isInline = schema.nodes.image.isInline;
     this.updateImageUrl(props);
-    this.state.caption = attrs.caption || '';
+    this.state.caption = attrs.alt || '';
     this.MAX_WIDTH = editor.view.dom.scrollWidth - 40;
   }
 
