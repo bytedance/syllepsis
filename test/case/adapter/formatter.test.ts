@@ -640,6 +640,20 @@ describe('setFormat - isolating node', () => {
 });
 
 describe('setFormat -- other', () => {
+  test('can stored format', async () => {
+    await page.evaluate(() => {
+      editor.setHTML('');
+      editor.setSelection({
+        index: 1,
+        length: 0,
+      });
+      editor.setFormat({ bold: true });
+    });
+    await page.keyboard.press('1');
+    const html = await page.evaluate(() => editor.getHTML());
+    expect(html).toEqual('<p><strong>1</strong></p>');
+  });
+
   test('would not set mark when value is false', async () => {
     const html = await page.evaluate(() => {
       editor.setFormat({ bold: true });

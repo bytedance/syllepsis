@@ -198,7 +198,6 @@ class SylApi {
       Object.keys(format).map(type => {
         tr = formatSelection(type, format[type], range)(state, tr);
       });
-      if (!tr.steps.length) return;
       dispatch(tr);
 
       option.focus !== false && this.focus();
