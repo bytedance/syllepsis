@@ -67,6 +67,7 @@
   line-height: 20px;
   box-sizing: content-box !important;
   width: fit-content !important;
+  width: -moz-fit-content !important;
 }
 
 .syl-tooltip .right-arrow {

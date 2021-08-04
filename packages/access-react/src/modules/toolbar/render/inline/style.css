@@ -1,5 +1,6 @@
 .syl-toolbar-inline {
   width: fit-content;
+  width: -moz-fit-content;
   white-space: nowrap;
   visibility: hidden;
   user-select: none;
