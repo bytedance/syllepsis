@@ -63,6 +63,9 @@ class ToolbarInlineLoader extends BaseModule<IToolbarInlineOption> {
   private preferLeft: 'fixed' | 'auto' = 'auto'; // whether to recalculate the left position or fixed
   private _isEnable = true;
 
+  // stored click element because document.activeElement not works well in safari
+  private lastClickElement: Element | null = null;
+
   get isEnable() {
     return this._isEnable;
   }
@@ -158,12 +161,6 @@ class ToolbarInlineLoader extends BaseModule<IToolbarInlineOption> {
   hide = () => {
     this.visible = false;
   };
-
-  checkHide = debounce(() => {
-    if (!this.adapter.isFocused && document.activeElement && !document.activeElement.closest(IGNORE_CLOSE_ATTRIBUTE)) {
-      this.hide();
-    }
-  }, 300);
 
   handleMouseUp = (e: any) => {
     // only handle the case where the mouse is pressed in the editor
@@ -312,16 +309,26 @@ class ToolbarInlineLoader extends BaseModule<IToolbarInlineOption> {
     this.tracePos(e);
   }, 20);
 
-  // keep focus and prevent hiding
-  focusEditor = () => requestAnimationFrame(() => this.adapter.focus());
+  checkHide = debounce(() => {
+    if (
+      !this.adapter.isFocused &&
+      this.lastClickElement &&
+      !this.dom.contains(this.lastClickElement) &&
+      !this.lastClickElement.closest(IGNORE_CLOSE_ATTRIBUTE)
+    ) {
+      this.hide();
+    }
+  }, 300);
+
+  storedClick = (e: MouseEvent) => (this.lastClickElement = e.target as Element);
 
   bindEvent() {
     document.body.addEventListener('mouseup', this.handleMouseUp);
+    document.body.addEventListener('click', this.storedClick);
     this.adapter.view.dom.addEventListener('mousedown', this.handleMouseDown);
     // do not trigger `mouseUp` when drop
     this.adapter.root.addEventListener('drop', this.handleMouseUp);
     this.adapter.on(EventChannel.LocalEvent.ON_BLUR, this.checkHide);
-    this.dom.addEventListener('click', this.focusEditor);
   }
 
   public setProps(option: IToolbarInlineOption) {
@@ -341,9 +348,9 @@ class ToolbarInlineLoader extends BaseModule<IToolbarInlineOption> {
 
   public destructor() {
     document.body.removeEventListener('mouseup', this.handleMouseUp);
+    document.body.removeEventListener('click', this.storedClick);
     this.adapter.view.dom.removeEventListener('mousedown', this.handleMouseDown);
     this.adapter.off(EventChannel.LocalEvent.ON_BLUR, this.checkHide);
-    this.dom.removeEventListener('click', this.focusEditor);
     this.adapter.root.removeEventListener('drop', this.handleMouseUp);
     this.adapter.root.removeChild(this.dom);
     this.bridge.unmount();

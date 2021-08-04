@@ -1,8 +1,11 @@
 import { Inline, SylApi, SylController, SylPlugin } from '@syllepsis/adapter';
 import { DOMOutputSpec, Node } from 'prosemirror-model';
 
-import { checkMarkDisable, toRgba } from '../../utils';
+import { checkMarkDisable, toHex } from '../../utils';
 
+interface IBackgroundProps {
+  default?: string;
+}
 interface IBackgroundAttrs {
   color: string | null;
 }
@@ -13,7 +16,7 @@ const NAME = 'background';
 const getBgAttrs = (style: string) => {
   const colorMatch = style.match(colorReg);
   if (!colorMatch) return false;
-  const background = toRgba(colorMatch[0]);
+  const background = toHex(colorMatch[0]);
   if (background) {
     return {
       color: background,
@@ -26,9 +29,16 @@ class Background extends Inline<IBackgroundAttrs> {
   public name = NAME;
   public tagName = () => 'span';
 
+  constructor(editor: SylApi, props: IBackgroundProps) {
+    super(editor, props);
+    if (props.default) {
+      this.attrs.color.default = toHex(props.default);
+    }
+  }
+
   public attrs = {
     color: {
-      default: null,
+      default: '#FFFFFF',
     },
   };
 
@@ -43,16 +53,29 @@ class Background extends Inline<IBackgroundAttrs> {
     },
   ];
 
-  public toDOM = (node: Node) => ['span', { style: `background-color: ${node.attrs.color}` }, 0] as DOMOutputSpec;
+  public toDOM = (node: Node) => {
+    const { color } = node.attrs;
+    const renderColor = color && toHex(color) !== toHex(this.attrs.color.default) && color;
+    return ['span', renderColor ? { style: `background-color: ${node.attrs.color}` } : {}, 0] as DOMOutputSpec;
+  };
 }
 
-class BackgroundController extends SylController {
+class BackgroundController extends SylController<IBackgroundProps> {
   public name = 'background';
-  public defaultColor = 'rgba(0, 0, 0, 1)';
-  public getAttrs = (color: { r: number; g: number; b: number; a: number }) => {
-    const rgba = `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
+  public defaultColor = '#FFFFFF';
+
+  constructor(editor: SylApi, props: IBackgroundProps) {
+    super(editor, props);
+    if (props.default) {
+      this.defaultColor = toHex(props.default);
+    }
+  }
+
+  public getAttrs = (color: string) => {
+    const result = toHex(color);
+    if (!result) return false;
     return {
-      color: rgba,
+      color: result,
     };
   };
   public getValue = (attrs: any) => attrs.color;
@@ -63,7 +86,7 @@ class BackgroundController extends SylController {
   public disable = (editor: SylApi) => checkMarkDisable(editor.view, NAME);
 }
 
-class BackgroundPlugin extends SylPlugin {
+class BackgroundPlugin extends SylPlugin<IBackgroundProps> {
   public name = NAME;
   public Controller = BackgroundController;
   public Schema = Background;

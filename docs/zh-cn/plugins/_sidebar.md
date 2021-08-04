@@ -17,6 +17,8 @@
   - [表格](/zh-cn/plugins/table.md)
   - [视频](/zh-cn/plugins/video.md)
   - [音频](/zh-cn/plugins/audio.md)
+  - [字体颜色](/en/plugins/color.md)
+  - [背景颜色](/en/plugins/background.md)
 - [props 配置](/zh-cn/props.md)
 - [API 接口](/zh-cn/api.md)
 - [Playground](/zh-cn/playground.md)

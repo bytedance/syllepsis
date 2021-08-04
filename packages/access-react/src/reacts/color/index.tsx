@@ -25,9 +25,6 @@ class ReactColorController extends ColorController {
           getValue={this.getValue}
           getAttrs={this.getAttrs}
           defaultColor={this.defaultColor}
-          handler={_attrs => {
-            this.editor.setFormat({ color: _attrs });
-          }}
         />
       );
       btnDOM.appendChild(dom);

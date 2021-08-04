@@ -55,7 +55,7 @@ class ToolbarInline extends React.Component<IToolbarInlineProps> {
           [className]: className,
           visible,
         })}
-        onClick={() => editor.focus()}
+        onClick={e => !e.cancelable && editor.focus()}
       >
         {contents.map(content => this.renderTool(content))}
       </div>

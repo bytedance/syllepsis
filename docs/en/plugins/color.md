@@ -1,0 +1,15 @@
+# ColorPlugin <!-- {docsify-ignore-all} -->
+
+```typescript
+import { ColorPlugin } from '@syllepsis/access-react';
+
+plugins: [
+  new ColorPlugin({
+    default: string, //  default font color，it will be reset when the attribute equal，default is '#000000'
+  }),
+];
+```
+
+## 示例
+
+[color](https://codesandbox.io/s/plugin-color-g18vz?hidenavigation=1 ':include :type=iframe width=100% height=500px')
