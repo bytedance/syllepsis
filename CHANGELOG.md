@@ -1,3 +1,15 @@
+## [0.0.6](https://github.com/bytedance/syllepsis/compare/v0.0.5...v0.0.6) (2021-08-05)
+
+
+### 🎉 Features
+
+* **access-react:** use a new ColorPick for color and background plugin
+
+
+### 🐞 Bug Fixers
+
+* **access-react:** dropdown menu is empty in 'toolbarInline', closes [#16](https://github.com/bytedance/syllepsis/issues/16)
+
 ## [0.0.5](https://github.com/bytedance/syllepsis/compare/v0.0.4...v0.0.5) (2021-08-03)
 
 
