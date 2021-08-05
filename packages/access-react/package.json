@@ -1,6 +1,6 @@
 {
   "name": "@syllepsis/access-react",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "react access layer of the syllepsis editor",
   "umd": "dist/umd/index.js",
   "main": "dist/lib/index.js",
@@ -39,9 +39,9 @@
   },
   "dependencies": {
     "@icon-park/react": "^1.3.3",
-    "@syllepsis/adapter": "^0.0.5",
-    "@syllepsis/editor": "^0.0.5",
-    "@syllepsis/plugin-basic": "^0.0.5",
+    "@syllepsis/adapter": "^0.0.6",
+    "@syllepsis/editor": "^0.0.6",
+    "@syllepsis/plugin-basic": "^0.0.6",
     "@types/classnames": "^2.2.6",
     "@types/emoji-mart": "<2.11.2",
     "@types/lodash.debounce": "^4.0.0",
