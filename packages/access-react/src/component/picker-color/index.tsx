@@ -1,6 +1,9 @@
-import { SylApi, Types } from '@syllepsis/adapter';
+import './style.css';
+
+import { SylApi } from '@syllepsis/adapter';
 import React from 'react';
-import { ChromePicker } from 'react-color';
+
+import { ColorSelector } from './color-selector';
 
 interface IColorPickerState {
   open: boolean;
@@ -14,7 +17,6 @@ interface IColorProps {
   getAttrs: any;
   defaultColor: string;
   mountDOM: HTMLElement;
-  handler: (attrs: Types.StringMap<any>) => any;
 }
 
 const PICKER_WIDTH = 225;
@@ -90,12 +92,13 @@ class ColorPicker extends React.Component<IColorProps, IColorPickerState> {
     }
   };
 
-  changeColor = (_color: any) => {
+  changeColor = (_color: string | false) => {
+    const { editor, getAttrs, name, defaultColor } = this.props;
     const isInput = document.activeElement ? document.activeElement.tagName === 'INPUT' : false;
-    const { editor, getAttrs, name } = this.props;
-    const attrs = getAttrs(_color.rgb);
+    const attrs = _color ? getAttrs(_color) : false;
     editor.setFormat({ [name]: attrs }, { focus: !isInput });
-    this.setState({ color: attrs.color }, () => this.setIconColor(attrs.color));
+    const resultColor = _color ? _color : defaultColor;
+    this.setState({ color: resultColor }, () => this.setIconColor(resultColor));
   };
 
   setIconColor = (color: string) => {
@@ -120,15 +123,11 @@ class ColorPicker extends React.Component<IColorProps, IColorPickerState> {
 
   render() {
     const { open, color } = this.state;
+    const { name, defaultColor } = this.props;
     if (!open) return null;
     return (
-      <div
-        className="color-picker-container"
-        style={{ userSelect: 'none', width: `${PICKER_WIDTH}px`, position: 'absolute', zIndex: 99 }}
-        data-syl-toolbar="true"
-        ref={el => el && (this.picker = el)}
-      >
-        <ChromePicker color={color as any} onChange={this.changeColor} />
+      <div className="syl-color-picker-container" data-syl-toolbar="true" ref={el => el && (this.picker = el)}>
+        <ColorSelector name={name} selectedColor={color} onClick={this.changeColor} resetColor={defaultColor} />
       </div>
     );
   }

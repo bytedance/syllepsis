@@ -16,9 +16,9 @@ Syllepsis 已内置了一系列的基础插件，可在 ↓↓ 列表 ↓↓ 中
 | `BoldPlugin`        | 粗体     | `bold`         | `**文字**` + `空格`                        |                                     | `@syllepsis/plugin-basic` |
 | `ItalicPlugin`      | 斜体     | `italic`       | `*文字*` + `空格`                          |                                     | `@syllepsis/plugin-basic` |
 | `UnderlinePlugin`   | 下划线   | `underline`    | `~文字~` + `空格` <br/>`++文字++` + `空格` |                                     | `@syllepsis/plugin-basic` |
-| `ColorPlugin`       | 文本颜色 | `color`        |                                            |                                     | `@syllepsis/access-*`     |
+| `ColorPlugin`       | 文本颜色 | `color`        |                                            | [Link](zh-cn/plugins/color)         | `@syllepsis/access-*`     |
 | `FontSizePlugin`    | 字体大小 | `font_size`    |                                            | [Link](/zh-cn/plugins/font-size)    | `@syllepsis/plugin-basic` |
-| `BackgroundPlugin`  | 文本背景 | `background`   |                                            |                                     | `@syllepsis/access-*`     |
+| `BackgroundPlugin`  | 文本背景 | `background`   |                                            | [Link](zh-cn/plugins/background)    | `@syllepsis/access-*`     |
 | `LetterSpacePlugin` | 字体间距 | `letter_space` |                                            | [Link](/zh-cn/plugins/letter-space) | `@syllepsis/plugin-basic` |
 
 ### 文本类型

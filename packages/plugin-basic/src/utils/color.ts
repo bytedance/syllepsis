@@ -1,42 +1,41 @@
-const rgbRegex = /rgb\((.*)\)/i;
-const hexRegex = /#[\d|a-z]{3,6}/i;
+import Color from 'color';
 
-// rgbToHex convert rgb(0, 0, 0) to #rgba(0, 0, 0, 1)
-const rgbToRgba = (color: string) => {
-  const split = /\(|\)|,/;
-  const result = color.split(split).filter(Boolean);
-  return `rgba(${result[0]}, ${result[1]}, ${result[2]}, 1)`;
+const STATIC_COLOR: Record<string, string> = {
+  black: '#000000',
+  silver: '#C0C0C0',
+  gray: '#808080',
+  white: '#FFFFFF',
+  maroon: '#800000',
+  red: '#FF0000',
+  purple: '#800080',
+  fuchsia: '#FF00FF',
+  green: '#008000',
+  lime: '#00FF00',
+  olive: '#808000',
+  yellow: '#FFFF00',
+  navy: '#000080',
+  blue: '#0000FF',
+  teal: '#008080',
+  aqua: '#00FFFF',
 };
 
-const transToDecimal = (numString: string) => parseInt(numString, 16);
-
-const hexToRgba = (hex: string) => {
-  let numReg = /[\d|a-f]{2}/gi;
-  if (hex.length < 6) {
-    numReg = /[\d|a-f]/g;
-  }
-  const numbers = [];
-  let res;
-  while ((res = numReg.exec(hex))) {
-    const num = res[0];
-    numbers.push(transToDecimal(num.length === 1 ? `${num}${num}` : num));
-  }
-
-  return `rgba(${numbers.join(', ')}, 1)`;
+const toHexAlpha = (val: number) => {
+  if (val === 1) return '';
+  if (!val) return '00';
+  return parseInt(`${255 * val}`, 10)
+    .toString(16)
+    .toUpperCase();
 };
 
-// toHex sanitize "rgb(0, 0, 0)" | "#000" | "#000000" to "rgba(0, 0, 0, 0)"
-const toRgba = (color: string): string | null => {
-  if (rgbRegex.test(color)) {
-    const result = color.match(rgbRegex);
-    if (result) {
-      return rgbToRgba(result[1]);
-    }
+// covert color-string to #xxxxxx
+const toHex = (_color: string) => {
+  try {
+    if (STATIC_COLOR[_color]) return STATIC_COLOR[_color];
+    const color = Color(_color);
+    return color.hex() + toHexAlpha(color.alpha());
+  } catch (e) {
+    return '';
   }
-  if (hexRegex.test(color)) {
-    return hexToRgba(color);
-  }
-  return color;
 };
 
-export { hexRegex, hexToRgba, rgbRegex, rgbToRgba, toRgba, transToDecimal };
+export { toHex };

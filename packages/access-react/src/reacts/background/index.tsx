@@ -25,9 +25,6 @@ class ReactBackgroundController extends BackgroundController {
           getValue={this.getValue}
           getAttrs={this.getAttrs}
           defaultColor={this.defaultColor}
-          handler={_attrs => {
-            this.editor.setFormat({ color: _attrs });
-          }}
         />
       );
       btnDOM.appendChild(dom);

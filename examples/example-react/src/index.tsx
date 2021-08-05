@@ -219,6 +219,10 @@ const RichEditor = () => {
           '|',
           AlignLeftPlugin.getName(),
           HeaderPlugin.getName(),
+          '|',
+          SpaceBeforePlugin.getName(),
+          SpaceAfterPlugin.getName(),
+          SpaceBothPlugin.getName(),
           {
             content: [OrderedListPlugin.getName(), BulletListPlugin.getName()],
             contentOption: { tipDirection: 'up' },

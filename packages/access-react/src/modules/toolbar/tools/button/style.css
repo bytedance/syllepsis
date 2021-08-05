@@ -144,7 +144,7 @@
   width: 100%;
   font-size: 13px;
   font-family: PingFangSC;
-  color: #666666;
+  color: #222222;
   vertical-align: middle;
 }
 
@@ -154,7 +154,7 @@
 
 .syl-toolbar-tool-horizon.inline {
   display: inline-block;
-  min-width: unset;
+  min-width: 28px;
   height: auto;
 }
 
@@ -190,7 +190,7 @@
   padding-right: 0;
 }
 
-.syl-toolbar-tool-horizon.inline .tool-name {
+.syl-toolbar-tool-horizon.inline .tool-name:not(:only-child) {
   padding: 0;
   line-height: unset;
   font-size: 0;

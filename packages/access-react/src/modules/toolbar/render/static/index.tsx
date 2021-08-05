@@ -89,7 +89,7 @@ class Toolbar extends React.Component<IToolbarStaticProps, IToolbarState> {
   public render() {
     const { contents, editor } = this.props.toolbarLib;
     return (
-      <div className="syl-toolbar" onClick={() => editor.focus()}>
+      <div className="syl-toolbar" onClick={e => !e.cancelable && editor.focus()}>
         {contents.map(content => this.renderTool(content))}
       </div>
     );

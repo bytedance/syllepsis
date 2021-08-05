@@ -1,65 +1,90 @@
 import { Inline, SylApi, SylController, SylPlugin } from '@syllepsis/adapter';
 import { DOMOutputSpec, Node } from 'prosemirror-model';
 
-import { checkMarkDisable, toRgba } from '../../utils';
+import { checkMarkDisable, toHex } from '../../utils';
 
 const NAME = 'color';
-const black = 'rgba(0, 0, 0, 1)';
-interface IColorProps {
+interface IColorAttrs {
   color: string;
 }
 
+interface IColorProps {
+  default?: string;
+}
+
 const getColorAttrs = (style: string) => {
-  const color = toRgba(style);
+  const color = toHex(style);
   if (color) {
     return {
-      color
+      color,
     };
   }
   return false;
 };
-class Color extends Inline<IColorProps> {
+class Color extends Inline<IColorAttrs> {
   public name = NAME;
   public tagName = () => 'span';
 
+  public props: IColorProps = {};
+
+  constructor(editor: SylApi, props: IColorProps) {
+    super(editor, props);
+    if (props.default) {
+      this.attrs.color.default = toHex(props.default);
+    }
+  }
+
   public attrs = {
     color: {
-      default: `${black}`
-    }
+      default: '#000000',
+    },
   };
 
   public parseDOM = [
     {
       style: 'color',
-      getAttrs: getColorAttrs
+      getAttrs: getColorAttrs,
     },
     {
       tag: '*[color]',
-      getAttrs: (dom: HTMLElement) => getColorAttrs(dom.getAttribute('color')!)
-    }
+      getAttrs: (dom: HTMLElement) => getColorAttrs(dom.getAttribute('color')!),
+    },
   ];
 
-  public toDOM = (node: Node) => ['span', { style: `color: ${node.attrs.color}` }, 0] as DOMOutputSpec;
+  public toDOM = (node: Node) => {
+    const { color } = node.attrs;
+    const renderColor = color && toHex(color) !== toHex(this.attrs.color.default) && color;
+    return ['span', renderColor ? { style: `color: ${node.attrs.color}` } : {}, 0] as DOMOutputSpec;
+  };
 }
 
-class ColorController extends SylController {
+class ColorController extends SylController<IColorProps> {
   public name = 'color';
-  public defaultColor = black;
-  public getAttrs = (color: { r: number; g: number; b: number; a: number }) => {
-    const rgba = `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
+  public defaultColor = '#000000';
+
+  constructor(editor: SylApi, props: IColorProps) {
+    super(editor, props);
+    if (props.default) {
+      this.defaultColor = toHex(props.default);
+    }
+  }
+
+  public getAttrs = (color: string) => {
+    const result = toHex(color);
+    if (!result) return false;
     return {
-      color: `${rgba}`
+      color: result,
     };
   };
   public getValue = (attrs: any) => attrs.color;
   public disable = (editor: SylApi) => checkMarkDisable(editor.view, NAME);
   public toolbar: SylController['toolbar'] = {
     className: 'color',
-    tooltip: 'color'
+    tooltip: 'color',
   };
 }
 
-class ColorPlugin extends SylPlugin {
+class ColorPlugin extends SylPlugin<IColorProps> {
   public name = NAME;
   public Controller = ColorController;
   public Schema = Color;

@@ -17,6 +17,8 @@
   - [Table](/en/plugins/table.md)
   - [Video](/en/plugins/video.md)
   - [Audio](/en/plugins/audio.md)
+  - [Color](/en/plugins/color.md)
+  - [Background](/en/plugins/background.md)
 - [Editor Props](/en/props.md)
 - [API interface](/en/api.md)
 - [Playground](/en/playground.md)
