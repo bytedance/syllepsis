@@ -99,6 +99,7 @@ class ColorPicker extends React.Component<IColorProps, IColorPickerState> {
     editor.setFormat({ [name]: attrs }, { focus: !isInput });
     const resultColor = _color ? _color : defaultColor;
     this.setState({ color: resultColor }, () => this.setIconColor(resultColor));
+    this.hide();
   };
 
   setIconColor = (color: string) => {
