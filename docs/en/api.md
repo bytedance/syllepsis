@@ -58,7 +58,7 @@ Whether the editor is destroyed.
 
 ```typescript
 // types
-(config?: {layerType?: string; mergeEmpty?: boolean }) => string | undefined;
+(config?: { layerType?: string; mergeEmpty?: boolean }) => string | undefined;
 ```
 
 Get the content of the editor `html`.
@@ -140,16 +140,19 @@ Disable quick input capability.
 
 ### getSelection
 
-`getSelection: () => IRangeStatic`
+`getSelection: () => IGetSelectionInfo`
 
-Get the current selection, index represents the cursor position; length represents the selected length, pay attention to the non-text length.
+Get the current selection, `index` represent the cursor position; `length` represent the selected length, pay attention to the non-text length.
+`anchor` represent anchor index of selection, `head` represent head index of selection. Used to distinguish directions.
+It will return `node` when selected `node`
 
 ### setSelection
 
-`setSelection: (range: IRangeStatic & {scrollIntoView?: boolean }) => void`
+`setSelection: (range: IRangeStatic & {scrollIntoView?: boolean, selectNode?: boolean }) => void`
 
 Set the selection, `index` represents the cursor position, `length` represents the length of the selection.
-Add the `scrollIntoView` parameter to control whether to scroll the selection to the window, the default is `true`.
+the `scrollIntoView` parameter to control whether to scroll the selection to the window, the default is `true`.
+the `selectNode` parameter to indicates whether to select the `node`.
 
 ### getText
 
@@ -184,8 +187,7 @@ nodesBetween: (
 
 Used to traverse the document
 
-- The `walker` function is used to traverse the document, returning `true` to perform a deep traversal on the current node, and returning `false` to jump out of the current node, and the default deep traversal.
--`range` is the range to be traversed. To traverse the full text, you can pass in `{ index: 0, length: SylApi.length }`, and the default range is the current selection.
+- The `walker` function is used to traverse the document, returning `true` to perform a deep traversal on the current node, and returning `false` to jump out of the current node, and the default deep traversal. -`range` is the range to be traversed. To traverse the full text, you can pass in `{ index: 0, length: SylApi.length }`, and the default range is the current selection.
 
 ### insert
 
@@ -334,6 +336,15 @@ Decorate existing nodes.
 }
 ```
 
+### IGetSelectionInfo
+
+````typescript
+interface IGetSelectionInfo extends Types.IRangeStatic {
+  anchor: number;
+  head: number;
+  node?: ProsemirrorNode;
+}
+
 ### InsertOption
 
 ```typescript
@@ -344,7 +355,7 @@ Decorate existing nodes.
   focus?: boolean; // focus, the default is true
   inheritMarks?: boolean; // Whether to inherit the current style when inserting in-line nodes, the default is true
 }
-```
+````
 
 ### IUpdateOption
 
