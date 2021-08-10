@@ -1,6 +1,6 @@
 import { redo } from 'prosemirror-history';
 import { DOMParser, Node as ProsemirrorNode } from 'prosemirror-model';
-import { EditorState, TextSelection } from 'prosemirror-state';
+import { EditorState, NodeSelection, TextSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 
 import { IDecoState } from './basic/decoration';
@@ -56,10 +56,17 @@ interface ISetHTMLOptions {
   keepWhiteSpace?: boolean;
 }
 
+interface IGetSelectionInfo extends Types.IRangeStatic {
+  anchor: number;
+  head: number;
+  node?: ProsemirrorNode;
+}
+
 interface ISetSelectionOptions extends Partial<Types.IRangeStatic> {
   anchor?: number;
   head?: number;
   scrollIntoView?: boolean;
+  selectNode?: boolean;
 }
 
 type TSylApiCommand = (...args: any[]) => any;
@@ -267,18 +274,21 @@ class SylApi {
   }
 
   public getSelection = () => {
-    // anchor, head can
-    const { from, to, anchor, head } = getRealSelectionInfo(this.view.state.selection);
-    return {
+    const selection = this.view.state.selection;
+    const { from, to, anchor, head } = getRealSelectionInfo(selection);
+    const selectionInfo: IGetSelectionInfo = {
       index: from,
       length: to - from,
       anchor,
       head,
     };
+    if (selection instanceof NodeSelection) selectionInfo.node = selection.node;
+
+    return selectionInfo;
   };
 
   public setSelection(config: ISetSelectionOptions) {
-    const { index, length = 0, scrollIntoView = true, anchor, head } = config;
+    const { index, length = 0, scrollIntoView = true, anchor, head, selectNode = false } = config;
     if (index === undefined && anchor === undefined && head === undefined) {
       throw new TypeError('must provide one of these parameters: [index, anchor, head]');
     }
@@ -298,7 +308,9 @@ class SylApi {
       }
     }
 
-    const selection = TextSelection.create(doc, resultAnchor, resultHead);
+    const selection = selectNode
+      ? NodeSelection.create(doc, resultAnchor)
+      : TextSelection.create(doc, resultAnchor, resultHead);
     const tr = state.tr.setSelection(selection);
     dispatch(scrollIntoView === false ? tr : tr.scrollIntoView());
   }

@@ -129,6 +129,15 @@ describe('single API test', () => {
     expect(count).toEqual(1);
   });
 
+  test('can setSelection to select node', async () => {
+    const nodeName = await page.evaluate(() => {
+      editor.setHTML(CARD_HTML);
+      editor.setSelection({ index: 0, selectNode: true });
+      return editor.getSelection().node.type.name;
+    });
+    expect(nodeName).toBe('card');
+  });
+
   test('it can setContent', async () => {
     const html = await page.evaluate(() => {
       const json = {
@@ -678,23 +687,27 @@ describe('insert API test', () => {
     const res1 = await page.evaluate(() => {
       editor.setHTML('');
       editor.insertCard('card', {}, { replaceEmpty: true });
+
       return {
         html: editor.getHTML(),
         selection: editor.getSelection(),
       };
     });
+
     expect(res1.html).toBe(CardView());
     expect(res1.selection).toMatchObject({ index: 2, length: 0 });
 
     const res2 = await page.evaluate(() => {
       editor.setHTML(`<p></p>${CARD_HTML}`);
       editor.setSelection({ index: 1, scrollIntoView: false });
-
       editor.insertCard('card');
-      return {
-        html: editor.getHTML(),
-        selection: editor.getSelection(),
-      };
+
+      return JSON.parse(
+        JSON.stringify({
+          html: editor.getHTML(),
+          selection: editor.getSelection(),
+        }),
+      );
     });
 
     expect(res2.html).toBe(`${CardView()}${CardView()}`);

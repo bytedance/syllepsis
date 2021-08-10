@@ -138,16 +138,19 @@
 
 ### getSelection
 
-`getSelection: () => IRangeStatic`
+`getSelection: () => IGetSelectionInfo`
 
-获取当前选区，index 代表光标位置；length 代表选中长度，注意非文本长度。
+获取当前选区，`index` 代表光标位置；`length` 代表选中长度，注意非文本长度。
+`anchor`为锚点位置，`head`为终止位置，用于区分选中方向
+当选中节点时返回选中的`node`
 
 ### setSelection
 
-`setSelection: (range: IRangeStatic & { scrollIntoView?: boolean }) => void`
+`setSelection: (range: IRangeStatic & { scrollIntoView?: boolean, selectNode?: boolean }) => void`
 
 设置选区，`index`代表光标位置，`length`代表选区长度。
-增加`scrollIntoView`参数，控制是否将选区滚动到视窗，默认为`true`。
+`scrollIntoView`参数，控制是否将选区滚动到视窗，默认为`true`。
+`selectNode`参数，控制是否选中节点，默认为 `false`
 
 ### getText
 
@@ -329,6 +332,16 @@ nodesBetween: (
 {
   index: number; // 光标位置，选区起点
   length: number; // 选区长度
+}
+```
+
+### IGetSelectionInfo
+
+```typescript
+interface IGetSelectionInfo extends Types.IRangeStatic {
+  anchor: number;
+  head: number;
+  node?: ProsemirrorNode;
 }
 ```
 

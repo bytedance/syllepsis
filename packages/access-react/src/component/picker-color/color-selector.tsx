@@ -55,6 +55,7 @@ const InputColor = ({ setColor, color, onChange }: IInputColorProps) => {
         onClick={e => e.stopPropagation()}
       />
       <button
+        type="button"
         onClick={() => {
           setColor(`#${colorStr}`);
         }}
