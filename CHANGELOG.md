@@ -1,3 +1,15 @@
+## [0.0.7](https://github.com/bytedance/syllepsis/compare/v0.0.6...v0.0.7) (2021-08-10)
+
+
+### 🎉 Features
+
+* **adapter:** SylApi: support `selectNode` in `setSelection` and return `node` in `getSelection`, closes [#18](https://github.com/bytedance/syllepsis/issues/18)
+
+
+### 🔨 Refactor
+
+* **access-react:** close picker after change color
+
 ## [0.0.6](https://github.com/bytedance/syllepsis/compare/v0.0.5...v0.0.6) (2021-08-05)
 
 
