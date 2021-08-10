@@ -54,7 +54,7 @@ class Color extends Inline<IColorAttrs> {
   public toDOM = (node: Node) => {
     const { color } = node.attrs;
     const renderColor = color && toHex(color) !== toHex(this.attrs.color.default) && color;
-    return ['span', renderColor ? { style: `color: ${node.attrs.color}` } : {}, 0] as DOMOutputSpec;
+    return ['span', renderColor ? { style: `color: ${node.attrs.color};` } : {}, 0] as DOMOutputSpec;
   };
 }
 

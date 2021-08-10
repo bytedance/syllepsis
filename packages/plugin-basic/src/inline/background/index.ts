@@ -56,7 +56,7 @@ class Background extends Inline<IBackgroundAttrs> {
   public toDOM = (node: Node) => {
     const { color } = node.attrs;
     const renderColor = color && toHex(color) !== toHex(this.attrs.color.default) && color;
-    return ['span', renderColor ? { style: `background-color: ${node.attrs.color}` } : {}, 0] as DOMOutputSpec;
+    return ['span', renderColor ? { style: `background-color: ${node.attrs.color};` } : {}, 0] as DOMOutputSpec;
   };
 }
 
