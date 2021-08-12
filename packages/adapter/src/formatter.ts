@@ -2,7 +2,7 @@ import { Node as ProsemirrorNode, Slice } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 
 import { ISetHTMLOptions, SylApi } from './api';
-import { Types } from './libs';
+import { createDetachedElement, Types } from './libs';
 import { FORMAT_TYPE, SYL_TAG, SylPlugin } from './schema';
 import { IMatcherConfig } from './schema/matchers';
 /**
@@ -196,7 +196,7 @@ const handleDOMSpec = (dom: HTMLElement) => {
 };
 
 const formatGetHTML = (root: HTMLElement, config: IFormatHTMLConfig, sylPlugins: SylPlugin<any>[]) => {
-  const div = document.createElement('div');
+  const div = createDetachedElement('div');
   const salt = String(Math.random()).substring(2, 8);
   div.hidden = true;
   div.innerHTML = root.innerHTML
@@ -217,7 +217,7 @@ const formatGetHTML = (root: HTMLElement, config: IFormatHTMLConfig, sylPlugins:
 };
 
 const formatSetHTML = (html: string, config: IFormatHTMLConfig) => {
-  const div = document.createElement('div');
+  const div = createDetachedElement('div');
   div.innerHTML = html;
   // this replace break element with \n in codeblock
   handleDOMSpec(div);

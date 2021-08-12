@@ -30,4 +30,20 @@ const isBackSpace = (e: KeyboardEvent) => judgeKey(e, 'Backspace', 8);
 const warpCommand = (adapter: SylApi, command: any): TSylApiCommand => (...args) =>
   command.apply(null, [adapter, ...args]);
 
-export { checkIsPrintableKey, getObjectType, isBackSpace, isFunction, isPureObject, judgeKey, warpCommand };
+let detachedDocument: Document | null = null;
+
+const createDetachedElement = (tagName: string) => {
+  if (!detachedDocument) detachedDocument = document.implementation.createHTMLDocument('detach');
+  return detachedDocument.createElement(tagName);
+};
+
+export {
+  checkIsPrintableKey,
+  createDetachedElement,
+  getObjectType,
+  isBackSpace,
+  isFunction,
+  isPureObject,
+  judgeKey,
+  warpCommand,
+};
