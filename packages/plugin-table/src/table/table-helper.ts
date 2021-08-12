@@ -1,4 +1,4 @@
-import { SylApi } from '@syllepsis/adapter';
+import { createDetachedElement, SylApi } from '@syllepsis/adapter';
 import { Node as ProseMirrorNode } from 'prosemirror-model';
 import { AllSelection, EditorState, Plugin, PluginKey, TextSelection, Transaction } from 'prosemirror-state';
 import { CellSelection } from 'prosemirror-tables';
@@ -51,7 +51,7 @@ const TableHelperPlugin = (editor: SylApi) =>
         const metas = /(\s*<meta [^>]*>)*/.exec(html);
         let result = html;
         if (metas) result = html.slice(metas[0].length);
-        const $div = document.createElement('div');
+        const $div = createDetachedElement('div');
         $div.innerHTML = result;
         if ($div.children.length === 1) {
           const $context = $div.querySelector('[data-pm-slice]');
