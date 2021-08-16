@@ -5,7 +5,7 @@ import React from 'react';
 
 import { ToolDisplay } from '../utils';
 import { IProp } from '.';
-import { ButtonForToolbar } from './button';
+import { ButtonForToolbar, getConfigVal } from './button';
 import { IPopperProps, List, Popper } from './utils';
 
 interface ISelectBase extends Partial<IProp> {
@@ -17,6 +17,14 @@ interface ISelectBase extends Partial<IProp> {
   menuDirection?: IToolbarOption['menuDirection'];
   groupKey?: string;
 }
+
+// default 'down-start'，but 'right-start' in dropdown menu, auto just when in toolbarInline
+const getDropdownDefaultDirection = (isStatic: boolean, isVertical: boolean) => {
+  if (isStatic) {
+    if (isVertical) return 'down-start';
+    return 'right-start';
+  }
+};
 
 const TOGGLE_DELAY = 150;
 
@@ -147,16 +155,21 @@ class SelectBase<T> extends React.Component<
       name = '',
       tooltip,
       editor,
-      tipDirection = 'up',
+      tipDirection,
       tipDistance = 4,
       toolbarType = 'static',
       menuDistance = 4,
-      menuDirection = 'down-start',
+      menuDirection,
       toolbar,
       display,
+      showName,
     } = this.props;
 
     const { open, tooltipShow } = this.state;
+    const isVertical = display === ToolDisplay.VERTICAL;
+    const isStatic = toolbarType === 'static';
+
+    const renderName = !isVertical ? getConfigVal([showName, tooltip, name]) : false;
 
     return (
       <ButtonForToolbar
@@ -165,28 +178,26 @@ class SelectBase<T> extends React.Component<
         tipDistance={tipDistance}
         toolbarType={toolbarType}
         name={name}
+        tooltip={isVertical ? tooltip : false}
         toolbar={{
           ...toolbar,
-          showName: display === ToolDisplay.VERTICAL ? toolbar?.showName : false,
+          showName: isVertical ? false : toolbar?.showName,
           icon: () => (
             <Popper
               isOpen={Boolean(open)}
               tipContentClassName={classnames({ [name]: name })}
               content={this.renderMenuList()}
-              distance={(toolbar && toolbar.menuDistance) || menuDistance}
-              // default 'down-start'，but 'right-start' in dropdown menu
-              direction={
-                (toolbar && toolbar.menuDirection) || display === ToolDisplay.VERTICAL ? menuDirection : 'right-start'
-              }
+              distance={(toolbar?.menuDistance || menuDistance) + (!isStatic && !isVertical ? -8 : 0)}
+              direction={menuDirection || toolbar?.menuDirection || getDropdownDefaultDirection(isStatic, isVertical)}
             >
               <span>{this.renderIcon()}</span>
+              {!isVertical && renderName && <span className="tool-name">{renderName}</span>}
             </Popper>
           ),
         }}
         getRef={wrap => {
           this.wrap = wrap;
         }}
-        tooltip={display === ToolDisplay.VERTICAL ? tooltip : false}
         active={this.checkActive()}
         handler={() => (this.state.open ? this.closeMenu() : this.openMenu())}
         editor={editor}

@@ -94,7 +94,7 @@ class SelectForToolbar extends SelectBase<{
       return (
         <>
           {icon}
-          <span className="tool-name">{toolbar.showName}</span>
+          <span className="tool-value">{toolbar.showName}</span>
         </>
       );
     }
@@ -122,11 +122,11 @@ class SelectForToolbar extends SelectBase<{
       return (
         <>
           {value.icon}
-          <span className="tool-name">{value.text}</span>
+          <span className="tool-value">{value.text}</span>
         </>
       );
     } else if (value.text !== undefined) {
-      return <span className="tool-name">{value.text}</span>;
+      return <span className="tool-value">{value.text}</span>;
     } else if (Icons[name] && (Icons[name] as JSX.Element[])[idx]) {
       return (Icons[name] as JSX.Element[])[idx];
     }
