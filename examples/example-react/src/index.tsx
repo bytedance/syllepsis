@@ -81,7 +81,7 @@ const RichEditor = () => {
       allowedClass: [],
       allowedLineHeights: false,
       allowedLineIndents: [],
-      allowedSpaceBefores: [],
+      allowedSpaceBefores: { default: true, value: 0 },
       allowedSpaceAfters: { default: true, value: 20 },
       allowedSpaceBoths: [],
     }),

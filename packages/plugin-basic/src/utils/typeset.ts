@@ -109,7 +109,7 @@ const constructTypesetParseDOM = (config: ITypesetProps) => {
     if (!/^allowed/.test(key) || !config[key]) return;
     const attrName = getAttrName(key);
     const { values, defaultValue } = formatAllowedValues(config[key] as TAllowedValuesConfig);
-    defaultValue && (defaultAttrs[attrName as any] = { default: defaultValue });
+    defaultValue !== undefined && (defaultAttrs[attrName as any] = { default: defaultValue });
     values && (allowValues[attrName] = values);
     getNestedValueByKey[attrName as keyof typeof getNestedValueByKey] = (val: number) => getNestedValue(val, values);
   });
