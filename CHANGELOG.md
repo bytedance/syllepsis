@@ -1,3 +1,11 @@
+## [0.0.9](https://github.com/bytedance/syllepsis/compare/v0.0.8...v0.0.9) (2021-08-16)
+
+
+### 🐞 Bug Fixers
+
+* **access-react:** plugins that use dropdown haven't show name when in dropdown, closes [#22](https://github.com/bytedance/syllepsis/issues/22)
+* **plugin-basic:** default value config not working when set falsy value
+
 ## [0.0.8](https://github.com/bytedance/syllepsis/compare/v0.0.7...v0.0.8) (2021-08-12)
 
 
