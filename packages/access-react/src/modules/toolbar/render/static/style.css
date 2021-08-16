@@ -21,6 +21,7 @@
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
   border-radius: 2px;
   z-index: 999;
+  margin-top: 0;
 }
 
 .syl-popper .syl-toolbar-menu,
