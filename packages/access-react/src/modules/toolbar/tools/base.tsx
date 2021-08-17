@@ -169,7 +169,9 @@ class SelectBase<T> extends React.Component<
     const isVertical = display === ToolDisplay.VERTICAL;
     const isStatic = toolbarType === 'static';
 
-    const renderName = !isVertical ? getConfigVal([showName, tooltip, name]) : false;
+    const locale = editor.configurator.getLocaleValue(name);
+
+    const renderName = !isVertical ? getConfigVal([showName, locale.showName, locale.tooltip, tooltip, name]) : false;
 
     return (
       <ButtonForToolbar
