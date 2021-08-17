@@ -208,7 +208,7 @@ class SelectBase<T> extends React.Component<
           onMouseLeave: this.hideTooltip,
           ...this.getTriggerHandler(),
         }}
-        className={open ? 'open' : ''}
+        className={classnames('syl-toolbar-dropdown', { open })}
       />
     );
   }

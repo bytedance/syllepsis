@@ -69,7 +69,29 @@
   outline: none;
 }
 
-.syl-toolbar-tool-horizon.active .syl-toolbar-tool-horizon-content {
+.syl-toolbar-tool-horizon-content {
+  position: relative;
+}
+
+.syl-toolbar-tool-horizon.active .syl-toolbar-tool-horizon-content::before {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  right: 8px;
+  background: url('data:image/svg+xml;utf8,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2048%2048%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Crect%20width%3D%2248%22%20height%3D%2248%22%20fill%3D%22%23fff%22%20fill-opacity%3D%220.01%22%2F%3E%3Cpath%20d%3D%22M10%2024L20%2034L40%2014%22%20stroke%3D%22%23222%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E')
+    no-repeat center;
+  background-size: 100%;
+  transform: translateY(-50%);
+}
+.syl-toolbar-tool-horizon.syl-toolbar-dropdown.active .syl-toolbar-tool-horizon-content::before,
+.syl-toolbar-menu.inline .syl-toolbar-tool-horizon.active .syl-toolbar-tool-horizon-content::before {
+  content: none;
+}
+
+.syl-toolbar-menu.inline .syl-toolbar-tool-horizon.active .syl-toolbar-tool-horizon-content {
   background-color: #e8e8e8;
 }
 
@@ -135,6 +157,10 @@
 }
 .syl-toolbar-tool-horizon-content > *:last-child {
   box-sizing: content-box;
+  padding-right: 36px;
+}
+
+.syl-toolbar-dropdown .syl-toolbar-tool-horizon-content > *:last-child {
   padding-right: 16px;
 }
 
@@ -142,7 +168,6 @@
 .syl-toolbar-tool-horizon .tool-value {
   display: inline-block;
   box-sizing: border-box;
-  width: 100%;
   font-size: 13px;
   font-family: PingFangSC;
   color: #222222;
@@ -183,11 +208,17 @@
 .syl-toolbar-tool-horizon.inline .syl-toolbar-tool-horizon-content svg:first-child {
   margin-right: 0;
 }
+
 .syl-toolbar-tool-horizon.inline .syl-toolbar-tool-horizon-content > *:first-child {
   padding-left: 0;
 }
+
 .syl-toolbar-tool-horizon.inline .syl-toolbar-tool-horizon-content > *:last-child {
   padding-right: 0;
+}
+
+.syl-toolbar-tool-horizon.inline .syl-toolbar-tool-horizon-content .tool-value {
+  padding: 0 4px;
 }
 
 .syl-toolbar-tool-horizon.inline .tool-name {
