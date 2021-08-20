@@ -38,6 +38,7 @@ interface IBaseConfig {
 }
 
 interface IConfiguration extends IBaseConfig, IBasicCtrlConfig, IExtraConfig {}
+type TSylEventType = EventChannel['LocalEvent'] | string | symbol;
 
 const EDITOR_CHECK = ['autocomplete', 'autoCorrect', 'autoCapitalize'];
 
@@ -304,15 +305,15 @@ class SylConfigurator {
     this.moduleManage && config.module && this.moduleManage.update(config.module);
   }
 
-  public on(event: EventChannel['LocalEvent'], handler: (...args: any[]) => void) {
+  public on(event: TSylEventType, handler: (...args: any[]) => void) {
     return this.baseConfiguration.emitter.on(event, handler);
   }
 
-  public off(event: EventChannel['LocalEvent'], handler: (...args: Array<any>) => void) {
+  public off(event: TSylEventType, handler: (...args: Array<any>) => void) {
     return this.baseConfiguration.emitter.off(event, handler);
   }
 
-  public emit(event: string | symbol, ...args: any[]): boolean {
+  public emit(event: TSylEventType, ...args: any[]): boolean {
     return this.baseConfiguration.emitter.emit(event, ...args);
   }
 
@@ -349,4 +350,4 @@ class SylConfigurator {
   }
 }
 
-export { IConfiguration, SylConfigurator };
+export { IConfiguration, SylConfigurator, TSylEventType };
