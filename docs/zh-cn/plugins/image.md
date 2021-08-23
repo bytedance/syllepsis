@@ -11,7 +11,7 @@ plugins: [
       // 如果是从外部粘贴的图片，uploader入参会是一个string
       uploader: (img: Blob | File | string) => Promise<string | { src: string, width: number, height: number }>,
       onUploadError: (img: File | Blob | string, err: Event) => any, // 上传失败回调
-      allowDomains: [string|Regexp] // 可选，图片src允许的值，匹配不上会触发uploader(没有配置则允许所有)
+      allowDomains: [string|Regexp] | ((domain: string) => boolean); // 可选，图片src允许的值，匹配不上会触发uploader(没有配置则允许所有)
       uploadType: 'blob'| 'file',// 可选，uploader接受的文件类型， 默认'blob'
       listenDrop: boolean, // 可选，监听外部文件drop事件，默认true
       listenPaste: boolean, // 可选，监听外部文件粘贴事件，默认true
