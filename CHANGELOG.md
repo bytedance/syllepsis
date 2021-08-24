@@ -1,3 +1,22 @@
+## [0.0.10](https://github.com/bytedance/syllepsis/compare/v0.0.9...v0.0.10) (2021-08-24)
+
+
+### 🎉 Features
+
+* **adapter:** SylApi: emit support passing arguments
+* **plugin-basic:** ImagePlugin: allowDomains props support function type, closes [#27](https://github.com/bytedance/syllepsis/issues/27)
+
+
+### 🐞 Bug Fixers
+
+* **access-react:** locale not working for plugins with dropdown, closes [#24](https://github.com/bytedance/syllepsis/issues/24)
+* **adapter:** object attrs values are not stringify in the default toDOM, closes [#25](https://github.com/bytedance/syllepsis/issues/25)
+
+
+### 🔨 Refactor
+
+* **access-react:** change active style in dropdown menu
+
 ## [0.0.9](https://github.com/bytedance/syllepsis/compare/v0.0.8...v0.0.9) (2021-08-16)
 
 
