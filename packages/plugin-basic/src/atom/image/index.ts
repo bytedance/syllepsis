@@ -85,10 +85,8 @@ const insertImageInEditor = (
   const insertNodes = { type: 'doc', content: [] as INodeInfo[] };
   dataInfos.forEach(({ image, attrs }) => {
     if (!image || !attrs) return;
-    const { naturalHeight, naturalWidth } = image;
-    const imageAttrs: ImageAttrs = {
+    const imageAttrs: Partial<ImageAttrs> = {
       width: DEFAULT_WIDTH,
-      height: Math.round(naturalHeight * DEFAULT_WIDTH) / naturalWidth,
       name: image.getAttribute('name') || '',
       alt: '',
       align: 'center',
