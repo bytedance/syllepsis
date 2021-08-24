@@ -21,7 +21,7 @@ Even if you can't find a suitable plug-in, don't be discouraged. Syllepsis provi
 | `ColorPlugin`       | Text color      | `color`        |                                              | [Link](/en/plugins/color)        | `@syllepsis/access-*`     |
 | `FontSizePlugin`    | Font size       | `font_size`    |                                              | [Link](/en/plugins/font-size)    | `@syllepsis/plugin-basic` |
 | `BackgroundPlugin`  | Text background | `background`   |                                              | [Link](/en/plugins/background)   | `@syllepsis/access-*`     |
-| `LetterspacePlugin` | Font spacing    | `letter_space` |                                              | [Link](/en/plugins/letter-space) | `@syllepsis/plugin-basic` |
+| `LetterSpacePlugin` | Font spacing    | `letter_space` |                                              | [Link](/en/plugins/letter-space) | `@syllepsis/plugin-basic` |
 
 ### Text type
 
@@ -65,9 +65,9 @@ Even if you can't find a suitable plug-in, don't be discouraged. Syllepsis provi
 | `FormatClearPlugin`   | Clear format             | `format_clear`   |          |                                      | `@syllepsis/plugin-basic` |
 | `FormatPainterPlugin` | Format Painter           | `format-painter` |          | [Link](zh-cn/plugins/format-painter) | `@syllepsis/plugin-basic` |
 | `LineIndentPlugin`    | First line indentation   | `line_ident`     |          |                                      | `@syllepsis/plugin-basic` |
-| `spaceBeforePlugin`   | Paragraph front distance | `space_before`   |          | [Link](/en/plugins/space)            | `@syllepsis/plugin-basic` |
-| `spaceAfterPlugin`    | Paragraph after distance | `space_after`    |          |                                      | `@syllepsis/plugin-basic` |
-| `spaceBothPlugin`     | Indent at both ends      | `space_both`     |          |                                      | `@syllepsis/plugin-basic` |
+| `SpaceBeforePlugin`   | Paragraph front distance | `space_before`   |          | [Link](/en/plugins/space)            | `@syllepsis/plugin-basic` |
+| `SpaceAfterPlugin`    | Paragraph after distance | `space_after`    |          |                                      | `@syllepsis/plugin-basic` |
+| `SpaceBothPlugin`     | Indent at both ends      | `space_both`     |          |                                      | `@syllepsis/plugin-basic` |
 | `LineHeightPlugin`    | Line height              | `line_height`    |          | [Link](/en/plugins/line-height)      | `@syllepsis/plugin-basic` |
 | `AlignLeftPlugin`     | Text alignment           | `align_left`     |          |                                      | `@syllepsis/plugin-basic` |
 | `AlignCenterPlugin`   | Text alignment           | `align_center`   |          |                                      | `@syllepsis/plugin-basic` |
