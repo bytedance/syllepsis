@@ -22,6 +22,7 @@ interface ImageProps {
   disableCaption?: boolean;
   addAttributes?: IUserAttrsConfig;
   deleteFailedUpload?: boolean;
+  uploadMaxWidth?: number;
 }
 
 interface ImageAttrs {

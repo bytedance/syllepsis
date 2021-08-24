@@ -120,6 +120,7 @@ const RichEditor = () => {
     }),
     new ImagePlugin({
       uploader: f => Promise.resolve(''),
+      uploadMaxWidth: 500,
     }),
     new VideoPlugin({
       uploader: async file =>

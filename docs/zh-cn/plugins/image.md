@@ -25,6 +25,7 @@ plugins: [
       deleteFailedUpload: boolean, // 可选，自动删除上传失败的图片，默认false
       // 注意配置这个之后需要配置`layers`接管渲染，否则不会在`dom`里面渲染出来
       addAttributes: IUserAttrsConfig;
+      uploadMaxWidth: number; // 可选，上传图片的限制宽度，naturalWidth大于这个宽度的图片会使用配置的值作为宽度（默认宽度375）；0代表不做限制
   }),
 ]
 ```
