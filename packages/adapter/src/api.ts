@@ -29,7 +29,7 @@ import {
   replace,
   update,
 } from './command';
-import { SylConfigurator } from './configurator';
+import { SylConfigurator, TSylEventType } from './configurator';
 import { EventChannel } from './event';
 import { formatGetHTML, IG_TAG, parseHTML } from './formatter';
 import { getRealSelectionInfo, Types, warpCommand } from './libs';
@@ -261,16 +261,16 @@ class SylApi {
     this.delete(index, 1);
   }
 
-  public on(event: EventChannel['LocalEvent'], handler: (...args: any[]) => void): void {
+  public on(event: TSylEventType, handler: (...args: any[]) => void): void {
     this.configurator.on(event, handler);
   }
 
-  public off(event: EventChannel['LocalEvent'], handler: (...args: Array<any>) => void) {
+  public off(event: TSylEventType, handler: (...args: Array<any>) => void) {
     this.configurator.off(event, handler);
   }
 
-  public emit(eventName: string) {
-    this.configurator.emit(eventName);
+  public emit(eventName: TSylEventType, ...args: any[]) {
+    this.configurator.emit(eventName, ...args);
   }
 
   public getSelection = () => {

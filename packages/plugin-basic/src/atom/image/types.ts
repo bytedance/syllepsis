@@ -8,7 +8,7 @@ type TImageUploader = (
 
 interface ImageProps {
   uploader?: TImageUploader;
-  allowDomains?: (RegExp | string)[];
+  allowDomains?: (RegExp | string)[] | ((domain: string) => boolean);
   listenDrop?: boolean;
   listenPaste?: boolean;
   uploadBeforeInsert?: boolean;

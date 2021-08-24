@@ -4,19 +4,13 @@ import { DOMOutputSpec, DOMOutputSpecArray, Node as ProseMirrorNode } from 'pros
 import { EditorView, NodeView as BaseNodeView } from 'prosemirror-view';
 
 import { SylApi } from '../api';
-import { Types } from '../libs';
+import { formatToDOMAttrs, Types } from '../libs';
 import { FLAG, FORMAT_TYPE } from './const';
 import { IMatcherConfig, ParseDOMMatcher, TextMatcherHandler } from './matchers';
 
 // provide default `toDOM` according to `tagName`, `attrs` and `content`
 const createWrapperDOM = (tagName: string, attrs: Types.StringMap<any> = {}, hasContent = false): DOMOutputSpec => {
-  const displayAttrs: Types.StringMap<string> = {};
-  Object.keys(attrs).forEach(key => {
-    const attr = attrs[key] as string;
-    if (attr) displayAttrs[key] = attr as string;
-  });
-
-  const pDOM: DOMOutputSpecArray = [tagName, displayAttrs];
+  const pDOM: DOMOutputSpecArray = [tagName, formatToDOMAttrs(attrs)];
   if (hasContent) pDOM[2] = 0;
 
   return pDOM;

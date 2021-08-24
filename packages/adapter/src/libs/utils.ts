@@ -1,10 +1,13 @@
 import { SylApi, TSylApiCommand } from '../api';
+import { Types } from './types';
 
 const getObjectType = (obj: any) => Object.prototype.toString.call(obj);
 
 const isFunction = (obj: any) => getObjectType(obj) === '[object Function]';
 
 const isPureObject = (obj: any) => getObjectType(obj) === '[object Object]';
+
+const isEmpty = (val: any) => val === null || val === undefined || val === '';
 
 const checkIsPrintableKey = (e: KeyboardEvent) => {
   if (e.ctrlKey || e.metaKey) return false;
@@ -37,9 +40,21 @@ const createDetachedElement = (tagName: string) => {
   return detachedDocument.createElement(tagName);
 };
 
+const formatToDOMAttrs = (attrs: Types.StringMap<any>) => {
+  const result: Types.StringMap<any> = {};
+  Object.keys(attrs).forEach(key => {
+    const value = attrs[key];
+    if (isEmpty(value)) return;
+    if (value instanceof Object) result[key] = JSON.stringify(value);
+    else result[key] = value;
+  });
+  return result;
+};
+
 export {
   checkIsPrintableKey,
   createDetachedElement,
+  formatToDOMAttrs,
   getObjectType,
   isBackSpace,
   isFunction,

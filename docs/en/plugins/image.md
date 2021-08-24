@@ -11,7 +11,7 @@ plugins: [
       // If it is a picture pasted from outside, uploader will be a string when entering the conference
       uploader: (img: Blob | File | string) => Promise<string | {src: string, width: number, height: number }>,
       onUploadError: (img: File | Blob | string, err: Event) => any, // upload failed callback
-      allowDomains: [string|Regexp], // Optional, allowed src, the uploader won't be triggered if not match (all src are allowed without configuration)
+      allowDomains: [string|Regexp]  | ((domain: string) => boolean), // Optional, allowed src, the uploader won't be triggered if not match (all src are allowed without configuration)
       uploadType:'blob'|'file',// Optional, file type accepted by uploader, default'blob'
       listenDrop: boolean, // Optional, listen for external file drop events, default true
       listenPaste: boolean, // Optional, listen to external file paste events, default true

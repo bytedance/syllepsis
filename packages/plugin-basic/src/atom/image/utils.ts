@@ -50,11 +50,14 @@ const getSizeByRatio = (ratio: number, width?: number, height?: number) => {
 };
 
 // According to the `allowDomains`, If it does not meet the requirements, the upload operation needs to be triggered
-const checkDomain = (src: string, config: ImageProps) =>
-  (config.allowDomains || [/./]).some(domain => {
+const checkDomain = (src: string, config: ImageProps) => {
+  const allowDomains = config.allowDomains;
+  if (typeof allowDomains === 'function') return allowDomains(src);
+  (allowDomains || [/./]).some(domain => {
     if (typeof domain === 'string') return src.includes(domain);
     return domain.test(src);
   });
+};
 
 // image file to be display needs converted to ObjectURL, here it is reversed, for uploading
 const transformBlobFromObjectURL = async (url: string): Promise<Blob> =>
