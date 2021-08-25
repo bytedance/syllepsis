@@ -11,7 +11,7 @@ import {
   isObjectURL,
   setDOMAttrByConfig,
 } from '../../utils';
-import { ImageAttrs, ImageProps, TUploadDataType } from './types';
+import { ImageAttrs, ImageProps, IUpdateImageProps, TUploadDataType } from './types';
 import {
   checkDomain,
   constructAttrs,
@@ -136,12 +136,6 @@ const insertImageWithFiles = async (editor: SylApi, files: File[], config: Parti
 
   insertImageInEditor(editor, results, editor.view.state.selection.from, config);
 };
-
-interface IUpdateImageProps {
-  getPos: () => number;
-  attrs: ImageAttrs;
-  state: any;
-}
 
 const updateImageUrl = async (editor: SylApi, props: IUpdateImageProps, config: ImageProps) => {
   maxWidth = editor.view.dom.scrollWidth - 40;
