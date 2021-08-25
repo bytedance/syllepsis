@@ -12,4 +12,4 @@ plugins: [
 
 ## 示例
 
-[color](https://codesandbox.io/s/plugin-color-g18vz?hidenavigation=1 ':include :type=iframe width=100% height=500px')
+[color](https://codesandbox.io/embed/plugin-color-g18vz?hidenavigation=1 ':include :type=iframe width=100% height=500px')

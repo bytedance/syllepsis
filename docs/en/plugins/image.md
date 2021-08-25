@@ -25,6 +25,7 @@ plugins: [
       deleteFailedUpload: boolean, // Optional, automatically delete failed pictures, the default is false
       // Note that after configuring this, you need to configure `layers` to take over rendering, otherwise it will not be rendered in `dom`
       addAttributes: IUserAttrsConfig;
+      uploadMaxWidth: number; // Optional，default upload image limit width. When naturalWidth is exceed will use the config value (default is 375). 0 represent no limit.
   }),
 ]
 ```

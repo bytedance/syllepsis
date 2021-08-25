@@ -1,7 +1,13 @@
 import { BlockAtom, SylApi, SylController, SylPlugin } from '@syllepsis/adapter';
 import { DOMOutputSpec, Node } from 'prosemirror-model';
 
-import { addAttrsByConfig, getFromDOMByConfig, IUserAttrsConfig, setDOMAttrByConfig } from '../../utils';
+import {
+  addAttrsByConfig,
+  createFileInput,
+  getFromDOMByConfig,
+  IUserAttrsConfig,
+  setDOMAttrByConfig,
+} from '../../utils';
 
 interface IAudioAttrs {
   src: string;
@@ -13,6 +19,7 @@ interface IAudioAttrs {
 interface IAudioProps {
   uploader: (file: File, editor: SylApi) => Promise<{ src: string; width?: number; height?: number }>;
   addAttributes?: IUserAttrsConfig;
+  accept?: string;
   isInline?: boolean;
 }
 
@@ -20,6 +27,7 @@ const NAME = 'audio';
 
 class AudioController extends SylController<IAudioProps> {
   public name = NAME;
+  private input: HTMLInputElement;
 
   public uploader: IAudioProps['uploader'] = async () =>
     Promise.reject('please provide uploader in controllerProps for audio');
@@ -27,31 +35,30 @@ class AudioController extends SylController<IAudioProps> {
   constructor(editor: SylApi, props: IAudioProps) {
     super(editor, props);
     if (props.uploader) this.uploader = props.uploader;
+    this.input = createFileInput({
+      multiple: false,
+      accept: props.accept || 'audio/*',
+      onChange: this.onChange,
+      getContainer: () => editor.root,
+    });
   }
+
+  private onChange = async (e: Event) => {
+    const { index } = this.editor.getSelection();
+    const target = e.target as HTMLInputElement;
+    const files = target.files;
+    if (!files || !files.length) return;
+    const uploadRes = await this.uploader(files[0], this.editor);
+    this.editor.insertCard(NAME, uploadRes, index);
+  };
 
   public toolbar = {
     icon: '',
-    handler: (editor: SylApi) => {
-      const input = document.createElement('input');
-      input.setAttribute('type', 'file');
-      input.setAttribute('accept', 'audio/*');
-      input.setAttribute('style', 'display: none');
-      document.body.appendChild(input);
-      input.onchange = async e => {
-        const { index } = editor.getSelection();
-        const uploadRes = await Promise.all(
-          Array.prototype.slice
-            .call((e.target as HTMLInputElement).files)
-            .map(async (file: File) => await this.uploader(file, editor)),
-        );
-        uploadRes.forEach((attrs, idx) => {
-          if (!attrs) return;
-          editor.insertCard(NAME, attrs, index + idx);
-        });
-        document.body.removeChild(input);
-      };
-      input.click();
-    },
+    handler: (editor: SylApi) => this.input.click(),
+  };
+
+  public editorWillUnmount = () => {
+    this.editor.root.removeChild(this.input);
   };
 }
 

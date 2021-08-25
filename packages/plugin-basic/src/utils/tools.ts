@@ -96,11 +96,36 @@ const setDOMAttrByConfig = (config: IUserAttrsConfig = {}, node: ProsemirrorNode
 // Keep the decimal point
 const getFixSize = (num: number, count = 3) => Number(num.toFixed(count).replace(/\.?0+$/, ''));
 
+const createFileInput = ({
+  multiple = false,
+  accept,
+  onChange,
+  getContainer = () => document.body,
+}: {
+  multiple: boolean;
+  accept: string;
+  onChange: (e: Event) => void;
+  getContainer: () => HTMLElement;
+}) => {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.multiple = multiple;
+  input.accept = accept;
+  input.style.display = 'none';
+  input.addEventListener('change', e => {
+    onChange(e);
+    (e.target as HTMLInputElement).value = '';
+  });
+  getContainer().appendChild(input);
+  return input;
+};
+
 export {
   addAttrsByConfig,
   checkMarkDisable,
   checkParentHaveAttr,
   checkParentSupportAttr,
+  createFileInput,
   getFixSize,
   getFromDOMByConfig,
   getMarkDisable,

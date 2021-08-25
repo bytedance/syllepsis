@@ -1,5 +1,20 @@
 import { IUserAttrsConfig } from '../../utils';
 
+declare module '@syllepsis/adapter' {
+  interface ISylApiCommand {
+    image?: {
+      insertImages: (files: File[]) => Promise<void>;
+      updateImageUrl: (props: IUpdateImageProps) => Promise<void>;
+      getConfiguration: () => Partial<ImageProps>;
+    };
+  }
+}
+interface IUpdateImageProps {
+  getPos: () => number;
+  attrs: ImageAttrs;
+  state: any;
+}
+
 type TUploadDataType = File | Blob | string;
 type TImageUploader = (
   file: TUploadDataType,
@@ -22,6 +37,7 @@ interface ImageProps {
   disableCaption?: boolean;
   addAttributes?: IUserAttrsConfig;
   deleteFailedUpload?: boolean;
+  uploadMaxWidth?: number;
 }
 
 interface ImageAttrs {
@@ -33,4 +49,4 @@ interface ImageAttrs {
   align?: 'left' | 'center' | 'right';
 }
 
-export { ImageAttrs, ImageProps, TImageUploader, TUploadDataType };
+export { ImageAttrs, ImageProps, IUpdateImageProps, TImageUploader, TUploadDataType };

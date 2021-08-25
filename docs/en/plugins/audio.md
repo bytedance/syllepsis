@@ -9,9 +9,10 @@ plugins: [
    new AudioPlugin({
      // Upload audio file and return audio address
      uploader: (file: File) => Promise.resolve({ src: string }),
-     // Note that after configuring this, you need to configure `layers` to take over rendering, 
+     // Note that after configuring this, you need to configure `layers` to take over rendering,
      // otherwise it will not be rendered in `dom`
-     addAttributes: IUserAttrsConfig; // Extend default attrs
+     addAttributes: IUserAttrsConfig; // Optional, Extend default attrs
+     accept: string, // Optional, accepted file type
    })
 ]
 ```
