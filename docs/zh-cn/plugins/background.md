@@ -12,4 +12,4 @@ plugins: [
 
 ## 示例
 
-[background](https://codesandbox.io/s/plugin-background-95i0o?hidenavigation=1 ':include :type=iframe width=100% height=500px')
+[background](https://codesandbox.io/embed/plugin-background-95i0o?hidenavigation=1 ':include :type=iframe width=100% height=500px')
