@@ -1,3 +1,16 @@
+## [0.0.11](https://github.com/bytedance/syllepsis/compare/v0.0.10...v0.0.11) (2021-08-25)
+
+
+### 🎉 Features
+
+* **plugin-basic:** ImagePlugin: support `uploadMaxWidth` to limit width when upload
+* **public-basic:** Audio/VideoPlugin: support `accept` props
+
+
+### 🐞 Bug Fixers
+
+* **plugin-basic:** the ratio is wrong  after change the width when no height  is passed, closes [#28](https://github.com/bytedance/syllepsis/issues/28)
+
 ## [0.0.10](https://github.com/bytedance/syllepsis/compare/v0.0.9...v0.0.10) (2021-08-24)
 
 
