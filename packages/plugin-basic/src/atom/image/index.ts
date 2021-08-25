@@ -3,7 +3,14 @@ import { DOMOutputSpecArray, Node, Node as ProsemirrorNode } from 'prosemirror-m
 import { NodeSelection, TextSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 
-import { addAttrsByConfig, getFixSize, getFromDOMByConfig, isObjectURL, setDOMAttrByConfig } from '../../utils';
+import {
+  addAttrsByConfig,
+  createFileInput,
+  getFixSize,
+  getFromDOMByConfig,
+  isObjectURL,
+  setDOMAttrByConfig,
+} from '../../utils';
 import { ImageAttrs, ImageProps, TUploadDataType } from './types';
 import {
   checkDomain,
@@ -169,16 +176,15 @@ const updateImageUrl = async (editor: SylApi, props: IUpdateImageProps, config: 
 };
 
 const createImageFileInput = (editor: SylApi, config: ImageProps) => {
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.multiple = true;
-  input.accept = config.accept || 'image/*';
-  input.style.display = 'none';
-  input.onchange = (e: any) => {
-    const files = getInputImageFiles(e);
-    insertImageWithFiles(editor, files, config);
-    input.value = '';
-  };
+  const input = createFileInput({
+    multiple: true,
+    accept: config.accept || 'image/*',
+    onChange: (e: Event) => {
+      const files = getInputImageFiles(e);
+      insertImageWithFiles(editor, files, config);
+    },
+    getContainer: () => editor.root,
+  });
 
   return input;
 };
@@ -259,6 +265,10 @@ class ImageController extends SylController<ImageProps> {
         return true;
       },
     },
+  };
+
+  public editorWillUnmount = () => {
+    this.editor.root.removeChild(this.fileInput);
   };
 }
 

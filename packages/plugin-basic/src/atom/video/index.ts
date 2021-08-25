@@ -1,10 +1,17 @@
 import { BlockAtom, SylApi, SylController, SylPlugin } from '@syllepsis/adapter';
 import { DOMOutputSpecArray, Node } from 'prosemirror-model';
 
-import { addAttrsByConfig, getFromDOMByConfig, IUserAttrsConfig, setDOMAttrByConfig } from '../../utils';
+import {
+  addAttrsByConfig,
+  createFileInput,
+  getFromDOMByConfig,
+  IUserAttrsConfig,
+  setDOMAttrByConfig,
+} from '../../utils';
 
 interface IVideoProps {
   uploader: (file: File, editor: SylApi) => Promise<{ src: string; width?: number; height?: number }>;
+  accept?: string;
   addAttributes?: IUserAttrsConfig;
   isInline?: boolean;
 }
@@ -30,22 +37,26 @@ class VideoController extends SylController<IVideoProps> {
   constructor(editor: SylApi, props: IVideoProps) {
     super(editor, props);
     if (props.uploader) this.uploadVideo = props.uploader;
-
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.multiple = false;
-    input.accept = 'video/*';
-    input.style.display = 'none';
-    input.onchange = async (ev: Event) => {
-      if (!input.files) return;
-      const index = editor.getSelection().index;
-      const attrs = await this.uploadVideo(input.files[0], editor);
-      if (!attrs) return;
-      editor.insertCard(NAME, attrs as any, index);
-    };
-    this.fileInput = input;
-    editor.root.appendChild(this.fileInput);
+    this.fileInput = createFileInput({
+      multiple: false,
+      accept: props.accept || 'video/*',
+      onChange: this.onChange,
+      getContainer: () => editor.root,
+    });
   }
+
+  public onChange = async (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    if (!target.files) return;
+    const index = this.editor.getSelection().index;
+    const attrs = await this.uploadVideo(target.files[0], this.editor);
+    if (!attrs) return;
+    this.editor.insertCard(NAME, attrs as any, index);
+  };
+
+  public editorWillUnmount = () => {
+    this.editor.root.removeChild(this.fileInput);
+  };
 }
 
 class Video extends BlockAtom<IVideoAttrs> {

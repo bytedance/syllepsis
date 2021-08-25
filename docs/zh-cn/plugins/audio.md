@@ -10,7 +10,8 @@ plugins: [
     // 上传音频文件，返回音频地址
     uploader: (file: File) => Promise.resolve({ src: string }),
     // 注意配置这个之后需要配置`layers`接管渲染，否则不会在`dom`里面渲染出来
-    addAttributes: IUserAttrsConfig; // 扩展默认attrs
+    addAttributes: IUserAttrsConfig; // 可选，扩展默认attrs
+    accept: string, // 可选，接受的文件类型
   })
 ]
 ```
