@@ -1,10 +1,8 @@
-import 'reflect-metadata';
-
 import { DOMOutputSpec, DOMOutputSpecArray, Node as ProseMirrorNode } from 'prosemirror-model';
 import { EditorView, NodeView as BaseNodeView } from 'prosemirror-view';
 
 import { SylApi } from '../api';
-import { formatToDOMAttrs, Types } from '../libs';
+import { defineMetadata, formatToDOMAttrs, Types } from '../libs';
 import { FLAG, FORMAT_TYPE } from './const';
 import { IMatcherConfig, ParseDOMMatcher, TextMatcherHandler } from './matchers';
 
@@ -16,7 +14,7 @@ const createWrapperDOM = (tagName: string, attrs: Types.StringMap<any> = {}, has
   return pDOM;
 };
 
-@Reflect.metadata(FLAG, FORMAT_TYPE.BLOCK)
+@defineMetadata(FLAG, FORMAT_TYPE.BLOCK)
 class SylSchema<Structure> {
   public name = '';
   public attrs?: {
@@ -48,7 +46,7 @@ class Formattable<Structure extends any = any, Props extends any = any> extends 
   };
 }
 
-@Reflect.metadata(FLAG, FORMAT_TYPE.BLOCK)
+@defineMetadata(FLAG, FORMAT_TYPE.BLOCK)
 class Block<Structure> extends Formattable<Structure> {
   public group = 'block';
   public content = 'inline*';
@@ -67,7 +65,7 @@ class Block<Structure> extends Formattable<Structure> {
  * `notClear` declares that it shouldn't be cleared by `SylApi.clearFormat`
  * `notStore` declares that it wouldn't be stored after deletion
  */
-@Reflect.metadata(FLAG, FORMAT_TYPE.INLINE)
+@defineMetadata(FLAG, FORMAT_TYPE.INLINE)
 class Inline<Structure> extends Formattable<Structure> {
   public group = 'inline';
   public inline = true;
@@ -79,13 +77,13 @@ class Inline<Structure> extends Formattable<Structure> {
   public toDOM = (node: ProseMirrorNode) => createWrapperDOM(this.tagName(node), node.attrs, true);
 }
 
-@Reflect.metadata(FLAG, FORMAT_TYPE.ATOM)
+@defineMetadata(FLAG, FORMAT_TYPE.ATOM)
 class Atom<Structure> extends Formattable<Structure> {
   public isLeaf = true;
   public draggable = true;
 }
 
-@Reflect.metadata(FLAG, FORMAT_TYPE.BLOCK_ATOM)
+@defineMetadata(FLAG, FORMAT_TYPE.BLOCK_ATOM)
 class BlockAtom<Structure> extends Atom<Structure> {
   public group = 'block';
   public inline = false;
@@ -96,7 +94,7 @@ class BlockAtom<Structure> extends Atom<Structure> {
   public toDOM = (node: ProseMirrorNode) => createWrapperDOM(this.tagName(node), node.attrs);
 }
 
-@Reflect.metadata(FLAG, FORMAT_TYPE.INLINE_ATOM)
+@defineMetadata(FLAG, FORMAT_TYPE.INLINE_ATOM)
 class InlineAtom<Structure> extends Atom<Structure> {
   public group = 'inline';
   public inline = true;
