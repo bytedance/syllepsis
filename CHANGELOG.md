@@ -1,3 +1,20 @@
+## [0.0.12](https://github.com/bytedance/syllepsis/compare/v0.0.11...v0.0.12) (2021-09-02)
+
+
+### 🎉 Features
+
+* **access-react:** use `isMatchObject` instead of `string` to get the actived item of dropdown menu, closes [#31](https://github.com/bytedance/syllepsis/issues/31)
+
+
+### 🐞 Bug Fixers
+
+* **ImagePlugin:** `addAttributes` not working on '.syl-image-wrapper', closes [#32](https://github.com/bytedance/syllepsis/issues/32)
+
+
+### 🔨 Refactor
+
+* **adapter:** remove the dependency of `reflect-metadata`
+
 ## [0.0.11](https://github.com/bytedance/syllepsis/compare/v0.0.10...v0.0.11) (2021-08-25)
 
 
