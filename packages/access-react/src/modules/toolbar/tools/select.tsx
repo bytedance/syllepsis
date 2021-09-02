@@ -10,6 +10,20 @@ import { SelectBase } from './base';
 import { getConfigVal } from './button';
 import { ListItem } from './utils';
 
+const isMatchObject = (objStatic: any, objCompare: any) => {
+  if (objStatic === objCompare) return true;
+  if (!(objStatic && typeof objStatic === 'object') || !(objCompare && typeof objCompare === 'object')) return false;
+  const isArray = Array.isArray(objStatic);
+  if (Array.isArray(objCompare) !== isArray) return false;
+  if (isArray) {
+    if (objStatic.length !== objCompare.length) return false;
+    for (let i = 0; i < objStatic.length; i++) if (!isMatchObject(objStatic[i], objCompare[i])) return false;
+  } else {
+    for (const p in objStatic) if (!(p in objCompare) || !isMatchObject(objStatic[p], objCompare[p])) return false;
+  }
+  return true;
+};
+
 class SelectForToolbar extends SelectBase<{
   name: IProp['name'];
   toolbar: IProp['toolbar'];
@@ -32,7 +46,7 @@ class SelectForToolbar extends SelectBase<{
       toolbar: { value },
     } = this.props;
 
-    this.activeIdx = value.findIndex(({ attrs: _attrs }: any) => JSON.stringify(_attrs) === JSON.stringify(this.attrs));
+    this.activeIdx = value.findIndex(({ attrs }: any) => isMatchObject(attrs, this.attrs));
 
     const needActive = value[this.activeIdx] && value[this.activeIdx].needActive;
 

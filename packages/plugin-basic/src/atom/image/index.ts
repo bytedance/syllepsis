@@ -292,8 +292,11 @@ class Image extends BlockAtom<ImageAttrs> {
       getAttrs: (dom: HTMLImageElement) => {
         if (!dom.src) return false;
 
-        let width = getPx(dom.style.width || dom.getAttribute('width') || '', 16);
-        let height = getPx(dom.style.height || dom.getAttribute('height') || '', 16);
+        const attrWidth = dom.getAttribute('width');
+        const attrHeight = dom.getAttribute('height');
+
+        let width = getPx(dom.style.width || (attrWidth && `${attrWidth}px`) || '', 16);
+        let height = getPx(dom.style.height || (attrHeight && `${attrHeight}px`) || '', 16);
 
         if (!width || isNaN(width)) width = 0;
         if (!height || isNaN(height)) height = 0;
@@ -311,6 +314,7 @@ class Image extends BlockAtom<ImageAttrs> {
           width,
           height,
         };
+
         getFromDOMByConfig(this.props.addAttributes, dom, formattedAttrs);
 
         return formattedAttrs;

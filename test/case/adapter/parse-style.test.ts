@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { parseTypesetStyle as OriginParse } from '../../../packages/adapter/dist/es';
 
 const parseTypesetStyle = (style: string) => {
@@ -162,5 +164,20 @@ describe('test parse type-setting-style', () => {
       spaceBoth: 5,
       spaceAfter: 6,
     });
+  });
+});
+
+describe('test dom parse', () => {
+  test('support width define in attribute or style', async () => {
+    const attrs1 = await page.evaluate(() => {
+      editor.setHTML('<img width=60 height=60 src="xx" />');
+      return editor.view.state.doc.firstChild.attrs;
+    });
+    const attrs2 = await page.evaluate(() => {
+      editor.setHTML('<img style="width: 60px;height: 60px;" src="xx" />');
+      return editor.view.state.doc.firstChild.attrs;
+    });
+    expect(attrs1).toMatchObject({ width: 60, height: 60 });
+    expect(attrs2).toMatchObject({ width: 60, height: 60 });
   });
 });
