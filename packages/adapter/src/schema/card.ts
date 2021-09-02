@@ -1,12 +1,10 @@
-import 'reflect-metadata';
-
 import { Node as ProseMirrorNode } from 'prosemirror-model';
 import { NodeSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 
 import { SylApi } from '../api';
 import { EventChannel } from '../event';
-import { Types } from '../libs';
+import { defineMetadata, getMetadata, Types } from '../libs';
 import { FLAG, FORMAT_TYPE, META, SELECT_CLS, SYL_TAG } from './const';
 import { IEventHandler } from './controller';
 import { Atom, BlockAtom, InlineAtom, SchemaMeta, SylSchema } from './schema';
@@ -186,14 +184,14 @@ class BaseCard<Structure = any> extends Atom<Structure> {
   public layers: IViewMap = {};
 }
 // * https://github.com/microsoft/TypeScript/issues/15607
-@Reflect.metadata(FLAG, FORMAT_TYPE.BLOCK_CARD)
+@defineMetadata(FLAG, FORMAT_TYPE.BLOCK_CARD)
 class Card<Structure> extends BaseCard<Structure> {
   public group = 'block';
   public isolating = true;
 }
 Card.prototype.NodeView = BlockCardView;
 
-@Reflect.metadata(FLAG, FORMAT_TYPE.INLINE_CARD)
+@defineMetadata(FLAG, FORMAT_TYPE.INLINE_CARD)
 class InlineCard<Structure> extends BaseCard<Structure> {
   public group = 'inline';
   public inline = true;
@@ -203,7 +201,7 @@ InlineCard.prototype.NodeView = InlineCardView;
 // Deprecated
 const configuration = (_config: ICardConfig) => (card: any) => {
   let config: ICardConfig & Types.StringMap<any> = _config;
-  const type = Reflect.getMetadata(FLAG, card);
+  const type = getMetadata(FLAG, card);
 
   if (!type || !isCardSchema(card)) {
     console.warn('config with not card type!');
@@ -223,7 +221,7 @@ const configuration = (_config: ICardConfig) => (card: any) => {
   }
 
   const meta = new SchemaMeta(type, config.name, config);
-  Reflect.defineMetadata(META, meta, card);
+  defineMetadata(META, meta)(card);
   return card;
 };
 

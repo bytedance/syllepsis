@@ -1,11 +1,9 @@
-import 'reflect-metadata';
-
 import { EditorState, Plugin } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 
 import { SylApi } from '../api';
 import { EventChannel } from '../event';
-import { ISylPluginConfig, ISylPluginProps, Types } from '../libs';
+import { getMetadata, ISylPluginConfig, ISylPluginProps, Types } from '../libs';
 import { BaseCard } from './card';
 import { META } from './const';
 import { SylController } from './controller';
@@ -29,8 +27,8 @@ const schemaMetaFactory = (Schema: FormattableType, adapter: SylApi, props: Type
   return {
     view: $schema.NodeView || null,
     schema: $schema,
-    // Deprecated Reflect.getMetadata will be remove in the future
-    meta: Reflect.getMetadata(META, Schema) ? Reflect.getMetadata(META, Schema) : meta,
+    // Deprecated getMetadata will be remove in the future
+    meta: getMetadata(META, Schema) ? getMetadata(META, Schema) : meta,
   };
 };
 
