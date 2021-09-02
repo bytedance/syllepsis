@@ -166,7 +166,7 @@ const toggleMark = (
   if ((empty && !$cursor) || !markApplies(nTr.doc, ranges, markType)) {
     return nTr;
   }
-  let tr = removeConflictMark(nTr, markType);
+  let tr = attrs ? removeConflictMark(nTr, markType) : nTr;
 
   if ($cursor) {
     if (attrs) {

@@ -763,6 +763,19 @@ describe('setFormat -- other', () => {
     expect(html).toEqual('<p><em>123</em><u>123</u></p>');
   });
 
+  test('will not affect the conflict mark when cleared', async () => {
+    const html = await page.evaluate(() => {
+      editor.setHTML('<p><u>123</u><em>123</em></p>');
+      editor.setSelection({
+        index: 1,
+        length: 6,
+      });
+      editor.setFormat({ underline: false });
+      return editor.getHTML();
+    });
+    expect(html).toEqual('<p>123<em>123</em></p>');
+  });
+
   test('simple mark can coexist', async () => {
     const html = await page.evaluate(() => {
       editor.setHTML('<p><strong>123</strong></p>');
