@@ -6,21 +6,26 @@ import { ImageAttrs, ImageProps } from './types';
 interface IImageSize {
   naturalWidth: number;
   naturalHeight: number;
+  ratio: number;
 }
 const IMAGE_SIZE: Types.StringMap<IImageSize | Promise<IImageSize>> = {};
 
-const getImageSize = async (src: string): Promise<{ naturalWidth: number; naturalHeight: number }> => {
+const getImageSize = async (src: string): Promise<IImageSize> => {
   if (IMAGE_SIZE[src]) return IMAGE_SIZE[src];
   IMAGE_SIZE[src] = new Promise(resolve => {
     const img = new window.Image();
     img.src = src;
     img.onload = e => {
-      IMAGE_SIZE[src] = { naturalWidth: img.naturalWidth, naturalHeight: img.naturalHeight };
+      IMAGE_SIZE[src] = {
+        naturalWidth: img.naturalWidth,
+        naturalHeight: img.naturalHeight,
+        ratio: img.naturalWidth / img.naturalHeight,
+      };
       resolve(IMAGE_SIZE[src]);
     };
     img.onerror = () => {
       delete IMAGE_SIZE[src];
-      resolve({ naturalWidth: 0, naturalHeight: 0 });
+      resolve({ naturalWidth: 0, naturalHeight: 0, ratio: 0 });
     };
   });
 
@@ -75,30 +80,33 @@ const transformBlobFromObjectURL = async (url: string): Promise<Blob> =>
 
 // deal with the lack of width and height of the paste, obtain the original image's aspect ratio and then calculate
 const correctSize = (
-  attrs: ImageAttrs,
+  attrs: Partial<ImageAttrs>,
 ): { width?: number; height?: number } | Promise<{ width?: number; height?: number }> => {
   const { src, width, height } = attrs;
-
-  if (width || height) return { width, height };
+  if (width && height) return { width, height };
   return new Promise(async resolve => {
-    const { naturalWidth, naturalHeight } = await getImageSize(src);
-    if (!naturalWidth || !naturalHeight) resolve({});
-    else {
-      const ratio = naturalWidth / naturalHeight;
-      const res = getSizeByRatio(ratio, width, height);
-      resolve(res);
-    }
+    const { naturalWidth, naturalHeight, ratio } = await getImageSize(src!);
+    if (!naturalWidth || !naturalHeight || (!width && !height)) return resolve({});
+    const res = getSizeByRatio(ratio, width, height);
+    resolve(res);
   });
 };
 
 // keep the aspect ratio after uploading
-const constructAttrs = (oAttrs: Partial<ImageAttrs>, nAttrs: Partial<ImageAttrs>) => {
-  let attrs: { width?: number; height?: number } = {};
-  if ((!nAttrs.width || !nAttrs.height) && oAttrs.height && oAttrs.width) {
-    const ratio = oAttrs.width / oAttrs.height;
-    attrs = getSizeByRatio(ratio, nAttrs.width, nAttrs.height);
+const constructAttrs = async (oAttrs: Partial<ImageAttrs>, nAttrs: Partial<ImageAttrs>) => {
+  if (nAttrs.width && nAttrs.height) return nAttrs;
+  if (!nAttrs.width || !nAttrs.height) {
+    const { ratio } = await getImageSize(nAttrs.src!);
+    return ratio ? { ...nAttrs, ...getSizeByRatio(ratio, nAttrs.width, nAttrs.height) } : nAttrs;
   }
-  return { ...oAttrs, ...nAttrs, ...attrs };
+  // nAttrs do not provide width and height
+  if (oAttrs.width && oAttrs.height) return nAttrs;
+  if (!oAttrs.width || !oAttrs.height) {
+    const { ratio } = await getImageSize(nAttrs.src!);
+    return ratio ? { ...nAttrs, ...getSizeByRatio(ratio, oAttrs.width, oAttrs.height) } : nAttrs;
+  }
+
+  return {};
 };
 
 export {

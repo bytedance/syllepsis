@@ -8,6 +8,7 @@ import {
   createFileInput,
   getFixSize,
   getFromDOMByConfig,
+  isMatchObject,
   isObjectURL,
   setDOMAttrByConfig,
 } from '../../utils';
@@ -152,27 +153,21 @@ const updateImageUrl = async (editor: SylApi, props: IUpdateImageProps, config: 
   const { src, name } = props.attrs;
   if (props.state === undefined) props.state = {};
   const state = props.state;
+  let imageAttrs: Partial<ImageAttrs> = {};
+
   try {
     // upload state, only one upload request is allowed in the same instance at the same time
     if (state.uploading || (!isObjectURL(src) && checkDomain(src, config))) {
-      const newAttrs = await correctSize(props.attrs);
-      if ((Object.keys(newAttrs) as Array<keyof typeof newAttrs>).some(key => newAttrs[key] !== props.attrs[key])) {
-        editor.updateCardAttrs(props.getPos(), newAttrs);
-      }
-      return;
+      imageAttrs = await correctSize(props.attrs);
+    } else {
+      state.uploading = true;
+      const attrs = await uploadImg(editor, src, name, config);
+      state.uploading = false;
+      if (!attrs) return;
+      imageAttrs = await constructAttrs(props.attrs, attrs);
     }
 
-    state.uploading = true;
-    const attrs = await uploadImg(editor, src, name, config);
-    state.uploading = false;
-    if (!attrs) return;
-
-    const imgSize = await correctSize({ ...props.attrs, ...attrs });
-    const imageAttrs = constructAttrs({ ...props.attrs, ...imgSize }, attrs);
-
-    if (src !== attrs.src) {
-      editor.updateCardAttrs(props.getPos(), imageAttrs);
-    }
+    if (!isMatchObject(imageAttrs, props.attrs)) editor.updateCardAttrs(props.getPos(), imageAttrs);
   } catch (err) {
     state.uploading = false;
   }
@@ -301,7 +296,6 @@ class Image extends BlockAtom<ImageAttrs> {
       tag: 'img',
       getAttrs: (dom: HTMLImageElement) => {
         if (!dom.src) return false;
-
         const attrWidth = dom.getAttribute('width');
         const attrHeight = dom.getAttribute('height');
 

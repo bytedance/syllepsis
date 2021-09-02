@@ -119,7 +119,14 @@ const RichEditor = () => {
       },
     }),
     new ImagePlugin({
-      uploader: f => Promise.resolve(''),
+      allowDomains: [],
+      uploader: f => {
+        const width = 600 * Math.random();
+        return Promise.resolve({
+          src: typeof f === 'string' ? f : URL.createObjectURL(f),
+          width,
+        });
+      },
       uploadMaxWidth: 500,
     }),
     new VideoPlugin({
