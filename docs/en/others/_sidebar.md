@@ -9,4 +9,4 @@
 - [Other](/en/others/README.md)
   - [ShadowAPI](/en/others/shadow-api.md)
   - [Internationalization](/en/others/i18n.md)
-  - [Update log](/en/others/log.md)
+  - [CHANGELOG](https://github.com/bytedance/syllepsis/blob/master/CHANGELOG.md)

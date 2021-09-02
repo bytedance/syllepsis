@@ -10,4 +10,4 @@
   - [ShadowAPI](/zh-cn/others/shadow-api.md)
   - [国际化](/zh-cn/others/i18n.md)
   - [常见问题汇总](/zh-cn/others/qa.md)
-  - [更新日志](/zh-cn/others/log.md)
+  - [更新日志](https://github.com/bytedance/syllepsis/blob/master/CHANGELOG.md)
