@@ -5,12 +5,8 @@
   text-align: center;
 }
 
-.syl-editor .image-wrapper {
-  display: inline-block;
-  left: 0;
-  top: 0;
-  position: relative;
-  z-index: 0;
+.syl-editor .syl-image-wrapper {
+  user-select: text;
 }
 
 .syl-image-fixer .align-menu {

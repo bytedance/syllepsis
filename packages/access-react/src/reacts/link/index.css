@@ -16,3 +16,7 @@
   box-shadow: 0 6px 24px 0 rgba(17, 34, 51, 0.1);
   z-index: 1;
 }
+
+.syl-link {
+  user-select: text;
+}

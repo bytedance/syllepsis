@@ -74,6 +74,7 @@ class LinkComponent extends React.PureComponent<ILinkComponentProps, ILinkCompon
         href={this.props.attrs.href}
         target="_blank"
         rel="nofollow"
+        className="syl-link"
         onMouseEnter={this.showTooltipOnHover}
         onMouseLeave={this.hideTooltipWhenLeaveAsync}
         onClick={this.preventDefaultEvent}
