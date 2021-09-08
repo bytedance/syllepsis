@@ -67,7 +67,7 @@ class Link extends InlineAtom<ILinkAttrs> {
       },
     },
   ];
-  toDOM = (node: Node) => ['a', { href: node.attrs.href }, node.attrs.text] as DOMOutputSpec;
+  toDOM = (node: Node) => ['a', { class: 'syl-link', href: node.attrs.href }, node.attrs.text] as DOMOutputSpec;
 }
 
 class LinkPlugin extends SylPlugin<ILinkProps> {
