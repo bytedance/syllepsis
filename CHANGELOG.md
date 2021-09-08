@@ -1,3 +1,18 @@
+## [0.0.13](https://github.com/bytedance/syllepsis/compare/v0.0.12...v0.0.13) (2021-09-08)
+
+
+### 🐞 Bug Fixers
+
+* **adapter:** SylApi: `setFormat` remove the excluded marks by fault when using to clear mark, closes [#34](https://github.com/bytedance/syllepsis/issues/34)
+* **adapter:** SylApi: getHTML() returned prosemirror hack content, closes [#37](https://github.com/bytedance/syllepsis/issues/37)
+* **ImagePlugin:** attrs passed by `uploader` will not update node  when `src` is the same, closes [#35](https://github.com/bytedance/syllepsis/issues/35)
+* **plugin:** lost select style of img and link
+
+
+### 🔨 Refactor
+
+* **ImagePlugin:** reduce resize handler area
+
 ## [0.0.12](https://github.com/bytedance/syllepsis/compare/v0.0.11...v0.0.12) (2021-09-02)
 
 
