@@ -104,8 +104,11 @@ const removeIgnoreContent = (div: HTMLElement) => {
     });
 };
 
-// when <br> after `inlineCard` is the last node, delete it
+// when <br> or <img class="ProseMirror-separator"> after `inlineCard` is the last node, delete it
 const removeBrAfterInlineCard = (div: HTMLElement) => {
+  Array.from(div.querySelectorAll('img.ProseMirror-separator')).forEach(
+    node => node.parentElement && node.parentElement.removeChild(node),
+  );
   Array.from(div.querySelectorAll('syl-inline')).forEach(a => {
     if (
       a.nextElementSibling &&
