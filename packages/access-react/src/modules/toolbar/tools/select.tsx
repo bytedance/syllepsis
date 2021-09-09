@@ -67,13 +67,15 @@ class SelectForToolbar extends SelectBase<{
 
   get defaultIcon() {
     const {
-      toolbar: { icon },
+      toolbar: { icon, value },
       name,
       type,
       editor,
     } = this.props;
     if (icon) {
       if (typeof icon === 'function') return icon(editor, this.attrs);
+      const defaultIdx = value.findIndex((item: { default: boolean }) => item.default);
+      if (value[defaultIdx] && value[defaultIdx].icon) return value[defaultIdx].icon;
       return icon;
     }
 
@@ -104,13 +106,11 @@ class SelectForToolbar extends SelectBase<{
 
   renderSelectIcon = () => {
     const { toolbar, editor, toolbarType } = this.props;
-    const index = Math.max(0, this.activeIdx);
-    const value = toolbar.value[index];
 
-    if (typeof toolbar.icon === 'function') {
-      return toolbar.icon(editor, this.attrs, { toolbarType });
-    }
-    return this.renderMenuItem(value, this.activeIdx) || this.defaultIcon;
+    if (typeof toolbar.icon === 'function') return toolbar.icon(editor, this.attrs, { toolbarType });
+    if (this.activeIdx < 0) return this.defaultIcon;
+
+    return this.renderMenuItem(toolbar.value[this.activeIdx], this.activeIdx) || this.defaultIcon;
   };
 
   renderDropDownIcon = () => this.defaultIcon;

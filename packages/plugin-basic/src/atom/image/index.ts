@@ -67,7 +67,7 @@ const parseSylDOM = (
 
 const uploadImg = async (editor: SylApi, src: string, fileName: string, config: ImageProps) => {
   let res: TUploadDataType = src;
-  const { uploader, uploadType, onUploadError, deleteFailedUpload, uploadBeforeInsert } = config;
+  const { uploader, uploadType, onUploadError, deleteFailedUpload } = config;
   if (!uploader) throw new Error('Must provide uploader!');
   if (isObjectURL(src)) res = await transformBlobFromObjectURL(src);
 
@@ -80,7 +80,7 @@ const uploadImg = async (editor: SylApi, src: string, fileName: string, config: 
     });
     return typeof uploadRes === 'string' ? { src: uploadRes || src } : uploadRes;
   } catch (err) {
-    if (deleteFailedUpload && uploadBeforeInsert !== true) {
+    if (deleteFailedUpload) {
       const nodeInfos = editor.getExistNodes(PLUGIN_NAME);
       nodeInfos.some(({ node, pos }) => {
         if (node.attrs.src === src) {
