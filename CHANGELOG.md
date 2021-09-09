@@ -1,3 +1,15 @@
+## [0.0.14](https://github.com/bytedance/syllepsis/compare/v0.0.13...v0.0.14) (2021-09-09)
+
+
+### 🎉 Features
+
+* **access-react:** support define default item in toolbar value
+
+
+### 🐞 Bug Fixers
+
+* **ImagePlugin:** `deleteFailedUpload` not working when `uploadBeforeInsert` is true, closes [#38](https://github.com/bytedance/syllepsis/issues/38)
+
 ## [0.0.13](https://github.com/bytedance/syllepsis/compare/v0.0.12...v0.0.13) (2021-09-08)
 
 
