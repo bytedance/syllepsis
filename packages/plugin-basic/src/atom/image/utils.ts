@@ -58,7 +58,7 @@ const getSizeByRatio = (ratio: number, width?: number, height?: number) => {
 const checkDomain = (src: string, config: ImageProps) => {
   const allowDomains = config.allowDomains;
   if (typeof allowDomains === 'function') return allowDomains(src);
-  (allowDomains || [/./]).some(domain => {
+  return (allowDomains || [/./]).some(domain => {
     if (typeof domain === 'string') return src.includes(domain);
     return domain.test(src);
   });
