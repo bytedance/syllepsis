@@ -1,3 +1,15 @@
+## [0.0.15](https://github.com/bytedance/syllepsis/compare/v0.0.14...v0.0.15) (2021-09-13)
+
+
+### 🎉 Features
+
+* **ImagePlugin:** support `renderLoading` props to rending loading node while uploading image, closes [#41](https://github.com/bytedance/syllepsis/issues/41)
+
+
+### 🐞 Bug Fixers
+
+* **ImagePlugin:** Array configuration of `allowDomains` does not work, closes [#40](https://github.com/bytedance/syllepsis/issues/40)
+
 ## [0.0.14](https://github.com/bytedance/syllepsis/compare/v0.0.13...v0.0.14) (2021-09-09)
 
 
