@@ -1,3 +1,5 @@
+import { SylApi } from '@syllepsis/adapter';
+
 import { IUserAttrsConfig } from '../../utils';
 
 declare module '@syllepsis/adapter' {
@@ -38,6 +40,7 @@ interface ImageProps {
   addAttributes?: IUserAttrsConfig;
   deleteFailedUpload?: boolean;
   uploadMaxWidth?: number;
+  renderLoading?: (props: IUpdateImageProps & { editor: SylApi }) => any;
 }
 
 interface ImageAttrs {
