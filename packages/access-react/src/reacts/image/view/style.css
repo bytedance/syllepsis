@@ -74,6 +74,7 @@
 .syl-image-atom-wrapper {
   display: inline-block;
   position: relative;
+  font-size: 0;
 }
 
 .syl-resizable-container {
@@ -83,6 +84,7 @@
   top: 0;
   left: 50%;
   transform: translateX(-50%);
+  outline: 1px solid #98ccfd;
 }
 
 .syl-resizable-container .syl-image-resize-box-control.top_left {
@@ -119,10 +121,11 @@
   box-sizing: border-box;
   content: '';
   height: 10px;
-  left: 5px;
+  left: 0;
   position: absolute;
-  top: 5px;
+  top: 0;
   width: 10px;
+  border-radius: 50%;
 }
 
 .syl-image-resize-box-control::before {
@@ -141,6 +144,31 @@
 
 .syl-image-wrapper .syl-image-caption {
   display: block;
+}
+
+.syl-image-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+@keyframes SylRotate {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+.syl-image-loading svg {
+  position: absolute;
+  left: 2%;
+  top: 2%;
+  animation: SylRotate 2s infinite;
 }
 
 .ProseMirror[contenteditable='false'] .syl-image-caption input:not(:focus) {

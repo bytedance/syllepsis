@@ -1,3 +1,4 @@
+import { LoadingOne } from '@icon-park/react';
 import { EventChannel } from '@syllepsis/adapter';
 import { IViewMapProps } from '@syllepsis/editor';
 import { ImageAttrs } from '@syllepsis/plugin-basic';
@@ -16,22 +17,22 @@ enum DEFAULT_IMG_SIZE {
 class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
   public imageWrapDom: any;
   public MAX_WIDTH: number;
-  public state = {
-    caption: '',
-    active: false,
-  };
   private isInline = false;
   private imageMount = false;
   private inputting = false;
 
   constructor(props: any) {
     super(props);
-    const { editor, attrs } = props;
+    const { editor, attrs, state } = props;
     const { schema } = editor.view.state;
     this.isInline = schema.nodes.image.isInline;
     this.updateImageUrl(props);
-    this.state.caption = attrs.alt || '';
     this.MAX_WIDTH = editor.view.dom.scrollWidth - 40;
+    this.state = {
+      caption: attrs.alt || '',
+      active: false,
+      isUploading: Boolean(state.uploading),
+    };
   }
 
   componentDidUpdate() {
@@ -92,7 +93,10 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
   };
 
   private async updateImageUrl(props: IViewMapProps<ImageAttrs>) {
-    props.editor.command.image!.updateImageUrl(props, this.props.dispatchUpdate!);
+    await props.editor.command.image!.updateImageUrl(props, this.props.dispatchUpdate!);
+    this.setState({
+      isUploading: false,
+    });
   }
 
   _onResizeEnd = (width: number, height: number): void =>
@@ -114,7 +118,7 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
     const { attrs, editor } = this.props;
     const { src, height, alt, width = DEFAULT_IMG_SIZE.width } = attrs;
     const config = editor.command.image!.getConfiguration();
-    const { active } = this.state;
+    const { active, isUploading } = this.state;
     return (
       <span className="syl-image-atom-wrapper" ref={ref => this.isInline && (this.imageWrapDom = ref)}>
         <img src={src} {...(alt ? { alt } : {})} {...(width ? { width } : {})} {...(height ? { height } : {})} />
@@ -128,6 +132,14 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
             targetDOM={this.imageWrapDom}
           />
         ) : null}
+        {isUploading &&
+          (config.renderLoading ? (
+            config.renderLoading(this.props)
+          ) : (
+            <div className="syl-image-loading">
+              <LoadingOne theme="outline" size="20" fill="#fff" />
+            </div>
+          ))}
       </span>
     );
   };

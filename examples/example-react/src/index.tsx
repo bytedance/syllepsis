@@ -119,12 +119,21 @@ const RichEditor = () => {
       },
     }),
     new ImagePlugin({
-      allowDomains: [],
+      // allowDomains: [],
       uploader: f => {
         const width = 600 * Math.random();
-        return Promise.resolve({
-          src: typeof f === 'string' ? f : URL.createObjectURL(f),
-          width,
+        return new Promise(resolve => {
+          if (typeof f === 'string') {
+            resolve('');
+            return;
+          }
+          setTimeout(() => {
+            resolve({
+              src: typeof f === 'string' ? f : URL.createObjectURL(f),
+              width,
+            });
+            console.log('resolve');
+          }, 3000);
         });
       },
       uploadMaxWidth: 500,
