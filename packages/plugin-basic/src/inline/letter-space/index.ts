@@ -1,9 +1,10 @@
-import { getPx, Inline, SylApi, SylController, SylPlugin } from '@syllepsis/adapter';
+import { getPx, IG_TAG, Inline, SylApi, SylController, SylPlugin } from '@syllepsis/adapter';
 import { DOMOutputSpec, Node } from 'prosemirror-model';
 
 import {
   checkMarkDisable,
   formatMenuValues,
+  getFixSize,
   getFormatAttrsByValue,
   TAllowedValuesConfig,
   TValuesConfig,
@@ -61,10 +62,13 @@ class LetterSpace extends Inline<ILetterSpaceAttrs> {
 
   public toDOM = (node: Node) => {
     const { space } = node.attrs;
-    const attrs: { style?: string } = {};
+    const attrs: { style?: string; [IG_TAG]?: string } = {};
     if (+space) {
-      attrs.style = `letter-spacing: ${space}px;`;
+      attrs.style = `letter-spacing: ${getFixSize(space)}px;`;
+    } else {
+      attrs[IG_TAG] = 'true';
     }
+
     return [this.tagName(), attrs, 0] as DOMOutputSpec;
   };
 }
