@@ -7,9 +7,10 @@ import { CardPlugin } from './block-card';
 import { InlineCardPlugin } from './inline-card';
 import { ItalicPlugin } from './inline-Italic';
 import { UnderlinePlugin } from './inline-underline';
-import { StrikeThroughPlugin } from './strike-through';
+import { StrikeThroughPlugin } from './inline-strike-through';
 import { InlineCardTextPlugin } from './inline-card-text';
 import { IsolatingPlugin } from './isolating-block';
+import { PastePlugin } from './paste-handler';
 import { SylPlugin, SylSchema } from '../../../packages/adapter/dist/es';
 
 const key = new PluginKey('nativePlugin');
@@ -51,6 +52,7 @@ const testPlugins: any = [
   },
   nativePlugin,
   IsolatingPlugin,
+  new PastePlugin(),
 ];
 
 export { testPlugins };

@@ -100,6 +100,14 @@
 
 设置`json`结构的数据内容。
 
+### pasteContent
+
+`pasteContent: (content: string, option?: { plainText?: boolean, scrollIntoView?: boolean }) => boolean`
+
+模拟粘贴的行为来插入内容, 返回`true`代表成功。
+`plainText` 指内容是否是纯文字，默认是`false`。
+`scrollIntoView` 控制是否将选区滚动到视窗，默认为`true`。
+
 ### getExistNodes
 
 `getExistNodes: (nodeName: string) => IMappingNode[]`

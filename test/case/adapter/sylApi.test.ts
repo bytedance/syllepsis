@@ -1099,6 +1099,7 @@ describe('shadow test', () => {
     });
     expect(res).toBe(true);
   });
+
   test('can use isActive', async () => {
     const res = await page.evaluate(() => {
       editor.insertText('12345');
@@ -1112,6 +1113,7 @@ describe('shadow test', () => {
     });
     expect(res).toBe(true);
   });
+
   test('can use emit', async () => {
     const res = await page.evaluate(() => {
       let i = 0;
@@ -1122,5 +1124,27 @@ describe('shadow test', () => {
       return i === 1;
     });
     expect(res).toBe(true);
+  });
+
+  test('pasteContent support plainText or HTML', async () => {
+    const res = await page.evaluate(() => {
+      editor.setHTML('<p>test_paste_html</p>');
+      return editor.getHTML();
+    });
+    expect(res).toBe('<p>test_paste_html</p>');
+
+    const res1 = await page.evaluate(() => {
+      editor.setHTML('');
+      editor.pasteContent('<p>test_paste_html</p>');
+      return editor.getHTML();
+    });
+    expect(res1).toBe('<p>match_paste_html</p>');
+
+    const res2 = await page.evaluate(() => {
+      editor.setHTML('');
+      editor.pasteContent('<p>test_paste_text</p>', { plainText: true });
+      return editor.getHTML();
+    });
+    expect(res2).toBe('<p>&lt;p&gt;match_paste_text&lt;/p&gt;</p>');
   });
 });
