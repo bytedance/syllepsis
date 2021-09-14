@@ -1,4 +1,4 @@
-import { Inline, SylApi, SylController, SylPlugin } from '@syllepsis/adapter';
+import { IG_TAG, Inline, SylApi, SylController, SylPlugin } from '@syllepsis/adapter';
 import { DOMOutputSpec, Node } from 'prosemirror-model';
 
 import { checkMarkDisable, toHex } from '../../utils';
@@ -54,7 +54,7 @@ class Color extends Inline<IColorAttrs> {
   public toDOM = (node: Node) => {
     const { color } = node.attrs;
     const renderColor = color && toHex(color) !== toHex(this.attrs.color.default) && color;
-    return ['span', renderColor ? { style: `color: ${node.attrs.color};` } : {}, 0] as DOMOutputSpec;
+    return ['span', renderColor ? { style: `color: ${node.attrs.color};` } : { [IG_TAG]: 'true' }, 0] as DOMOutputSpec;
   };
 }
 
