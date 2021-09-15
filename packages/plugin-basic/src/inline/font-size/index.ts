@@ -1,7 +1,7 @@
-import { getPx, Inline, SylApi, SylController, SylPlugin } from '@syllepsis/adapter';
+import { getPx, IG_TAG, Inline, SylApi, SylController, SylPlugin } from '@syllepsis/adapter';
 import { DOMOutputSpec, Node } from 'prosemirror-model';
 
-import { formatMenuValues, getFormatAttrsByValue, TAllowedValuesConfig, TValuesConfig } from '../../utils';
+import { formatMenuValues, getFixSize, getFormatAttrsByValue, TAllowedValuesConfig, TValuesConfig } from '../../utils';
 
 interface IFontSizeProps {
   allowedValues?: TAllowedValuesConfig;
@@ -73,17 +73,20 @@ class FontSize extends Inline<IFontSizeAttrs> {
 
   public toDOM = (node: Node) => {
     const size = node.attrs.size;
-    const attrs: { style?: string } = {};
+    const attrs: { style?: string; [IG_TAG]?: string } = {};
 
     if (size) {
       if (Number.isNaN(parseInt(size, 10))) {
         attrs.style = `font-size: ${size};`;
       } else if (this.props.unit === 'px') {
-        attrs.style = `font-size: ${size}px;`;
+        attrs.style = `font-size: ${getFixSize(size)}px;`;
       } else {
-        attrs.style = `font-size: ${(size / this.defaultFontSize).toFixed(3).replace(/\.?0+$/, '')}em;`;
+        attrs.style = `font-size: ${getFixSize(size / this.defaultFontSize)}em;`;
       }
+    } else {
+      attrs[IG_TAG] = 'true';
     }
+
     return ['span', attrs, 0] as DOMOutputSpec;
   };
 }
