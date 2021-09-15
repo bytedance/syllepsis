@@ -241,6 +241,7 @@ class SylConfigurator {
     const textShortCutPlugin = ruleBuilder($schemaMetas, $controllerMetas, !this.baseConfiguration.disableShortcut);
 
     const CustomCtrlPlugin = CreateCustomCtrlPlugin(
+      adapter,
       this.sylPluginInstances.reduce((result, plugin) => {
         if (plugin) {
           const config: ICustomCtrlConfig = {};
@@ -252,7 +253,6 @@ class SylConfigurator {
         }
         return result;
       }, [] as Array<ICustomCtrlConfig>),
-      adapter,
     );
 
     this.plugins.push(

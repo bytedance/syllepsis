@@ -62,7 +62,9 @@ interface IEventHandler {
   transformPastedText?: (editor: SylApi, text: string) => string;
   transformPasted?: (editor: SylApi, p: Slice) => Slice;
   clipboardTextSerializer?: (editor: SylApi, p: Slice) => string;
-  handleDOMEvents?: Types.StringMap<(editor: SylApi, view: EditorView, event: any) => boolean>;
+  handleDOMEvents?: Partial<
+    Record<keyof HTMLElementEventMap, (editor: SylApi, view: EditorView, event: any) => boolean>
+  >;
 }
 
 type TKeymapHandler = (

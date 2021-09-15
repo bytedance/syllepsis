@@ -3,14 +3,11 @@ import { EditorProps } from 'prosemirror-view';
 
 import { SylApi } from '../../api';
 import { Types } from '../../libs';
-import { SylController } from '../../schema/controller';
+import { IEventHandler, SylController } from '../../schema';
 
-type TEventHandler = (adapter: SylApi, ...args: any[]) => boolean;
-
+type TEventHandler = (adapter: SylApi, ...args: any[]) => any;
 type TransEventHandler = (adapter: SylApi, data: any) => any;
-interface IHandlersCenter {
-  [K: string]: Array<TEventHandler | TransEventHandler>;
-}
+type THandlersCenter = Partial<Record<keyof IEventHandler, Array<TEventHandler | IEventHandler['handleDOMEvents']>>>;
 
 const transEvents = ['transformPastedHTML', 'transformPastedText', 'clipboardTextParser', 'transformPasted'];
 
@@ -38,49 +35,6 @@ const chainEvent = (
   return handlers.some(handler => (handler as TEventHandler)(adapter, ...args));
 };
 
-// use `chainEvent` to handle the `handler` group
-const wrapEvent = (handlers: IHandlersCenter, adapter: SylApi) =>
-  Object.keys(handlers).reduce((result, event) => {
-    let handler;
-    if (event === 'handleDOMEvents') {
-      const collectHandlers = handlers[event].reduce((res, eventHandler) => {
-        Object.keys(eventHandler).forEach(domEvent => {
-          if (!res[domEvent]) {
-            res[domEvent] = [(eventHandler as Types.StringMap<any>)[domEvent]];
-          } else {
-            res[domEvent].push((eventHandler as Types.StringMap<any>)[domEvent]);
-          }
-        });
-        return res;
-      }, {} as any);
-
-      handler = Object.keys(collectHandlers).reduce((res, domEvent) => {
-        res[domEvent] = (...args: any[]) => chainEvent(domEvent, adapter, collectHandlers[domEvent], ...args);
-        return res;
-      }, {} as any);
-    } else {
-      handler = (...args: any[]) => chainEvent(event, adapter, handlers[event] as Array<TEventHandler>, ...args);
-    }
-    result[event as keyof EditorProps] = handler;
-    return result;
-  }, {} as NonNullable<PluginSpec['props']>);
-
-// group the `eventHandler` props
-const collectProps = (propsList: Array<NonNullable<SylController['eventHandler']>>, adapter: SylApi) => {
-  const handlers = propsList.reduce((res, props) => {
-    Object.keys(props).forEach((event: any) => {
-      if (Array.isArray(res[event])) {
-        res[event].push(props[event as keyof SylController['eventHandler']]);
-      } else {
-        res[event] = [props[event as keyof SylController['eventHandler']]];
-      }
-    });
-    return res;
-  }, {} as IHandlersCenter);
-
-  return wrapEvent(handlers, adapter);
-};
-
 const createPlugin = (spec: PluginSpec) =>
   new Plugin({
     key,
@@ -88,42 +42,89 @@ const createPlugin = (spec: PluginSpec) =>
   });
 
 interface ICustomCtrlConfig {
-  eventHandler?: SylController['eventHandler'];
+  eventHandler?: IEventHandler;
   appendTransaction?: SylController['appendTransaction'];
 }
 
-const CreateCustomCtrlPlugin = (configs: Array<ICustomCtrlConfig>, adapter: SylApi) => {
-  const allConfig = configs.reduce(
-    (res, config) => {
-      if (config.eventHandler) res.props.push(config.eventHandler);
-      if (config.appendTransaction) res.appendTransaction.push(config.appendTransaction);
-      return res;
-    },
-    { props: [], appendTransaction: [] } as {
-      props: Array<NonNullable<ICustomCtrlConfig['eventHandler']>>;
-      appendTransaction: Array<NonNullable<ICustomCtrlConfig['appendTransaction']>>;
-    },
-  );
+const createCustomCtrlPluginSpec = (adapter: SylApi, configs: Array<ICustomCtrlConfig>) => {
+  const eventHandlers: THandlersCenter = {};
+  const appendTransactions: Array<NonNullable<SylController['appendTransaction']>> = [];
 
-  const customProps: PluginSpec = {};
-  if (allConfig.props.length) customProps.props = collectProps(allConfig.props, adapter);
-  if (allConfig.appendTransaction.length) {
-    customProps.appendTransaction = (trs: Transaction[], oldState: EditorState, _newState: EditorState) => {
-      let newState = _newState;
-      const tr = newState.tr;
-      let appended = false;
-      allConfig.appendTransaction.forEach(handler => {
-        const res = handler(tr, oldState, newState);
-        if (res) {
-          newState = _newState.applyInner(res);
-          appended = true;
+  const handleAppendTransaction = (trs: Transaction[], oldState: EditorState, _newState: EditorState) => {
+    let newState = _newState;
+    const tr = newState.tr;
+    let appended = false;
+    appendTransactions.forEach(handler => {
+      const res = handler(tr, oldState, newState);
+      if (res) {
+        newState = _newState.applyInner(res);
+        appended = true;
+      }
+    });
+    if (appended) return tr;
+  };
+
+  const handleProps = () =>
+    (Object.keys(eventHandlers) as Array<keyof IEventHandler>).reduce((result, event: keyof IEventHandler) => {
+      let handler;
+      // collect domEvent handlers and chain
+      if (event === 'handleDOMEvents') {
+        const collectHandlers = (eventHandlers[event] as Array<IEventHandler['handleDOMEvents']>).reduce(
+          (res, domEventHandlerMap: IEventHandler['handleDOMEvents']) => {
+            (Object.keys(domEventHandlerMap!) as Array<keyof HTMLElementEventMap>).forEach(domEvent => {
+              if (!domEventHandlerMap) return;
+              const domEventHandler = domEventHandlerMap[domEvent];
+              if (!domEventHandler) return;
+              if (!Array.isArray(res[domEvent])) {
+                res[domEvent] = [domEventHandler];
+              } else {
+                res[domEvent].push(domEventHandler);
+              }
+            });
+            return res;
+          },
+          {} as Record<keyof HTMLElementEventMap, Array<TEventHandler>>,
+        );
+
+        handler = (Object.keys(collectHandlers) as Array<keyof HTMLElementEventMap>).reduce(
+          (res, domEvent: keyof HTMLElementEventMap) => {
+            res[domEvent] = (...args: any[]) => chainEvent(domEvent, adapter, collectHandlers[domEvent], ...args);
+            return res;
+          },
+          {} as any,
+        );
+      } else {
+        // simple chain the custom event handler
+        handler = (...args: any[]) => chainEvent(event, adapter, eventHandlers[event] as Array<TEventHandler>, ...args);
+      }
+
+      result[event as keyof EditorProps] = handler;
+      return result;
+    }, {} as NonNullable<PluginSpec['props']>);
+
+  configs.forEach(config => {
+    if (config.eventHandler) {
+      const eventHandler = config.eventHandler;
+      (Object.keys(eventHandler) as Array<keyof IEventHandler>).forEach((event: keyof IEventHandler) => {
+        const handler = eventHandler[event];
+        if (!handler) return;
+        if (Array.isArray(eventHandlers[event])) {
+          eventHandlers[event]!.push(handler);
+        } else {
+          eventHandlers[event] = [handler];
         }
       });
-      if (appended) return tr;
-    };
-  }
+    }
+    if (config.appendTransaction) appendTransactions.push(config.appendTransaction);
+  });
 
-  return createPlugin(customProps);
+  return {
+    props: handleProps(),
+    appendTransaction: handleAppendTransaction,
+  };
 };
+
+const CreateCustomCtrlPlugin = (adapter: SylApi, customProps: Array<ICustomCtrlConfig>) =>
+  createPlugin(createCustomCtrlPluginSpec(adapter, customProps));
 
 export { CreateCustomCtrlPlugin, ICustomCtrlConfig };
