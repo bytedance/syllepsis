@@ -106,10 +106,16 @@ Set the data content of the `json` structure.
 
 `pasteContent: (content: string, option?: { plainText?: boolean, scrollIntoView?: boolean }) => boolean`
 
-Used to simulate paste behavior to insert content.Return `true` for success
+Used to simulate paste behavior to insert content.Return `true` for success.
 
-`plainText` indicates whether the content is plain text, the default is `false`。
-`scrollIntoView` scroll to the selected position, the default is `true`。
+`plainText` indicates whether the content is plain text, the default is `false`.
+`scrollIntoView` scroll to the selected position, the default is `true`.
+
+### dispatchEvent
+
+`dispatchEvent: (event: Event) => void;`
+
+Trigger events, which can be used for testing or other purposes.
 
 ### getExistNodes
 
