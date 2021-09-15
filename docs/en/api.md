@@ -102,6 +102,15 @@ Get the data content of the `json` structure.
 
 Set the data content of the `json` structure.
 
+### pasteContent
+
+`pasteContent: (content: string, option?: { plainText?: boolean, scrollIntoView?: boolean }) => boolean`
+
+Used to simulate paste behavior to insert content.Return `true` for success
+
+`plainText` indicates whether the content is plain text, the default is `false`。
+`scrollIntoView` scroll to the selected position, the default is `true`。
+
 ### getExistNodes
 
 `getExistNodes: (nodeName: string) => IMappingNode[]`

@@ -23,8 +23,10 @@ import {
   InsertOption,
   insertShadow,
   insertText,
+  IPasteOption,
   IReplaceOption,
   IUpdateOption,
+  paste,
   removeShadow,
   replace,
   update,
@@ -427,6 +429,11 @@ class SylApi {
       this.onError(e, arguments);
     }
   }
+
+  /**
+   * Used to simulate paste behavior to insert content
+   */
+  public pasteContent = (content: string, option: IPasteOption = {}) => paste(this.view, content, option);
 
   public getExistNodes(nodeName: string) {
     try {
