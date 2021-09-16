@@ -4,6 +4,7 @@ declare module 'prosemirror-view' {
   interface EditorView {
     editable: boolean;
     docView: any;
+    dispatchEvent: (event: Event) => void;
   }
 }
 

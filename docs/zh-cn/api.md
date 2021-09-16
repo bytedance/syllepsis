@@ -108,6 +108,12 @@
 `plainText` 指内容是否是纯文字，默认是`false`。
 `scrollIntoView` 控制是否将选区滚动到视窗，默认为`true`。
 
+### dispatchEvent
+
+`dispatchEvent: (event: Event) => void;`
+
+主动触发事件，可用于测试或者其他目的。
+
 ### getExistNodes
 
 `getExistNodes: (nodeName: string) => IMappingNode[]`

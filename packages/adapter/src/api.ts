@@ -11,6 +11,7 @@ import {
   appendShadow,
   checkHasContentBefore,
   clearFormat,
+  dispatchEvent,
   formatSelection,
   getCursorNode,
   getExistMarks,
@@ -26,7 +27,7 @@ import {
   IPasteOption,
   IReplaceOption,
   IUpdateOption,
-  paste,
+  pasteContent,
   removeShadow,
   replace,
   update,
@@ -433,7 +434,12 @@ class SylApi {
   /**
    * Used to simulate paste behavior to insert content
    */
-  public pasteContent = (content: string, option: IPasteOption = {}) => paste(this.view, content, option);
+  public pasteContent = (content: string, option: IPasteOption = {}) => pasteContent(this.view, content, option);
+
+  /**
+   * Trigger events, which can be used for testing or other purposes.
+   */
+  public dispatchEvent = (event: Event) => dispatchEvent(this.view, event);
 
   public getExistNodes(nodeName: string) {
     try {
