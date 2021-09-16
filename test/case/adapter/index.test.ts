@@ -12,5 +12,6 @@ require('./dom-event.test');
 require('./shortcut.test');
 require('./sylApi.test');
 require('./props.test');
+require('./configurator.test');
 
 require('./other.test');

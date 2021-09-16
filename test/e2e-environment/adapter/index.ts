@@ -116,4 +116,5 @@ const editor = createEditor(
   },
 );
 
+// @ts-ignore
 window.editor = editor;
