@@ -6,7 +6,7 @@ import { EditorView, NodeView } from 'prosemirror-view';
 
 import { ISylApiAdapterOptions, SylApi } from './api';
 import { BasicCtrlPlugin, BSControlKey, IBasicCtrlConfig } from './basic/basic-ctrl';
-import { CreateCustomCtrlPlugin, ICustomCtrlConfig } from './basic/custom-ctrl';
+import { CreateCustomCtrlPlugin, CustomPlugin, ICustomCtrlConfig } from './basic/custom-ctrl';
 import { DecorationPlugin } from './basic/decoration';
 import { getKeymapPlugins } from './basic/keymap/keymap';
 import { createLifeCyclePlugin } from './basic/lifecycle/lifecycle-plugin';
@@ -18,7 +18,7 @@ import { parseSylPluginConfig } from './libs/plugin-config-parse';
 import { ISylPluginConfig, Types } from './libs/types';
 import { LocaleStore } from './locale';
 import { IModuleType, ModuleManager } from './module';
-import { BaseCard, BaseCardView, basicSchema, SchemaMeta, SylPlugin } from './schema';
+import { BaseCard, BaseCardView, basicSchema, IEventHandler, SchemaMeta, SylPlugin } from './schema';
 import { createSchema, updateSchema } from './schema/normalize';
 
 // extra configuration support, never related to editing
@@ -35,6 +35,7 @@ interface IBaseConfig {
   locale?: Types.StringMap<any>;
   disable?: boolean;
   disableShortcut?: boolean;
+  eventHandler?: IEventHandler;
 }
 
 interface IConfiguration extends IBaseConfig, IBasicCtrlConfig, IExtraConfig {}
@@ -114,10 +115,15 @@ class SylConfigurator {
   private localStore?: LocaleStore;
   public domParser?: DOMParser;
 
+  private customCtrlPlugin?: CustomPlugin;
+
   // configs of SylPlugin
   private sylPluginConfigs: Array<ISylPluginConfig> = [];
   // instances of SylPlugin
   private sylPluginInstances: Array<SylPlugin> = [];
+
+  public eventHandler: IEventHandler = {};
+
   // configuration that pass to BasicCtrlPlugin
   public basicConfiguration: Required<IBasicCtrlConfig> = {
     keepLastLine: true,
@@ -141,6 +147,7 @@ class SylConfigurator {
     locale: {},
     disable: false,
     disableShortcut: false,
+    eventHandler: {},
   };
 
   // prosemirror-plugin
@@ -240,25 +247,28 @@ class SylConfigurator {
     const $controllerMetas = this.sylPluginInstances.map(p => p && p.$controller!).filter(p => p);
     const textShortCutPlugin = ruleBuilder($schemaMetas, $controllerMetas, !this.baseConfiguration.disableShortcut);
 
-    const CustomCtrlPlugin = CreateCustomCtrlPlugin(
+    this.customCtrlPlugin = CreateCustomCtrlPlugin(
       adapter,
-      this.sylPluginInstances.reduce((result, plugin) => {
-        if (plugin) {
-          const config: ICustomCtrlConfig = {};
-          if (plugin.$controller) {
-            if (plugin.$controller.eventHandler) config.eventHandler = plugin.$controller.eventHandler;
-            if (plugin.$controller.appendTransaction) config.appendTransaction = plugin.$controller.appendTransaction;
-            Object.keys(config).length && result.push(config);
+      this.sylPluginInstances.reduce(
+        (result, plugin) => {
+          if (plugin) {
+            const config: ICustomCtrlConfig = {};
+            if (plugin.$controller) {
+              if (plugin.$controller.eventHandler) config.eventHandler = plugin.$controller.eventHandler;
+              if (plugin.$controller.appendTransaction) config.appendTransaction = plugin.$controller.appendTransaction;
+              Object.keys(config).length && result.push(config);
+            }
           }
-        }
-        return result;
-      }, [] as Array<ICustomCtrlConfig>),
+          return result;
+        },
+        [{ eventHandler: this.eventHandler }] as Array<ICustomCtrlConfig>,
+      ),
     );
 
     this.plugins.push(
       ...nativePlugins.top,
       textShortCutPlugin,
-      CustomCtrlPlugin,
+      this.customCtrlPlugin,
       // decrease the priority of the `keymap`, because `handleKeyDown` can handle more things
       ...getKeymapPlugins(keyMaps),
       DecorationPlugin(),
@@ -302,8 +312,23 @@ class SylConfigurator {
     this.setBaseConfiguration(config);
     this.setExtraConfiguration(config);
     this.setBasicCtrlConfiguration(config);
+    this.setEventHandler(config.eventHandler);
     this.moduleManage && config.module && this.moduleManage.update(config.module);
   }
+
+  private setEventHandler = (eventHandler?: IEventHandler) => {
+    if (this.eventHandler !== eventHandler || !eventHandler) this.unregisterEventHandler(this.eventHandler);
+    this.eventHandler = eventHandler || {};
+    this.registerEventHandler(this.eventHandler);
+  };
+
+  public registerEventHandler = (eventHandler: IEventHandler) => {
+    this.customCtrlPlugin && this.customCtrlPlugin.registerProps({ eventHandler });
+  };
+
+  public unregisterEventHandler = (eventHandler: IEventHandler) => {
+    this.customCtrlPlugin && this.customCtrlPlugin.unregisterProps({ eventHandler });
+  };
 
   public on(event: TSylEventType, handler: (...args: any[]) => void) {
     return this.baseConfiguration.emitter.on(event, handler);

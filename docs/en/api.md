@@ -415,6 +415,28 @@ interface IGetSelectionInfo extends Types.IRangeStatic {
 }
 ```
 
+## Configurator
+
+`configurator`是挂载在`SylApi`上的配置对象，可用于配置一些能力.
+
+### setLocale
+
+`setLocale(locale?: Types.StringMap<any>): boolean | undefined;`
+
+用于设置`locale`对象。
+
+### registerEventHandler
+
+`(event: IEventHandler) => void;`
+
+用于配置事件监听。
+
+### unregisterEventHandler
+
+`(event: IEventHandler) => void;`
+
+用于移除事件监听。
+
 ## Event
 
 ```typescript

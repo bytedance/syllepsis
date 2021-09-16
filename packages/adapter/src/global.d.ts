@@ -5,6 +5,7 @@ declare module 'prosemirror-view' {
     editable: boolean;
     docView: any;
     dispatchEvent: (event: Event) => void;
+    eventHandlers: Record<string, any>;
   }
 }
 

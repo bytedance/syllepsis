@@ -414,6 +414,28 @@ interface IGetSelectionInfo extends Types.IRangeStatic {
 }
 ```
 
+## Configurator
+
+`Configurator` is a configuration object mounted on `SylApi`, which can be used to configure some capabilities.
+
+### setLocale
+
+`setLocale(locale?: Types.StringMap<any>): boolean | undefined;`
+
+Used to set the `locale` config.
+
+### registerEventHandler
+
+`(event: IEventHandler) => void;`
+
+Used to add event handlers.
+
+### unregisterEventHandler
+
+`(event: IEventHandler) => void;`
+
+Used to remove event handlers.
+
 ## Event
 
 ```typescript

@@ -20,4 +20,17 @@ describe('CreateEditor', () => {
     });
     expect(isRegister).toBe(true);
   });
+
+  it('support eventHandler', async () => {
+    await page.evaluate(() => {
+      window.__handleClick = 0;
+      window.__click = 0;
+    });
+    await page.click('.ProseMirror');
+    const isPass = await page.evaluate(() => {
+      return window.__handleClick === 1 && window.__click === 1;
+    });
+
+    expect(isPass).toBe(true);
+  });
 });
