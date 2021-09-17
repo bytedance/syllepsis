@@ -37,6 +37,8 @@ const createEditor = (
         return false;
       },
     },
+    scrollThreshold: 2,
+    scrollMargin: 2,
   });
 
   if (selection) editor.setSelection(selection);
