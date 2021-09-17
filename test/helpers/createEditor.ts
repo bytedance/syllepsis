@@ -30,6 +30,13 @@ const createEditor = (
         },
       },
     },
+    keymap: {
+      'Shift-b': () => {
+        // @ts-ignore
+        window.__keymap++;
+        return false;
+      },
+    },
   });
 
   if (selection) editor.setSelection(selection);

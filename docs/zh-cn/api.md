@@ -414,27 +414,51 @@ interface IGetSelectionInfo extends Types.IRangeStatic {
 }
 ```
 
+### TKeymapHandler
+
+```typescript
+// https://prosemirror.net/docs/ref/#keymap.keymap，处理快捷键
+type TKeymapHandler = (
+  editor: SylApi,
+  state: EditorState,
+  dispatch: EditorView['dispatch'],
+  view: EditorView,
+) => boolean;
+```
+
 ## Configurator
 
-`Configurator` is a configuration object mounted on `SylApi`, which can be used to configure some capabilities.
+`configurator`是挂载在`SylApi`上的配置对象，可用于配置一些能力.
 
 ### setLocale
 
 `setLocale(locale?: Types.StringMap<any>): boolean | undefined;`
 
-Used to set the `locale` config.
+用于设置`locale`对象。
 
 ### registerEventHandler
 
 `(event: IEventHandler) => void;`
 
-Used to add event handlers.
+用于配置事件监听。
 
 ### unregisterEventHandler
 
 `(event: IEventHandler) => void;`
 
-Used to remove event handlers.
+用于移除事件监听。
+
+### registerKeymap
+
+`(keymap: Types.StringMap<TKeymapHandler>) => void;`
+
+用于设置快捷键监听。
+
+### unregisterKeymap
+
+`(keymap: Types.StringMap<TKeymapHandler>) => void;`
+
+用于移除快捷键监听。
 
 ## Event
 

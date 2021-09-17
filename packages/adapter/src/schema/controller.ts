@@ -99,4 +99,4 @@ class SylController<T extends Types.StringMap<any> = any> {
   }
 }
 
-export { IControllerCommand, IEventHandler, IToolbar, SylController };
+export { IControllerCommand, IEventHandler, IToolbar, SylController, TKeymapHandler };

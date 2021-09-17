@@ -6,9 +6,10 @@ import { EditorView, NodeView } from 'prosemirror-view';
 
 import { ISylApiAdapterOptions, SylApi } from './api';
 import { BasicCtrlPlugin, BSControlKey, IBasicCtrlConfig } from './basic/basic-ctrl';
-import { CreateCustomCtrlPlugin, CustomPlugin, ICustomCtrlConfig } from './basic/custom-ctrl';
+import { CtrlPlugin } from './basic/ctrl-plugin';
+import { CreateCustomCtrlPlugin, ICustomCtrlConfig } from './basic/custom-ctrl';
 import { DecorationPlugin } from './basic/decoration';
-import { getKeymapPlugins } from './basic/keymap/keymap';
+import { basicKeymapPlugin, defaultKeymapPlugin, getCustomKeymapPlugins } from './basic/keymap';
 import { createLifeCyclePlugin } from './basic/lifecycle/lifecycle-plugin';
 import { ruleBuilder } from './basic/text-shortcut/rule-builder';
 import { SHORTCUT_KEY } from './basic/text-shortcut/shortcut-plugin';
@@ -18,7 +19,7 @@ import { parseSylPluginConfig } from './libs/plugin-config-parse';
 import { ISylPluginConfig, Types } from './libs/types';
 import { LocaleStore } from './locale';
 import { IModuleType, ModuleManager } from './module';
-import { BaseCard, BaseCardView, basicSchema, IEventHandler, SchemaMeta, SylPlugin } from './schema';
+import { BaseCard, BaseCardView, basicSchema, IEventHandler, SchemaMeta, SylPlugin, TKeymapHandler } from './schema';
 import { createSchema, updateSchema } from './schema/normalize';
 
 // extra configuration support, never related to editing
@@ -36,6 +37,7 @@ interface IBaseConfig {
   disable?: boolean;
   disableShortcut?: boolean;
   eventHandler?: IEventHandler;
+  keymap?: Types.StringMap<TKeymapHandler>;
 }
 
 interface IConfiguration extends IBaseConfig, IBasicCtrlConfig, IExtraConfig {}
@@ -115,14 +117,16 @@ class SylConfigurator {
   private localStore?: LocaleStore;
   public domParser?: DOMParser;
 
-  private customCtrlPlugin?: CustomPlugin;
-
   // configs of SylPlugin
   private sylPluginConfigs: Array<ISylPluginConfig> = [];
   // instances of SylPlugin
   private sylPluginInstances: Array<SylPlugin> = [];
 
-  public eventHandler: IEventHandler = {};
+  // relate to custom ctrl
+  private customCtrlPlugin?: CtrlPlugin<{ eventHandler: IEventHandler }>;
+
+  // relate to keymap
+  private customKeyMapPlugin?: CtrlPlugin<Types.StringMap<TKeymapHandler>>;
 
   // configuration that pass to BasicCtrlPlugin
   public basicConfiguration: Required<IBasicCtrlConfig> = {
@@ -148,6 +152,7 @@ class SylConfigurator {
     disable: false,
     disableShortcut: false,
     eventHandler: {},
+    keymap: {},
   };
 
   // prosemirror-plugin
@@ -261,16 +266,19 @@ class SylConfigurator {
           }
           return result;
         },
-        [{ eventHandler: this.eventHandler }] as Array<ICustomCtrlConfig>,
+        [{ eventHandler: this.baseConfiguration.eventHandler }] as Array<ICustomCtrlConfig>,
       ),
     );
+    this.customKeyMapPlugin = getCustomKeymapPlugins(adapter, [this.baseConfiguration.keymap, ...keyMaps]);
 
     this.plugins.push(
       ...nativePlugins.top,
       textShortCutPlugin,
-      this.customCtrlPlugin,
+      this.customCtrlPlugin!,
       // decrease the priority of the `keymap`, because `handleKeyDown` can handle more things
-      ...getKeymapPlugins(keyMaps),
+      this.customKeyMapPlugin!,
+      basicKeymapPlugin,
+      defaultKeymapPlugin,
       DecorationPlugin(),
       BasicCtrlPlugin(this.basicConfiguration, !this.baseConfiguration.disable),
       ...nativePlugins.bottom,
@@ -313,13 +321,15 @@ class SylConfigurator {
     this.setExtraConfiguration(config);
     this.setBasicCtrlConfiguration(config);
     this.setEventHandler(config.eventHandler);
+    this.setKeymap(config.keymap);
     this.moduleManage && config.module && this.moduleManage.update(config.module);
   }
 
   private setEventHandler = (eventHandler?: IEventHandler) => {
-    if (this.eventHandler !== eventHandler || !eventHandler) this.unregisterEventHandler(this.eventHandler);
-    this.eventHandler = eventHandler || {};
-    this.registerEventHandler(this.eventHandler);
+    if (this.baseConfiguration.eventHandler !== eventHandler || !eventHandler)
+      this.unregisterEventHandler(this.baseConfiguration.eventHandler);
+    this.baseConfiguration.eventHandler = eventHandler || {};
+    this.registerEventHandler(this.baseConfiguration.eventHandler);
   };
 
   public registerEventHandler = (eventHandler: IEventHandler) => {
@@ -330,6 +340,19 @@ class SylConfigurator {
     this.customCtrlPlugin && this.customCtrlPlugin.unregisterProps({ eventHandler });
   };
 
+  private setKeymap = (keymap?: Types.StringMap<TKeymapHandler>) => {
+    if (this.baseConfiguration.keymap !== keymap || !keymap) this.unregisterKeymap(this.baseConfiguration.keymap);
+    this.baseConfiguration.keymap = keymap || {};
+    this.registerKeymap(this.baseConfiguration.keymap);
+  };
+
+  public registerKeymap = (keymap: Types.StringMap<TKeymapHandler>) => {
+    this.customKeyMapPlugin && this.customKeyMapPlugin.registerProps(keymap);
+  };
+
+  public unregisterKeymap = (keymap: Types.StringMap<TKeymapHandler>) => {
+    this.customKeyMapPlugin && this.customKeyMapPlugin.unregisterProps(keymap);
+  };
   public on(event: TSylEventType, handler: (...args: any[]) => void) {
     return this.baseConfiguration.emitter.on(event, handler);
   }

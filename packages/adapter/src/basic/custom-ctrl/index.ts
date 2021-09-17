@@ -2,8 +2,9 @@ import { EditorState, Plugin, PluginKey, Transaction } from 'prosemirror-state';
 import { EditorProps, EditorView } from 'prosemirror-view';
 
 import { SylApi } from '../../api';
-import { Types } from '../../libs';
+import { filterData, groupData, toArray, Types } from '../../libs';
 import { IEventHandler, SylController } from '../../schema';
+import { CtrlPlugin } from '../ctrl-plugin';
 
 type ValueOf<T> = T[keyof T];
 type TEventHandler = (adapter: SylApi, ...args: any[]) => any;
@@ -42,37 +43,10 @@ const chainEvent = (
   return handlers.some(handler => (handler as TEventHandler)(adapter, ...args));
 };
 
-class CustomPlugin extends Plugin {
-  public ctrlCenter: CustomCtrlCenter;
-
-  constructor(spec: Plugin['spec'], ctrlCenter: CustomCtrlCenter) {
-    super(spec);
-    this.props = spec.props!;
-    this.ctrlCenter = ctrlCenter;
-  }
-
-  public registerProps = (props: ICustomCtrlConfig | Array<ICustomCtrlConfig>) => {
-    this.ctrlCenter.register(props);
-  };
-
-  public unregisterProps = (props: ICustomCtrlConfig | Array<ICustomCtrlConfig>) => {
-    this.ctrlCenter.unregister(props);
-  };
-}
 interface ICustomCtrlConfig {
   eventHandler?: IEventHandler;
   appendTransaction?: SylController['appendTransaction'];
 }
-
-const groupHandler = (target: any, key: string, handler: any) => {
-  if (!Array.isArray(target[key])) target[key] = [];
-  target[key].push(handler);
-};
-
-const filterHandler = (target: any, key: string, handler: any) => {
-  if (!Array.isArray(target[key])) return;
-  target[key] = target[key].filter((fn: any) => fn !== handler);
-};
 
 class CustomCtrlCenter {
   private adapter: SylApi;
@@ -141,9 +115,7 @@ class CustomCtrlCenter {
   };
 
   public register = (registerConfigs: ICustomCtrlConfig | Array<ICustomCtrlConfig>) => {
-    let configs = registerConfigs;
-    if (!Array.isArray(configs)) configs = [configs];
-    configs.forEach(config => {
+    toArray(registerConfigs).forEach(config => {
       if (config.appendTransaction) this.appendTransactions.push(config.appendTransaction);
 
       if (config.eventHandler) {
@@ -157,11 +129,11 @@ class CustomCtrlCenter {
             (Object.keys(domEventHandler) as Array<keyof NonNullable<IEventHandler['handleDOMEvents']>>).forEach(
               (key: keyof NonNullable<IEventHandler['handleDOMEvents']>) => {
                 if (!domEventHandler[key]) return;
-                groupHandler(this.eventHandler.handleDOMEvents, key, domEventHandler[key]);
+                groupData(this.eventHandler.handleDOMEvents, key, domEventHandler[key]);
               },
             );
           } else {
-            groupHandler(this.eventHandler, event, handler);
+            groupData(this.eventHandler, event, handler);
           }
         });
       }
@@ -171,21 +143,19 @@ class CustomCtrlCenter {
   };
 
   public unregister = (registerConfigs: ICustomCtrlConfig | Array<ICustomCtrlConfig>) => {
-    let configs = registerConfigs;
-    if (!Array.isArray(configs)) configs = [configs];
-    configs.forEach(config => {
-      if (config.appendTransaction) filterHandler(this, 'appendTransactions', config.appendTransaction);
+    toArray(registerConfigs).forEach(config => {
+      if (config.appendTransaction) filterData(this, 'appendTransactions', config.appendTransaction);
       if (config.eventHandler) {
         (Object.keys(config.eventHandler) as Array<keyof IEventHandler>).forEach((key: keyof IEventHandler) => {
           if (key === 'handleDOMEvents') {
             (Object.keys(config.eventHandler!.handleDOMEvents!) as Array<keyof TDomEventHandlersMap>).forEach(
               (key: keyof TDomEventHandlersMap) => {
                 if (!this.eventHandler.handleDOMEvents?.[key]) return;
-                filterHandler(this.eventHandler.handleDOMEvents, key, config.eventHandler!.handleDOMEvents![key]);
+                filterData(this.eventHandler.handleDOMEvents, key, config.eventHandler!.handleDOMEvents![key]);
               },
             );
           } else if (this.eventHandler[key]) {
-            filterHandler(this.eventHandler, key, config.eventHandler![key]);
+            filterData(this.eventHandler, key, config.eventHandler![key]);
           }
         });
       }
@@ -208,7 +178,7 @@ class CustomCtrlCenter {
 
 const CreateCustomCtrlPlugin = (adapter: SylApi, customProps: Array<ICustomCtrlConfig>) => {
   const ctrlCenter = new CustomCtrlCenter(adapter, customProps);
-  return new CustomPlugin(ctrlCenter.spec, ctrlCenter);
+  return new CtrlPlugin<ICustomCtrlConfig | Array<ICustomCtrlConfig>>(ctrlCenter.spec, ctrlCenter);
 };
 
-export { CreateCustomCtrlPlugin, CustomPlugin, ICustomCtrlConfig };
+export { CreateCustomCtrlPlugin, ICustomCtrlConfig };

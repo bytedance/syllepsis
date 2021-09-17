@@ -148,4 +148,43 @@ describe('Controller config test', () => {
 
     expect(isPass).toBe(true);
   });
+
+  test('can replace keymap', async () => {
+    await page.evaluate(() => {
+      window.__keymap = 0;
+      editor.configurator.update({
+        keymap: {
+          'Shift-b': () => {
+            window.__keymap--;
+          },
+        },
+      });
+    });
+
+    await page.keyboard.down('Shift');
+    await page.keyboard.press('b');
+    await page.keyboard.up('Shift');
+
+    const isPass = await page.evaluate(() => window.__keymap === -1);
+
+    expect(isPass).toBe(true);
+  });
+
+  test('can register keymap', async () => {
+    await page.evaluate(() => {
+      window.keymapR = 0;
+      editor.configurator.registerKeymap({
+        'Shift-r': () => {
+          keymapR++;
+        },
+      });
+    });
+    await page.keyboard.down('Shift');
+    await page.keyboard.press('r');
+    await page.keyboard.up('Shift');
+
+    const isPass = await page.evaluate(() => window.keymapR === 1);
+
+    expect(isPass).toBe(true);
+  });
 });
