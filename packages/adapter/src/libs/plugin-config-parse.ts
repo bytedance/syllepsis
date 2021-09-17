@@ -1,17 +1,8 @@
-import { EditorState, Plugin } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
+import { Plugin } from 'prosemirror-state';
 
 import { SylApi } from '../api';
 import { SylPlugin, SylUnionPlugin } from '../schema';
 import { IConfigPluginObj, ISylPluginConfig, ISylPluginProps, Types } from './types';
-
-// add `SylApi` in the first parameter of the keymap function
-const wrapKeymap = (adapter: SylApi, keyMaps: Types.StringMap<any>) =>
-  Object.keys(keyMaps).reduce((result, key) => {
-    result[key] = (state: EditorState, dispatch: EditorView['dispatch'], view: EditorView) =>
-      keyMaps[key](adapter, state, dispatch, view);
-    return result;
-  }, {} as Types.StringMap<any>);
 
 // parse the configuration of Plugins
 const parseSylPluginConfig = (sylPluginConfigs: ISylPluginConfig[], adapter: SylApi) => {
@@ -33,7 +24,7 @@ const parseSylPluginConfig = (sylPluginConfigs: ISylPluginConfig[], adapter: Syl
       keyMap = sylPlugin.$controller.keymap;
     }
 
-    keyMap && keyMaps.push(wrapKeymap(adapter, keyMap));
+    keyMap && keyMaps.push(keyMap);
   };
 
   const registerUnionPlugin = (unionPlugin: SylUnionPlugin, props: ISylPluginProps) => {

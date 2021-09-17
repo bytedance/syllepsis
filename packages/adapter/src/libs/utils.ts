@@ -51,14 +51,33 @@ const formatToDOMAttrs = (attrs: Types.StringMap<any>) => {
   return result;
 };
 
+type ToArray<T> = T extends any[] ? T : T[];
+
+const toArray = <T>(arg: T) => {
+  if (arg instanceof Array) return arg as ToArray<T>;
+  return [arg] as ToArray<T>;
+};
+const groupData = (target: any, key: string, handler: any) => {
+  if (!Array.isArray(target[key])) target[key] = [];
+  target[key].push(handler);
+};
+
+const filterData = (target: any, key: string, handler: any) => {
+  if (!Array.isArray(target[key])) return;
+  target[key] = target[key].filter((fn: any) => fn !== handler);
+};
+
 export {
   checkIsPrintableKey,
   createDetachedElement,
+  filterData,
   formatToDOMAttrs,
   getObjectType,
+  groupData,
   isBackSpace,
   isFunction,
   isPureObject,
   judgeKey,
+  toArray,
   warpCommand,
 };

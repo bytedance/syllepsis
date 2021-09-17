@@ -33,4 +33,20 @@ describe('CreateEditor', () => {
 
     expect(isPass).toBe(true);
   });
+
+  it('support keymap', async () => {
+    await page.evaluate(() => {
+      window.__keymap = 0;
+    });
+
+    await page.keyboard.down('Shift');
+    await page.keyboard.press('b');
+    await page.keyboard.up('Shift');
+
+    const isPass = await page.evaluate(() => {
+      return window.__keymap === 1;
+    });
+
+    expect(isPass).toBe(true);
+  });
 });
