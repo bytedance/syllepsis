@@ -187,4 +187,17 @@ describe('Controller config test', () => {
 
     expect(isPass).toBe(true);
   });
+
+  test('support update other plugin props', async () => {
+    const isPass = await page.evaluate(() => {
+      editor.configurator.setCustomConfiguration({
+        scrollThreshold: 10,
+        scrollMargin: 20,
+      });
+
+      return editor.view.someProp('scrollThreshold') === 10 && editor.view.someProp('scrollMargin') === 20;
+    });
+
+    expect(isPass).toBe(true);
+  });
 });

@@ -42,8 +42,7 @@ const chainEvent = (
   if (!adapter.view.editable) return false;
   return handlers.some(handler => (handler as TEventHandler)(adapter, ...args));
 };
-
-interface ICustomCtrlConfig {
+interface ICustomCtrlConfig extends EditorProps {
   eventHandler?: IEventHandler;
   appendTransaction?: SylController['appendTransaction'];
 }
@@ -75,7 +74,7 @@ class CustomCtrlCenter {
       return handler ? handler(this.adapter.view, event) || event.defaultPrevented : false;
     });
 
-  private ensureProps = () => {
+  private ensureDOMEvents = () => {
     const { view } = this.adapter;
     view.someProp('handleDOMEvents', (currentHandlers: EditorView['eventHandlers']) => {
       for (const type in currentHandlers) {
@@ -111,32 +110,37 @@ class CustomCtrlCenter {
       result[event as keyof EditorProps] = handler;
       return result;
     }, this.props);
-    this.ensureProps();
+    this.ensureDOMEvents();
   };
 
   public register = (registerConfigs: ICustomCtrlConfig | Array<ICustomCtrlConfig>) => {
     toArray(registerConfigs).forEach(config => {
-      if (config.appendTransaction) this.appendTransactions.push(config.appendTransaction);
-
-      if (config.eventHandler) {
-        const eventHandler = config.eventHandler;
-        (Object.keys(eventHandler) as Array<keyof IEventHandler>).forEach((event: keyof IEventHandler) => {
-          const handler = eventHandler[event];
-          if (!handler) return;
-          if (event === 'handleDOMEvents') {
-            if (!this.eventHandler.handleDOMEvents) this.eventHandler.handleDOMEvents = {};
-            const domEventHandler = handler as NonNullable<IEventHandler['handleDOMEvents']>;
-            (Object.keys(domEventHandler) as Array<keyof NonNullable<IEventHandler['handleDOMEvents']>>).forEach(
-              (key: keyof NonNullable<IEventHandler['handleDOMEvents']>) => {
-                if (!domEventHandler[key]) return;
-                groupData(this.eventHandler.handleDOMEvents, key, domEventHandler[key]);
-              },
-            );
-          } else {
-            groupData(this.eventHandler, event, handler);
-          }
-        });
-      }
+      (Object.keys(config) as Array<keyof ICustomCtrlConfig>).forEach((configName: keyof ICustomCtrlConfig) => {
+        if (configName === 'appendTransaction') {
+          this.appendTransactions.push(config.appendTransaction!);
+        } else if (configName === 'eventHandler') {
+          const eventHandler = config.eventHandler;
+          (Object.keys(eventHandler!) as Array<keyof IEventHandler>).forEach((event: keyof IEventHandler) => {
+            const handler = eventHandler![event];
+            if (!handler) return;
+            if (event === 'handleDOMEvents') {
+              if (!this.eventHandler.handleDOMEvents) this.eventHandler.handleDOMEvents = {};
+              const domEventHandler = handler as NonNullable<IEventHandler['handleDOMEvents']>;
+              (Object.keys(domEventHandler) as Array<keyof NonNullable<IEventHandler['handleDOMEvents']>>).forEach(
+                (key: keyof NonNullable<IEventHandler['handleDOMEvents']>) => {
+                  if (!domEventHandler[key]) return;
+                  groupData(this.eventHandler.handleDOMEvents, key, domEventHandler[key]);
+                },
+              );
+            } else {
+              groupData(this.eventHandler, event, handler);
+            }
+          });
+        } else {
+          // @ts-ignore
+          this.props[configName] = config[configName];
+        }
+      });
     });
 
     this.handleProps();
@@ -144,21 +148,27 @@ class CustomCtrlCenter {
 
   public unregister = (registerConfigs: ICustomCtrlConfig | Array<ICustomCtrlConfig>) => {
     toArray(registerConfigs).forEach(config => {
-      if (config.appendTransaction) filterData(this, 'appendTransactions', config.appendTransaction);
-      if (config.eventHandler) {
-        (Object.keys(config.eventHandler) as Array<keyof IEventHandler>).forEach((key: keyof IEventHandler) => {
-          if (key === 'handleDOMEvents') {
-            (Object.keys(config.eventHandler!.handleDOMEvents!) as Array<keyof TDomEventHandlersMap>).forEach(
-              (key: keyof TDomEventHandlersMap) => {
-                if (!this.eventHandler.handleDOMEvents?.[key]) return;
-                filterData(this.eventHandler.handleDOMEvents, key, config.eventHandler!.handleDOMEvents![key]);
-              },
-            );
-          } else if (this.eventHandler[key]) {
-            filterData(this.eventHandler, key, config.eventHandler![key]);
-          }
-        });
-      }
+      (Object.keys(config) as Array<keyof ICustomCtrlConfig>).forEach((configName: keyof ICustomCtrlConfig) => {
+        if (configName === 'appendTransaction') {
+          filterData(this, 'appendTransactions', config.appendTransaction);
+        } else if (configName === 'eventHandler') {
+          (Object.keys(config.eventHandler!) as Array<keyof IEventHandler>).forEach((key: keyof IEventHandler) => {
+            if (key === 'handleDOMEvents') {
+              (Object.keys(config.eventHandler!.handleDOMEvents!) as Array<keyof TDomEventHandlersMap>).forEach(
+                (key: keyof TDomEventHandlersMap) => {
+                  if (!this.eventHandler.handleDOMEvents?.[key]) return;
+                  filterData(this.eventHandler.handleDOMEvents, key, config.eventHandler!.handleDOMEvents![key]);
+                },
+              );
+            } else if (this.eventHandler[key]) {
+              filterData(this.eventHandler, key, config.eventHandler![key]);
+            }
+          });
+        } else {
+          // @ts-ignore
+          this.props[configName] = undefined;
+        }
+      });
     });
 
     this.handleProps();

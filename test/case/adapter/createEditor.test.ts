@@ -49,4 +49,12 @@ describe('CreateEditor', () => {
 
     expect(isPass).toBe(true);
   });
+
+  it('support scrollThreshold and scrollMargin', async () => {
+    const isPass = await page.evaluate(() => {
+      return editor.view.someProp('scrollThreshold') === 2 && editor.view.someProp('scrollMargin') === 2;
+    });
+
+    expect(isPass).toBe(true);
+  });
 });
