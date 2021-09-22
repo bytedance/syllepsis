@@ -1,3 +1,10 @@
+## [0.0.18](https://github.com/bytedance/syllepsis/compare/v0.0.17...v0.0.18) (2021-09-22)
+
+
+### 🐞 Bug Fixers
+
+* **access-react:** toolbar button setFormat by mistake  when attrs is false and format is not activa, closes [#56](https://github.com/bytedance/syllepsis/issues/56)
+
 ## [0.0.17](https://github.com/bytedance/syllepsis/compare/v0.0.16...v0.0.17) (2021-09-17)
 
 
