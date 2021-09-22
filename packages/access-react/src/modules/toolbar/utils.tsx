@@ -52,9 +52,9 @@ const getHandler = (toolbar: IToolbar, callback: IToolbarOption['onToolClick']) 
   if (toolbar.handler) {
     toolbar.handler(editor, name, attrs);
   } else {
-    // need to check whether the content all include the format when `attrs` is false
+    // need to check whether the content all include the format when `attrs` is false and format activated
     editor.setFormat({
-      [name]: attrs ? attrs : checkFormatAcross(editor, name) ? false : true,
+      [name]: attrs ? attrs : editor.isActive(name) ? (checkFormatAcross(editor, name) ? false : true) : attrs,
     });
   }
 
