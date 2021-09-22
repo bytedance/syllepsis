@@ -127,7 +127,7 @@ class ListItem extends Block<IListItemAttrs> {
 
   public inline = false;
 
-  public defining = false;
+  public defining = true;
 
   public parseDOM = [
     {
