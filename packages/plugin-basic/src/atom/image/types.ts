@@ -21,7 +21,7 @@ type TUploadDataType = File | Blob | string;
 type TImageUploader = (
   file: TUploadDataType,
   state: { src: string },
-) => Promise<string | { src: string; width?: number; height?: number; [key: string]: any }>;
+) => Promise<string | { src?: string; width?: number; height?: number; [key: string]: any }>;
 
 interface ImageProps {
   uploader?: TImageUploader;

@@ -24,22 +24,28 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
   constructor(props: any) {
     super(props);
     const { editor, attrs, state } = props;
-    const { schema } = editor.view.state;
-    this.isInline = schema.nodes.image.isInline;
     this.updateImageUrl(props);
-    this.MAX_WIDTH = editor.view.dom.scrollWidth - 40;
+
     this.state = {
       caption: attrs.alt || '',
       active: false,
       isUploading: Boolean(state.uploading),
     };
+
+    const { schema } = editor.view.state;
+    this.isInline = schema.nodes.image.isInline;
+    this.MAX_WIDTH = editor.view.dom.scrollWidth - 40;
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps: IViewMapProps<ImageAttrs>) {
     if (!this.inputting && this.props.attrs.alt !== this.state.caption) {
       this.setState({
         caption: this.props.attrs.alt || '',
       });
+    }
+    if (this.props.attrs.src !== prevProps.attrs.src) {
+      this.props.state.uploading = false;
+      this.updateImageUrl(this.props);
     }
   }
 
@@ -93,7 +99,13 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
   };
 
   private async updateImageUrl(props: IViewMapProps<ImageAttrs>) {
-    await props.editor.command.image!.updateImageUrl(props, this.props.dispatchUpdate!);
+    const uploadPromise = props.editor.command.image!.updateImageUrl(props, this.props.dispatchUpdate!);
+    if (this.state && this.state.isUploading !== this.props.state.uploading) {
+      this.setState({
+        isUploading: Boolean(this.props.state.uploading),
+      });
+    }
+    await uploadPromise;
     this.setState({
       isUploading: false,
     });

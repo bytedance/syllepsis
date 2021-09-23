@@ -78,7 +78,8 @@ const uploadImg = async (editor: SylApi, src: string, fileName: string, config: 
     const uploadRes = await uploader(res, {
       src,
     });
-    return typeof uploadRes === 'string' ? { src: uploadRes || src } : uploadRes;
+    if (typeof uploadRes === 'string') return { src: uploadRes || src };
+    return { src, ...uploadRes };
   } catch (err) {
     if (deleteFailedUpload) {
       const nodeInfos = editor.getExistNodes(PLUGIN_NAME);
@@ -127,8 +128,9 @@ const insertImageWithFiles = async (editor: SylApi, files: File[], config: Parti
 
           image.onload = async () => {
             if (config.uploadBeforeInsert) {
-              attrs = await uploadImg(editor, url, f.name, config);
-              if (!attrs) resolve({});
+              const uploadRes = await uploadImg(editor, url, f.name, config);
+              if (!uploadRes) resolve({});
+              else attrs = { ...attrs, ...uploadRes };
             }
             resolve({ attrs, image });
           };
@@ -166,9 +168,12 @@ const updateImageUrl = async (editor: SylApi, props: IUpdateImageProps, config: 
       if (!attrs) return;
       imageAttrs = await constructAttrs(props.attrs, attrs);
     }
-
-    if (!isMatchObject(imageAttrs, props.attrs)) editor.updateCardAttrs(props.getPos(), imageAttrs);
-  } catch (err) {
+    const $pos = editor.view.state.doc.resolve(props.getPos());
+    const curNode = $pos.nodeAfter;
+    // confirm the image node exist
+    if (!curNode || curNode.type.name !== PLUGIN_NAME || curNode.attrs.src !== src) return;
+    if (!isMatchObject(imageAttrs, props.attrs)) editor.updateCardAttrs($pos.pos, imageAttrs);
+  } catch {
     state.uploading = false;
   }
 };
