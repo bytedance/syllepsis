@@ -123,17 +123,12 @@ const RichEditor = () => {
       uploader: f => {
         const width = 600 * Math.random();
         return new Promise(resolve => {
-          if (typeof f === 'string') {
-            resolve('');
-            return;
-          }
           setTimeout(() => {
             resolve({
-              src: typeof f === 'string' ? f : URL.createObjectURL(f),
               width,
             });
-            console.log('resolve');
-          }, 3000);
+            console.log('resolve', f);
+          }, 1000);
         });
       },
       uploadMaxWidth: 500,
