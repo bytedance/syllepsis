@@ -115,8 +115,6 @@ function LinkTooltip(props: ILinkTooltip) {
   );
 }
 
-let LinkModalInstance: LinkModal;
-
 class LinkSchema extends Link {
   public ViewMap = {
     template: LinkComponent,
@@ -258,21 +256,22 @@ class LinkModal extends React.PureComponent<ILinkModalProps, ILinkModalState> {
 class LinkController extends BaseLinkController {
   public modal: LinkModal | null = null;
   public modalContainer: HTMLElement;
+
   public eventHandler = {
-    handleClickOn(
+    handleClickOn: (
       editor: SylApi,
       view: EditorView,
       pos: number,
       node: ProsemirrorNode,
       nodePos: number,
       event: MouseEvent,
-    ) {
+    ) => {
       if (!editor.editable) return false;
-      if (node.type.name === PLUGIN_NAME) {
+      if (node.type.name === PLUGIN_NAME && this.modal) {
         // debugger;
         event.preventDefault();
         const { href, text } = node.attrs;
-        LinkModalInstance.setState({
+        this.modal.setState({
           text,
           href,
           pos,
@@ -315,7 +314,6 @@ class LinkController extends BaseLinkController {
         ref={el => {
           if (el) {
             this.modal = el;
-            LinkModalInstance = el;
           }
         }}
         validateHref={this.validateHref}
