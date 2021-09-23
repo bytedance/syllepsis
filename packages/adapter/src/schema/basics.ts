@@ -29,7 +29,7 @@ class Paragraph extends Block<IParagraphAttrs> {
 
   public attrs = {
     align: {
-      default: 'left',
+      default: '',
     },
     class: {
       default: '',

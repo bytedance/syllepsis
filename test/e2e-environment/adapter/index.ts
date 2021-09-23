@@ -24,7 +24,7 @@ const editor = createEditor(
     HrPlugin,
     new ParagraphPlugin({
       addMatchTags: ['section'],
-      allowedAligns: ['left', 'center', 'right', 'justify'],
+      allowedAligns: [{ value: 'left', default: true }, 'center', 'right', 'justify'],
       allowedClass: ['syl'],
       allowedLineHeights: false,
       allowedLineIndents: [],

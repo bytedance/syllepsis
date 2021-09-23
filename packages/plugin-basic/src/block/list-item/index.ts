@@ -109,7 +109,7 @@ class ListItem extends Block<IListItemAttrs> {
 
   public attrs = {
     align: {
-      default: 'left',
+      default: '',
     },
     spaceBefore: {
       default: '',
