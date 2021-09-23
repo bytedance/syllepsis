@@ -333,4 +333,21 @@ describe('list - Backspace', () => {
     });
     expect(html).toEqual('<ol start="1"><li>123</li><li>123</li></ol>');
   });
+
+  test('treat as defining node, will not replace parent node', async () => {
+    const html = await page.evaluate(() => {
+      editor.setHTML(`<ul><li>1</li><li></li></ul>`);
+      editor.setSelection({ index: 5 });
+      editor.pasteContent(`<meta charset='utf-8'><li data-pm-slice="1 1 [&quot;bullet_list&quot;,{}]">c</li>`);
+      return editor.getHTML();
+    });
+    expect(html).toEqual('<ul><li>1</li><li>c</li></ul>');
+    const html1 = await page.evaluate(() => {
+      editor.setHTML(`<ul><li>1</li><li>2</li></ul>`);
+      editor.setSelection({ index: 5 });
+      editor.pasteContent(`<meta charset='utf-8'><li data-pm-slice="1 1 [&quot;bullet_list&quot;,{}]">c</li>`);
+      return editor.getHTML();
+    });
+    expect(html1).toEqual('<ul><li>1</li><li>c2</li></ul>');
+  });
 });
