@@ -97,7 +97,7 @@ const readTypesetParseResult = (res: Types.StringMap<number | string>) => {
   const result: ITypesetAttrs = {
     lineHeight: getValue(res.lineHeight),
     lineIndent: getValue(res.lineIndent),
-    align: res.align as any
+    align: res.align as any,
   };
   result.spaceBefore = getValue(res.top);
   result.spaceAfter = getValue(res.bottom);
@@ -113,9 +113,9 @@ const parseTypesetStyle = (
     res: Types.StringMap<number | string>,
     name: string,
     value: string,
-    fontSize: number
+    fontSize: number,
   ) => any = readTypesetStyle,
-  fontSize = FONT_SIZE
+  fontSize = FONT_SIZE,
 ) => {
   const res: Types.StringMap<number | string> = {};
   const styleExecReg = /\s*([\w-]+)\s*:\s*([^;]+)/g;
@@ -143,7 +143,7 @@ const getMarginStyle = (
   spaceBefore: string | number = '',
   spaceAfter: string | number = '',
   spaceBoth: string | number = '',
-  dAttrs: Types.StringMap<any>
+  dAttrs: Types.StringMap<any>,
 ) => {
   const hasBefore = checkIfRender('spaceBefore', spaceBefore, dAttrs);
   const hasAfter = checkIfRender('spaceAfter', spaceAfter, dAttrs);
@@ -163,7 +163,7 @@ const getTypesetDOMStyle = (attrs: ITypesetAttrs & Types.StringMap<any>, dAttrs:
   let style = '';
   const { align, spaceAfter, spaceBefore, spaceBoth, lineHeight, lineIndent } = attrs;
 
-  if (align !== (dAttrs.align && dAttrs.align.default)) style += `text-align: ${align};`;
+  if (align && align !== (dAttrs.align && dAttrs.align.default)) style += `text-align: ${align};`;
   if (lineHeight && lineHeight !== (dAttrs.lineHeight && dAttrs.lineHeight.default)) {
     style += `line-height: ${lineHeight};`;
   }

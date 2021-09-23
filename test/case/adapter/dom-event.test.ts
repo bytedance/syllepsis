@@ -68,7 +68,7 @@ describe('Test DOM Event', () => {
     const res = await page.evaluate(() => {
       return {
         selection: editor.getSelection(),
-        html: editor.getHTML()
+        html: editor.getHTML(),
       };
     });
     expect(res.selection).toMatchObject({ index: 1, length: 0 });
@@ -94,7 +94,7 @@ describe('Test DOM Event', () => {
     const { selection, html } = await page.evaluate(() => {
       return {
         selection: editor.view.state.selection.node.type.name,
-        html: editor.getHTML()
+        html: editor.getHTML(),
       };
     });
     expect(selection).toEqual('card');
@@ -150,7 +150,7 @@ describe('Test DOM Event', () => {
     const res = await page.evaluate(() => {
       return {
         selection: editor.getSelection(),
-        html: editor.getHTML()
+        html: editor.getHTML(),
       };
     });
     expect(res.selection).toMatchObject({ index: 9, length: 0 });
@@ -166,7 +166,7 @@ describe('Test DOM Event', () => {
     const { html, selection } = await page.evaluate(() => {
       return {
         selection: editor.getSelection(),
-        html: editor.getHTML()
+        html: editor.getHTML(),
       };
     });
     expect(selection).toMatchObject({ index: 1, length: 0 });
@@ -182,7 +182,7 @@ describe('Test DOM Event', () => {
     const { html, selection } = await page.evaluate(() => {
       return {
         selection: editor.getSelection(),
-        html: editor.getHTML()
+        html: editor.getHTML(),
       };
     });
     expect(selection).toMatchObject({ index: 1, length: 0 });
@@ -195,11 +195,11 @@ describe('Test DOM Event', () => {
         index: 0,
         length: 1,
         attrs: {
-          nodeName: 'shadow'
+          nodeName: 'shadow',
         },
         spec: {
-          key: 'shadow'
-        }
+          key: 'shadow',
+        },
       });
       editor.setSelection({ index: 0, length: 10 });
     });
@@ -255,7 +255,7 @@ describe('Test DOM Event', () => {
     const res = await page.evaluate(() => {
       return {
         html: editor.getHTML(),
-        format: editor.getFormat()
+        format: editor.getFormat(),
       };
     });
     expect(res.html).toEqual(`<h1>1</h1>`);
@@ -271,11 +271,11 @@ describe('Test DOM Event', () => {
     const res = await page.evaluate(() => {
       return {
         html: editor.getHTML(),
-        align: editor.view.state.selection.$from.parent.attrs.align
+        align: editor.view.state.selection.$from.parent.attrs.align,
       };
     });
     expect(res.html).toEqual(``);
-    expect(res.align).toEqual('left');
+    expect(res.align).toEqual('');
   });
 
   test('Enter - split paragraph keep format', async () => {
@@ -288,7 +288,7 @@ describe('Test DOM Event', () => {
       return {
         html: editor.getHTML(),
         italic: editor.getFormat().italic,
-        align: editor.view.state.selection.$from.parent.attrs.align
+        align: editor.view.state.selection.$from.parent.attrs.align,
       };
     });
     expect(res.html).toEqual(`<p style="text-align: center;">12<em>3</em></p>`);
@@ -439,7 +439,7 @@ describe('Test DOM Event', () => {
     const { html, selection } = await page.evaluate(() => {
       return {
         selection: editor.getSelection(),
-        html: editor.getHTML()
+        html: editor.getHTML(),
       };
     });
     expect(selection).toMatchObject({ index: 2, length: 0 });
@@ -455,7 +455,7 @@ describe('Test DOM Event', () => {
     const { html, selection } = await page.evaluate(() => {
       return {
         selection: editor.getSelection(),
-        html: editor.getHTML()
+        html: editor.getHTML(),
       };
     });
     expect(selection).toMatchObject({ index: 2, length: 0 });
