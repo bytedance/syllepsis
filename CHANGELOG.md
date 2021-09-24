@@ -1,3 +1,17 @@
+## [0.0.19](https://github.com/bytedance/syllepsis/compare/v0.0.18...v0.0.19) (2021-09-23)
+
+
+### 🐞 Bug Fixers
+
+* **access-react:** repalce link get error when there are multiple editor instances, closes [#65](https://github.com/bytedance/syllepsis/issues/65)
+* **ImagePlugin:** replace image hasn't trigger `uploader`, closes [#60](https://github.com/bytedance/syllepsis/issues/60)
+* **plugin-baisc:** paste list at head of `list_item` will replace parent node by mistake, closes [#59](https://github.com/bytedance/syllepsis/issues/59)
+
+
+### 🔨 Refactor
+
+* remove default 'left' align of `paragraph` and `list_item` node, closes [#63](https://github.com/bytedance/syllepsis/issues/63)
+
 ## [0.0.18](https://github.com/bytedance/syllepsis/compare/v0.0.17...v0.0.18) (2021-09-22)
 
 
