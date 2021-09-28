@@ -228,18 +228,17 @@ class ToolbarInlineLoader extends BaseModule<IToolbarInlineOption> {
       const topPos = Math.min(headTop, anchorTop); // the top position of the selection area
       const bottomPos = Math.max(headBottom, anchorBottom); // the bottom position of the selection area
 
-      const { scrollHeight, scrollWidth, offsetLeft } = this.dom;
-      const domOffsetLeft = scrollWidth / 2;
+      const { offsetHeight, offsetWidth, offsetLeft } = this.dom;
+      const domOffsetLeft = offsetWidth / 2;
       const { top: editorTop, left: editorLeft, right: editorRight } = this.adapter.root.getBoundingClientRect();
 
-      const maxTop = window.innerHeight - scrollHeight - thresholdBottom;
+      const maxTop = window.innerHeight - offsetHeight - thresholdBottom;
       const minLeft = thresholdLeft;
-      const maxLeft = editorRight - editorLeft - scrollWidth - thresholdRight; // The largest left, related to `thresholdRight`
+      const maxLeft = editorRight - editorLeft - offsetWidth - thresholdRight; // The largest left, related to `thresholdRight`
       const defaultLeft = headLeft - domOffsetLeft - editorLeft; // align the left of the head position in the center
 
-      let computedTop = topPos - scrollHeight - 8;
+      let computedTop = topPos - offsetHeight - 8;
       this.preferDir = 'up';
-
       // less than the `thresholdTop`, when selected across rows and not displayed, it will be judged according to the position of the head and anchor and displayed at the bottom
       if (
         computedTop < thresholdTop ||
@@ -251,7 +250,7 @@ class ToolbarInlineLoader extends BaseModule<IToolbarInlineOption> {
 
       // exceed the `maxTop`, displayed on the top
       if (computedTop > maxTop) {
-        computedTop = topPos - scrollHeight - 8;
+        computedTop = topPos - offsetHeight - 8;
         this.preferDir = 'up';
       }
 

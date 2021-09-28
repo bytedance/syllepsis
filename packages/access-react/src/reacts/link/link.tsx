@@ -4,7 +4,7 @@ import { SylApi } from '@syllepsis/adapter';
 import { ILinkProps, Link, LinkController as BaseLinkController } from '@syllepsis/plugin-basic';
 import { Node as ProsemirrorNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import React, { MouseEventHandler } from 'react';
+import React, { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 
 import { InlineCard } from '../../card';
@@ -68,43 +68,65 @@ class LinkComponent extends React.PureComponent<ILinkComponentProps, ILinkCompon
   public render() {
     const { showTooltip } = this.state;
 
-    return [
-      <a
-        key={`link-${this.props.attrs.text}`}
-        href={this.props.attrs.href}
-        target="_blank"
-        rel="nofollow"
-        className="syl-link"
-        onMouseEnter={this.showTooltipOnHover}
-        onMouseLeave={this.hideTooltipWhenLeaveAsync}
-        onClick={this.preventDefaultEvent}
-      >
-        {this.props.attrs.text}
-      </a>,
-      showTooltip &&
-        ReactDOM.createPortal(
-          <LinkTooltip
-            key={`linktooltip-${this.props.attrs.text}`}
-            hideTooltipWhenLeaveAsync={this.hideTooltipWhenLeaveAsync}
-            cancelHideTooltip={this.cancelHideTooltip}
-            {...this.props}
-          />,
-          this.props.editor.root,
-        ),
-    ];
+    return (
+      <>
+        <a
+          key={`link-${this.props.attrs.text}`}
+          href={this.props.attrs.href}
+          target="_blank"
+          rel="nofollow"
+          className="syl-link"
+          onMouseEnter={this.showTooltipOnHover}
+          onMouseLeave={this.hideTooltipWhenLeaveAsync}
+          onClick={this.preventDefaultEvent}
+        >
+          {this.props.attrs.text}
+        </a>
+        {showTooltip &&
+          ReactDOM.createPortal(
+            <LinkTooltip
+              key={`linktooltip-${this.props.attrs.text}`}
+              hideTooltipWhenLeaveAsync={this.hideTooltipWhenLeaveAsync}
+              cancelHideTooltip={this.cancelHideTooltip}
+              {...this.props}
+            />,
+            this.props.editor.root,
+          )}
+      </>
+    );
   }
 }
 
-function LinkTooltip(props: ILinkTooltip) {
-  const position = props.getBoundingClientRect();
+const LinkTooltip = (props: ILinkTooltip) => {
+  const [visibility, setVisibility] = useState<'hidden' | 'visible'>('hidden');
+  const tipRef = useRef<HTMLSpanElement | null>(null);
+  const [position, setPosition] = useState({});
+
+  useEffect(() => {
+    // ensure tooltip in visible area
+    if (!tipRef.current) return;
+    const rect = props.getBoundingClientRect();
+    const $edit = props.editor.view.dom as HTMLElement;
+    const editRect = props.editor.view.dom.getBoundingClientRect();
+    const width = tipRef.current.offsetWidth;
+    const computedPos = { left: rect.left, top: rect.top - rect.height - 2 };
+
+    if (rect.left + width > editRect.right) computedPos.left = editRect.width - width - 2;
+    if (computedPos.top + (editRect.top - $edit.offsetTop) < 0) computedPos.top = rect.bottom + 2;
+
+    setPosition(computedPos);
+    setVisibility('visible');
+  }, [tipRef]);
+
   return (
     <span
       contentEditable={false}
       className="syl-link-tooltip-wrapper syl-link-tooltip"
       style={{
-        top: position.top - 22 + 'px',
-        left: position.left - 5 + 'px',
+        visibility,
+        ...position,
       }}
+      ref={tipRef}
       onMouseEnter={props.cancelHideTooltip}
       onMouseLeave={props.hideTooltipWhenLeaveAsync}
     >
@@ -113,7 +135,7 @@ function LinkTooltip(props: ILinkTooltip) {
       </a>
     </span>
   );
-}
+};
 
 class LinkSchema extends Link {
   public ViewMap = {
