@@ -21,7 +21,7 @@ interface ISelectedArea {
   column: number;
 }
 
-const DEFAULT_TIP = '选择表格行列数';
+const DEFAULT_TIP = 'rows & columns'; // '选择表格行列数'
 const DEFAULT_CONFIG: Required<IMenuConfig> = {
   row: 7,
   column: 7,

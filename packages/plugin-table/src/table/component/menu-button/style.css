@@ -1,7 +1,7 @@
-.table-menu-button-before{
+.table-menu-button-before {
   position: relative;
 }
-.table-menu-button-before::before{
+.table-menu-button-before::before {
   content: '';
   display: block;
   position: absolute;
@@ -21,7 +21,6 @@
 .syl-table-menu-wrapper .syl-table-menu-tip-wrapper {
   font-size: 12px;
   line-height: 20px;
-  color: #666666;
   margin-bottom: 8px;
 }
 
