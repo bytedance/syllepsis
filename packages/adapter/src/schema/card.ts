@@ -130,17 +130,17 @@ class BaseCardView<Structure extends Types.StringMap<any> = any> {
 
   public getNode = () => this.adapter.view.state.tr.doc.nodeAt(this.getPos());
 
+  // cardDOM position relative to editor.root
   public getBoundingClientRect(): Types.BoundingStatic {
-    const pos = this.adapter.view.coordsAtPos(this.getPos());
-    if (!this.root) this.root = this.adapter.root;
-    const root = this.root;
-    const rootRect = root.getBoundingClientRect();
+    const domRect = this.dom.getBoundingClientRect();
+    const rootRect = this.adapter.root.getBoundingClientRect();
 
     return {
-      top: pos.top - rootRect.top,
-      left: pos.left - rootRect.left,
-      bottom: rootRect.bottom - pos.bottom,
-      right: rootRect.right - pos.right,
+      ...JSON.parse(JSON.stringify(domRect)),
+      top: domRect.top - rootRect.top,
+      left: domRect.left - rootRect.left,
+      bottom: domRect.bottom - rootRect.top,
+      right: domRect.right - rootRect.left,
     };
   }
 
