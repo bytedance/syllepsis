@@ -169,11 +169,11 @@ class TableButton {
 
   private onAreaClick = (e: Event) => {
     this.onSelected(this.selectedArea);
-    this.onMouseLeave();
+    this.closeMenu();
     this.menuConfig.trigger === 'click' && e.stopPropagation();
   };
 
-  private onMouseLeave = debounce(() => {
+  private closeMenu = debounce(() => {
     this.hideMenu();
     this.selectedArea = { row: 0, column: 0 };
   }, 100);
@@ -181,7 +181,7 @@ class TableButton {
   private onButtonMouseLeave = (e: MouseEvent) => {
     const related = e.relatedTarget as Node;
     if (!this.$wrapper.contains(related)) {
-      this.onMouseLeave();
+      this.closeMenu();
     }
   };
 
@@ -212,7 +212,6 @@ class TableButton {
     this.$button.addEventListener('mouseleave', this.onButtonMouseLeave);
     this.$cellList.addEventListener('click', this.onAreaClick);
     this.$cellList.addEventListener('mousemove', this.onMouseMove);
-    this.$wrapper.addEventListener('mouseleave', this.onMouseLeave);
     this.editor.on(EventChannel.LocalEvent.LOCALE_CHANGE, this.setTip);
   }
 
@@ -225,7 +224,6 @@ class TableButton {
       this.$cellList.removeEventListener('click', this.onAreaClick);
       this.$cellList.removeEventListener('mousemove', this.onMouseMove);
     }
-    if (this.$wrapper) this.$wrapper.removeEventListener('mouseleave', this.onMouseLeave);
     this.editor.off(EventChannel.LocalEvent.LOCALE_CHANGE, this.setTip);
   }
 }
