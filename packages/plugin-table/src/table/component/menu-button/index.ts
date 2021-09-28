@@ -97,11 +97,22 @@ class TableButton {
       // vertical button
       if (this.isInList) {
         const top = this.$button.offsetHeight;
-        style += `transform: translate(-105%, -${top}px)`;
+        style += `transform: translate(-105%, -${top}px);`;
+      } else {
+        const $toolbar = this.$button.parentElement;
+        if ($toolbar) {
+          const buttonRect = this.$button.getBoundingClientRect();
+          const toolbarRect = $toolbar.getBoundingClientRect();
+          const width = this.$wrapper.offsetWidth;
+          if (buttonRect.left + this.$wrapper.offsetWidth > toolbarRect.right) {
+            style += `left: -${width - (toolbarRect.right - buttonRect.left)}px;`;
+          }
+        }
       }
+
       this.$wrapper.setAttribute('style', style);
     } else {
-      this.$wrapper.setAttribute('style', 'display: none;');
+      this.$wrapper.setAttribute('style', 'position: absolute; visibility: hidden; left: -99999px;');
     }
   }
 
@@ -128,7 +139,7 @@ class TableButton {
 
     const $tipWrapper = document.createElement('div');
     $tipWrapper.classList.add('syl-table-menu-tip-wrapper');
-    this.$wrapper.setAttribute('style', 'display: none;');
+    this.$wrapper.setAttribute('style', 'position: absolute;visibility: hidden;');
     this.$tip.classList.add('syl-table-menu-tip');
     this.$size.classList.add('syl-table-menu-size-tip');
     this.setTip();
