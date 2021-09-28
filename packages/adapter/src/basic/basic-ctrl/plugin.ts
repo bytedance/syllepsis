@@ -45,7 +45,7 @@ const BasicCtrlPlugin = (config: IBasicCtrlConfig, _editable = true) => {
           const { state, dispatch } = view;
           const { $from } = state.selection;
           if (
-            $from.depth &&
+            $from.depth === 1 &&
             state.selection instanceof TextSelection &&
             !$from.parent.content.size &&
             isOriginAttrs($from.parent)

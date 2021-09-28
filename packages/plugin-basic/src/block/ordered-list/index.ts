@@ -19,8 +19,8 @@ class OrderedList extends Block<IOrderedListAttrs> {
 
   public attrs = {
     start: {
-      default: 1
-    }
+      default: 1,
+    },
   };
 
   public textMatcher = [
@@ -28,10 +28,10 @@ class OrderedList extends Block<IOrderedListAttrs> {
       matcher: /^(\d+)\.\s$/,
       handler(match: RegExpExecArray) {
         return {
-          start: match[1]
+          start: match[1],
         };
-      }
-    }
+      },
+    },
   ];
 
   public parseDOM = [
@@ -39,10 +39,10 @@ class OrderedList extends Block<IOrderedListAttrs> {
       tag: 'ol',
       getAttrs(dom: HTMLOListElement) {
         return {
-          start: dom.hasAttribute('start') ? +dom.getAttribute('start')! : 1
+          start: dom.hasAttribute('start') ? +dom.getAttribute('start')! : 1,
         };
-      }
-    }
+      },
+    },
   ];
 }
 
@@ -50,7 +50,7 @@ class OrderedListController extends SylController {
   public name = NAME;
   public toolbar = {
     className: 'ordered_list',
-    tooltip: 'ordered_list'
+    tooltip: 'ordered_list',
   };
 }
 

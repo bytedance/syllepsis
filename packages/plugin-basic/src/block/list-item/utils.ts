@@ -1,8 +1,10 @@
 import { SylApi } from '@syllepsis/adapter';
-import { Node as ProsemirrorNode, NodeType } from 'prosemirror-model';
+import { Node as ProsemirrorNode, NodeType, Slice } from 'prosemirror-model';
 import { EditorState, Transaction } from 'prosemirror-state';
 import { canJoin, liftTarget } from 'prosemirror-transform';
 import { EditorView } from 'prosemirror-view';
+
+import { LIST_ITEM_NAME } from './const';
 
 const getListItemType = (doc: ProsemirrorNode) => doc.type.schema.nodes.list_item as NodeType;
 
@@ -185,10 +187,25 @@ const filterKeymap = (fn: (state: EditorState, dispatch?: EditorView['dispatch']
   dispatch?: EditorView['dispatch'],
 ) => fn(state, dispatch);
 
+const getListItem = (slice: Slice) => {
+  let listNode: ProsemirrorNode | null = null;
+
+  slice.content.descendants(node => {
+    if (node.type.name === LIST_ITEM_NAME) {
+      listNode = node;
+      return false;
+    }
+    if (listNode) return false;
+  });
+
+  return listNode as ProsemirrorNode | null;
+};
+
 export {
   checkAndMergeList,
   checkOutMaxNestedLevel,
   filterKeymap,
+  getListItem,
   liftListItem,
   liftListItemAtHead,
   sinkListItem,
