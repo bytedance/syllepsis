@@ -350,4 +350,13 @@ describe('list - Backspace', () => {
     });
     expect(html1).toEqual('<ul><li>1</li><li>c2</li></ul>');
   });
+
+  test('can paste list from outside', async () => {
+    const html = await page.evaluate(() => {
+      editor.setHTML('');
+      editor.pasteContent(`<ul><li>1</li><li>2</li></ul>`);
+      return editor.getHTML();
+    });
+    expect(html).toEqual('<ul><li>1</li><li>2</li></ul>');
+  });
 });

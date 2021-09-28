@@ -1,5 +1,5 @@
 import { Block, getTypesetDOMStyle, parseTypesetStyle, SylApi, SylController, SylPlugin } from '@syllepsis/adapter';
-import { DOMOutputSpecArray, Node as ProseMirrorNode } from 'prosemirror-model';
+import { DOMOutputSpecArray, Fragment, Node as ProseMirrorNode, Slice } from 'prosemirror-model';
 import { EditorState, Transaction } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 
@@ -11,10 +11,12 @@ import {
   IUserAttrsConfig,
   setDOMAttrByConfig,
 } from '../../utils';
+import { LIST_ITEM_NAME } from './const';
 import {
   checkAndMergeList,
   checkOutMaxNestedLevel,
   filterKeymap,
+  getListItem,
   liftListItem,
   liftListItemAtHead,
   sinkListItem,
@@ -45,8 +47,6 @@ interface IListItemAttrs {
   spaceBoth: number | string;
   lineHeight: number | string;
 }
-
-const NAME = 'list_item';
 
 class ListItem extends Block<IListItemAttrs> {
   public formatAttrs: ReturnType<typeof constructTypesetParseDOM>['formatAttrs'] = v => v;
@@ -103,7 +103,7 @@ class ListItem extends Block<IListItemAttrs> {
     }
   }
 
-  public name = NAME;
+  public name = LIST_ITEM_NAME;
 
   public tagName = () => 'li';
 
@@ -127,7 +127,7 @@ class ListItem extends Block<IListItemAttrs> {
 
   public inline = false;
 
-  public defining = true;
+  public defining = false;
 
   public parseDOM = [
     {
@@ -160,7 +160,21 @@ class ListItem extends Block<IListItemAttrs> {
 }
 
 class ListItemController extends SylController<IListItemProps> {
-  public name = NAME;
+  public name = LIST_ITEM_NAME;
+
+  public eventHandler = {
+    transformPasted: (editor: SylApi, slice: Slice) => {
+      const { $from } = editor.view.state.selection;
+      if ($from.parent.type.name === LIST_ITEM_NAME && $from.pos === $from.start()) {
+        // hack when paste at start of list_item
+        const listNode = getListItem(slice);
+        if (!listNode) return slice;
+        slice.openStart += 1;
+        if (!slice.size) return new Slice(Fragment.from(listNode), 1, 1);
+      }
+      return slice;
+    },
+  };
 
   public command = {
     getMaxNestedLevel: () => this.props.maxNestedLevel,
@@ -184,9 +198,9 @@ class ListItemController extends SylController<IListItemProps> {
 }
 
 class ListItemPlugin extends SylPlugin<IListItemProps> {
-  public name = NAME;
+  public name = LIST_ITEM_NAME;
   public Controller = ListItemController;
   public Schema = ListItem;
 }
 
-export { NAME as LIST_ITEM_NAME, ListItem, ListItemController, ListItemPlugin };
+export { LIST_ITEM_NAME, ListItem, ListItemController, ListItemPlugin };
