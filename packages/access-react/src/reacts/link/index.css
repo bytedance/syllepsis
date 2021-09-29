@@ -16,6 +16,10 @@
   border: 1px solid #e3e5ea;
   box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.1);
   z-index: 1;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .syl-link {
