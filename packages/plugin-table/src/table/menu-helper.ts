@@ -89,18 +89,18 @@ interface ITableMenuLocale {
 }
 
 const defaultMenuLocale: ITableMenuLocale = {
-  cut: '剪切',
-  copy: '复制',
-  paste: '粘贴',
-  mergeCells: '合并单元格',
-  splitCell: '拆分单元格',
-  addColumnBefore: '左边插入列',
-  addColumnAfter: '右边插入列',
-  addRowBefore: '上边插入行',
-  addRowAfter: '下边插入行',
-  deleteRow: '删除当前行',
-  deleteColumn: '删除当前列',
-  deleteTable: '删除表格',
+  cut: 'cut', // '剪切',
+  copy: 'copy', // '复制',
+  paste: 'paste', // '粘贴',
+  mergeCells: 'merge cells', // '合并单元格',
+  splitCell: 'split cell', // '拆分单元格',
+  addColumnBefore: 'add column before', // '左边插入列',
+  addColumnAfter: 'add column after', // '右边插入列',
+  addRowBefore: 'add row before', // '上边插入行',
+  addRowAfter: 'add row after', // '下边插入行',
+  deleteRow: 'delete row', // '删除当前行',
+  deleteColumn: 'delete column', // '删除当前列',
+  deleteTable: 'delete table', // '删除表格',
 };
 
 const createMenu = (localeConfig: ITableMenuLocale): Array<TContextMenu> => {

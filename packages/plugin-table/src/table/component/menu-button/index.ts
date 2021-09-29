@@ -21,7 +21,7 @@ interface ISelectedArea {
   column: number;
 }
 
-const DEFAULT_TIP = '选择表格行列数';
+const DEFAULT_TIP = 'rows & columns'; // '选择表格行列数'
 const DEFAULT_CONFIG: Required<IMenuConfig> = {
   row: 7,
   column: 7,
@@ -97,11 +97,22 @@ class TableButton {
       // vertical button
       if (this.isInList) {
         const top = this.$button.offsetHeight;
-        style += `transform: translate(-105%, -${top}px)`;
+        style += `transform: translate(-105%, -${top}px);`;
+      } else {
+        const $toolbar = this.$button.parentElement;
+        if ($toolbar) {
+          const buttonRect = this.$button.getBoundingClientRect();
+          const toolbarRect = $toolbar.getBoundingClientRect();
+          const width = this.$wrapper.offsetWidth;
+          if (buttonRect.left + this.$wrapper.offsetWidth > toolbarRect.right) {
+            style += `left: -${width - (toolbarRect.right - buttonRect.left)}px;`;
+          }
+        }
       }
+
       this.$wrapper.setAttribute('style', style);
     } else {
-      this.$wrapper.setAttribute('style', 'display: none;');
+      this.$wrapper.setAttribute('style', 'position: absolute; visibility: hidden; left: -99999px;');
     }
   }
 
@@ -128,7 +139,7 @@ class TableButton {
 
     const $tipWrapper = document.createElement('div');
     $tipWrapper.classList.add('syl-table-menu-tip-wrapper');
-    this.$wrapper.setAttribute('style', 'display: none;');
+    this.$wrapper.setAttribute('style', 'position: absolute;visibility: hidden;');
     this.$tip.classList.add('syl-table-menu-tip');
     this.$size.classList.add('syl-table-menu-size-tip');
     this.setTip();
@@ -169,11 +180,11 @@ class TableButton {
 
   private onAreaClick = (e: Event) => {
     this.onSelected(this.selectedArea);
-    this.onMouseLeave();
+    this.closeMenu();
     this.menuConfig.trigger === 'click' && e.stopPropagation();
   };
 
-  private onMouseLeave = debounce(() => {
+  private closeMenu = debounce(() => {
     this.hideMenu();
     this.selectedArea = { row: 0, column: 0 };
   }, 100);
@@ -181,7 +192,7 @@ class TableButton {
   private onButtonMouseLeave = (e: MouseEvent) => {
     const related = e.relatedTarget as Node;
     if (!this.$wrapper.contains(related)) {
-      this.onMouseLeave();
+      this.closeMenu();
     }
   };
 
@@ -212,7 +223,6 @@ class TableButton {
     this.$button.addEventListener('mouseleave', this.onButtonMouseLeave);
     this.$cellList.addEventListener('click', this.onAreaClick);
     this.$cellList.addEventListener('mousemove', this.onMouseMove);
-    this.$wrapper.addEventListener('mouseleave', this.onMouseLeave);
     this.editor.on(EventChannel.LocalEvent.LOCALE_CHANGE, this.setTip);
   }
 
@@ -225,7 +235,6 @@ class TableButton {
       this.$cellList.removeEventListener('click', this.onAreaClick);
       this.$cellList.removeEventListener('mousemove', this.onMouseMove);
     }
-    if (this.$wrapper) this.$wrapper.removeEventListener('mouseleave', this.onMouseLeave);
     this.editor.off(EventChannel.LocalEvent.LOCALE_CHANGE, this.setTip);
   }
 }
