@@ -1,3 +1,17 @@
+## [0.0.20](https://github.com/bytedance/syllepsis/compare/v0.0.19...v0.0.20) (2021-09-29)
+
+
+### 🎉 Features
+
+* **LinkPlugin:** ensure link tooltip will display in visible area, closes [#67](https://github.com/bytedance/syllepsis/issues/67)
+
+
+### 🐞 Bug Fixers
+
+* **plugin-basic:** lost list type when paste content is from outside, closes [#68](https://github.com/bytedance/syllepsis/issues/68)
+* **TablePlugin:** ensure table menu display in visible area, closes [#72](https://github.com/bytedance/syllepsis/issues/72)
+* **TablePlugin:** menu closes at the wrong time to leave, closes [#71](https://github.com/bytedance/syllepsis/issues/71)
+
 ## [0.0.19](https://github.com/bytedance/syllepsis/compare/v0.0.18...v0.0.19) (2021-09-23)
 
 
