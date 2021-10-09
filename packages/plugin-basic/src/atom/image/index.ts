@@ -284,11 +284,12 @@ class Image extends BlockAtom<ImageAttrs> {
     super(editor, props);
     addAttrsByConfig(props.addAttributes, this);
     this.props = props;
-    if (this.props.disableAlign) {
-      const { align, ...rest } = this.attrs;
-      // @ts-ignore
-      this.attrs = rest;
-    }
+
+    const { align, alt, ...rest } = this.attrs;
+    // @ts-ignore
+    this.attrs = { ...rest };
+    if (!this.props.disableAlign) this.attrs.align = align;
+    if (!this.props.disableCaption) this.attrs.alt = alt;
   }
 
   public parseDOM = [
