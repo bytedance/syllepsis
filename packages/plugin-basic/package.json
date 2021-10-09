@@ -15,6 +15,7 @@
     "basic"
   ],
   "files": [
+    "assets",
     "dist",
     "src"
   ],
