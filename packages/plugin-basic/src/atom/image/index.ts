@@ -158,7 +158,7 @@ const updateImageUrl = async (editor: SylApi, props: IUpdateImageProps, config: 
   let imageAttrs: Partial<ImageAttrs> = {};
 
   try {
-    // upload state, only one upload request is allowed in the same instance at the same time
+    // upload state, only single upload request is allowed in the same instance at the same time
     if (state.uploading || (!isObjectURL(src) && checkDomain(src, config))) {
       imageAttrs = await correctSize(props.attrs);
     } else {
@@ -173,7 +173,7 @@ const updateImageUrl = async (editor: SylApi, props: IUpdateImageProps, config: 
     // confirm the image node exist
     if (!curNode || curNode.type.name !== PLUGIN_NAME || curNode.attrs.src !== src) return;
     if (!isMatchObject(imageAttrs, props.attrs)) editor.updateCardAttrs($pos.pos, imageAttrs);
-  } catch {
+  } finally {
     state.uploading = false;
   }
 };

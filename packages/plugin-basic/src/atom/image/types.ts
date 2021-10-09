@@ -41,6 +41,7 @@ interface ImageProps {
   deleteFailedUpload?: boolean;
   uploadMaxWidth?: number;
   renderLoading?: (props: IUpdateImageProps & { editor: SylApi }) => any;
+  renderFailed?: false | ((props: IUpdateImageProps & { editor: SylApi; reUpload: () => Promise<void> }) => any);
 }
 
 interface ImageAttrs {

@@ -23,6 +23,7 @@ const getImageSize = async (src: string): Promise<IImageSize> => {
       };
       resolve(IMAGE_SIZE[src]);
     };
+    // sometimes it fails when blocking
     img.onerror = () => {
       delete IMAGE_SIZE[src];
       resolve({ naturalWidth: 0, naturalHeight: 0, ratio: 0 });
