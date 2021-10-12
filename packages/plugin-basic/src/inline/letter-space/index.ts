@@ -26,6 +26,7 @@ class LetterSpace extends Inline<ILetterSpaceAttrs> {
   public tagName = () => 'span';
   public formatAttrs: ReturnType<typeof getFormatAttrsByValue>['formatAttrs'] = v => v;
   public defaultFontSize = 16;
+  private defaultValue = 0;
 
   constructor(editor: SylApi, props: ILetterSpaceProps) {
     super(editor, props);
@@ -35,7 +36,8 @@ class LetterSpace extends Inline<ILetterSpaceAttrs> {
   public constructParseDOM(config: ILetterSpaceProps) {
     if (!config || !config.allowedValues) return;
 
-    const { formatAttrs } = getFormatAttrsByValue(config.allowedValues, 'space');
+    const { formatAttrs, defaultValue } = getFormatAttrsByValue(config.allowedValues, 'space');
+    defaultValue !== undefined && (this.defaultValue = +defaultValue);
 
     if (config.defaultFontSize) this.defaultFontSize = +config.defaultFontSize;
     this.formatAttrs = formatAttrs;
@@ -50,20 +52,17 @@ class LetterSpace extends Inline<ILetterSpaceAttrs> {
   public parseDOM = [
     {
       style: 'letter-spacing',
-      getAttrs: (style: string) => {
-        const space = getPx(style, this.defaultFontSize);
-        if (!space) return false;
-        return this.formatAttrs({
-          space,
-        });
-      },
+      getAttrs: (style: string) =>
+        this.formatAttrs({
+          space: getPx(style, this.defaultFontSize),
+        }),
     },
   ];
 
   public toDOM = (node: Node) => {
     const { space } = node.attrs;
     const attrs: { style?: string; [IG_TAG]?: string } = {};
-    if (+space) {
+    if (+space !== this.defaultValue) {
       attrs.style = `letter-spacing: ${getFixSize(space)}px;`;
     } else {
       attrs[IG_TAG] = 'true';
