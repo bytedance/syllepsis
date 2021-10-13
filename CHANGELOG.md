@@ -1,3 +1,21 @@
+## [0.0.21](https://github.com/bytedance/syllepsis/compare/v0.0.20...v0.0.21) (2021-10-13)
+
+
+### 🎉 Features
+
+* **color:** open `color-picker` will set the active color
+* **ImagePlugin:** support `renderFailed` to render node when image fails to load, closes [#75](https://github.com/bytedance/syllepsis/issues/75)
+* **plugin-basic:** provide default style file, closes [#74](https://github.com/bytedance/syllepsis/issues/74)
+* **StrikePlugin:** support `Mod-d` to toggle strike
+
+
+### 🐞 Bug Fixers
+
+* **access-react:** `color-picker` style compatible with `rtl`
+* **ImagePlugin:** `disableCaption` did not remove `attrs.alt`, closes [#76](https://github.com/bytedance/syllepsis/issues/76)
+* **LetterSpacePlugin:** accept `0` as a avaliable value, closes [#78](https://github.com/bytedance/syllepsis/issues/78)
+* **UnderlinePlugin:** `Mod-u` does not toggle `underline`, closes [#79](https://github.com/bytedance/syllepsis/issues/79)
+
 ## [0.0.20](https://github.com/bytedance/syllepsis/compare/v0.0.19...v0.0.20) (2021-09-29)
 
 
