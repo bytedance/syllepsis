@@ -1,24 +1,19 @@
 import { Inline, SylApi, SylController, SylPlugin } from '@syllepsis/adapter';
 
-import { checkMarkDisable } from '../../utils';
+import { checkMarkDisable, keymapToggleMark } from '../../utils';
 
 const UNDERLINE_PATTERN = /underline/i;
 const NAME = 'underline';
 
-const toggleMarkUnderline = (editor: SylApi) => {
-  const format = editor.getFormat();
-  const status = !Boolean(format.underline);
-  editor.setFormat({ underline: status });
-  return true;
-};
+const toggleMarkUnderline = keymapToggleMark(NAME);
 class Underline extends Inline<any> {
   public name = NAME;
   public tagName = () => 'u';
 
   public textMatcher = [
     {
-      matcher: [/\+\+([^+]+)\+\+\s$/, /~([^~]+)~\s$/]
-    }
+      matcher: [/\+\+([^+]+)\+\+\s$/, /~([^~]+)~\s$/],
+    },
   ];
 
   public parseDOM = [
@@ -26,14 +21,9 @@ class Underline extends Inline<any> {
     { tag: 'u' },
     {
       tag: 'span',
-      getAttrs
-    }
+      getAttrs,
+    },
   ];
-
-  static keymap = {
-    'Mod-u': toggleMarkUnderline,
-    'Mod-U': toggleMarkUnderline
-  };
 }
 
 function getAttrs(dom: HTMLSpanElement): any {
@@ -48,6 +38,10 @@ function getAttrs(dom: HTMLSpanElement): any {
 class UnderlineController extends SylController {
   public name = NAME;
   public disable = (editor: SylApi) => checkMarkDisable(editor.view, NAME);
+  public keymap = {
+    'Mod-u': toggleMarkUnderline,
+    'Mod-U': toggleMarkUnderline,
+  };
 }
 
 class UnderlinePlugin extends SylPlugin {
