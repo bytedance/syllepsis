@@ -1,23 +1,18 @@
 import { Inline, SylApi, SylController, SylPlugin } from '@syllepsis/adapter';
 
-import { checkMarkDisable } from '../../utils';
+import { checkMarkDisable, keymapToggleMark } from '../../utils';
 
 const NAME = 'bold';
 
-const toggleMarkBold = (editor: SylApi) => {
-  const format = editor.getFormat();
-  const status = !Boolean(format.bold);
-  editor.setFormat({ bold: status });
-  return true;
-};
+const toggleMarkBold = keymapToggleMark(NAME);
 class Bold extends Inline<any> {
   public name = NAME;
   public tagName = () => 'strong';
 
   public textMatcher = [
     {
-      matcher: /\*\*([^*]+)\*\*\s$/
-    }
+      matcher: /\*\*([^*]+)\*\*\s$/,
+    },
   ];
 
   public parseDOM = [
@@ -27,7 +22,7 @@ class Bold extends Inline<any> {
       priority: 25,
       getAttrs(node: HTMLElement) {
         return node.style.fontWeight !== 'normal';
-      }
+      },
     },
     /**
      * if h1 use font-weight to bolden content, it will marked as bold
@@ -39,8 +34,8 @@ class Bold extends Inline<any> {
       style: 'font-weight',
       getAttrs(value: string) {
         return /^bold(er)?$/.test(value) || +value >= 700;
-      }
-    }
+      },
+    },
   ];
 }
 
@@ -51,7 +46,7 @@ class BoldController extends SylController {
 
   public keymap = {
     'Mod-b': toggleMarkBold,
-    'Mod-B': toggleMarkBold
+    'Mod-B': toggleMarkBold,
   };
 }
 
