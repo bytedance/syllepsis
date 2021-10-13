@@ -1,7 +1,7 @@
-import { LoadingOne } from '@icon-park/react';
+import { DamageMap, LoadingOne } from '@icon-park/react';
 import { EventChannel } from '@syllepsis/adapter';
 import { IViewMapProps } from '@syllepsis/editor';
-import { ImageAttrs } from '@syllepsis/plugin-basic';
+import { ImageAttrs, ImageProps } from '@syllepsis/plugin-basic';
 import cls from 'classnames';
 import debounce from 'lodash.debounce';
 import React, { ChangeEventHandler } from 'react';
@@ -14,6 +14,26 @@ enum DEFAULT_IMG_SIZE {
   height = 300,
 }
 
+interface ISylMaskImageFailedProps
+  extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+  attrs: ImageAttrs;
+  maxWidth: number;
+}
+
+const SylMaskImageFailed = ({ attrs, maxWidth, ...rest }: ISylMaskImageFailedProps) => {
+  const { width, align } = attrs;
+  const displayWidth = width || Math.min(DEFAULT_IMG_SIZE.width, maxWidth);
+  return (
+    <div className="syl-image-failed-wrapper" style={{ textAlign: align }} {...rest}>
+      <div className="syl-image-failed" style={{ width: `${displayWidth}px`, height: `${(displayWidth * 9) / 16}px` }}>
+        <span className="syl-image-icon">
+          <DamageMap size={displayWidth / 6} fill="#999" />
+        </span>
+      </div>
+    </div>
+  );
+};
+
 class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
   public imageWrapDom: any;
   public MAX_WIDTH: number;
@@ -24,12 +44,13 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
   constructor(props: any) {
     super(props);
     const { editor, attrs, state } = props;
-    this.updateImageUrl(props);
+    this.updateImageUrl();
 
     this.state = {
       caption: attrs.alt || '',
       active: false,
       isUploading: Boolean(state.uploading),
+      isFailed: false,
     };
 
     const { schema } = editor.view.state;
@@ -38,14 +59,14 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
   }
 
   componentDidUpdate(prevProps: IViewMapProps<ImageAttrs>) {
-    if (!this.inputting && this.props.attrs.alt !== this.state.caption) {
+    if (!this.inputting && this.props.attrs.alt !== undefined && this.props.attrs.alt !== this.state.caption) {
       this.setState({
         caption: this.props.attrs.alt || '',
       });
     }
     if (this.props.attrs.src !== prevProps.attrs.src) {
       this.props.state.uploading = false;
-      this.updateImageUrl(this.props);
+      this.updateImageUrl();
     }
   }
 
@@ -98,18 +119,28 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
     this.props.editor.updateCardAttrs(pos, attrs);
   };
 
-  private async updateImageUrl(props: IViewMapProps<ImageAttrs>) {
-    const uploadPromise = props.editor.command.image!.updateImageUrl(props, this.props.dispatchUpdate!);
-    if (this.state && this.state.isUploading !== this.props.state.uploading) {
+  private updateImageUrl = async () => {
+    try {
+      const uploadPromise = this.props.editor.command.image!.updateImageUrl(this.props, this.props.dispatchUpdate!);
+      if (this.state && this.state.isUploading !== this.props.state.uploading) {
+        this.setState({
+          isFailed: false,
+          isUploading: Boolean(this.props.state.uploading),
+        });
+      }
+      await uploadPromise;
       this.setState({
-        isUploading: Boolean(this.props.state.uploading),
+        isUploading: false,
+        isFailed: false,
       });
+    } catch (err) {
+      this.setState({
+        isFailed: true,
+        isUploading: false,
+      });
+      throw err;
     }
-    await uploadPromise;
-    this.setState({
-      isUploading: false,
-    });
-  }
+  };
 
   _onResizeEnd = (width: number, height: number): void =>
     this.dispatchUpdate({
@@ -122,18 +153,26 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
       caption: e.target.value,
     });
   };
-  get width() {
-    return Math.min(this.props.attrs.width || 0, this.MAX_WIDTH) || DEFAULT_IMG_SIZE.width;
-  }
 
   public renderImage = () => {
-    const { attrs, editor } = this.props;
-    const { src, height, alt, width = DEFAULT_IMG_SIZE.width } = attrs;
-    const config = editor.command.image!.getConfiguration();
     const { active, isUploading } = this.state;
+    const { attrs, editor } = this.props;
+    const { src, alt, width, height } = attrs;
+    const config = editor.command.image!.getConfiguration();
+
     return (
       <span className="syl-image-atom-wrapper" ref={ref => this.isInline && (this.imageWrapDom = ref)}>
-        <img src={src} {...(alt ? { alt } : {})} {...(width ? { width } : {})} {...(height ? { height } : {})} />
+        <img
+          src={src}
+          {...(alt ? { alt } : {})}
+          {...(width ? { width } : {})}
+          {...(height ? { height } : {})}
+          onError={() => {
+            this.setState({
+              isFailed: true,
+            });
+          }}
+        />
         {editor.editable && !config.disableResize && active ? (
           <ImageResizeBox
             height={height}
@@ -223,9 +262,19 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
     );
   };
 
+  public renderFailedImage = (config: ImageProps) => {
+    if (config.renderFailed) return config.renderFailed({ ...this.props, reUpload: this.updateImageUrl });
+    return <SylMaskImageFailed attrs={this.props.attrs} maxWidth={config.uploadMaxWidth!} />;
+  };
+
   render() {
+    const { isFailed, isUploading } = this.state;
+    if (isFailed && !isUploading) {
+      const config = this.props.editor.command.image!.getConfiguration() as ImageProps;
+      if (config.renderFailed !== false) return this.renderFailedImage(config);
+    }
     return this.isInline ? this.renderImage() : this.renderBlockImage();
   }
 }
 
-export { ImageMask };
+export { ImageMask, SylMaskImageFailed };

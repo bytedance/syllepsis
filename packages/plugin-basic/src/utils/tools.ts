@@ -1,4 +1,4 @@
-import { Types } from '@syllepsis/adapter';
+import { SylApi, Types } from '@syllepsis/adapter';
 import { Node as ProsemirrorNode } from 'prosemirror-model';
 import { NodeSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
@@ -134,6 +134,12 @@ const isMatchObject = (objStatic: any, objCompare: any) => {
   return true;
 };
 
+const keymapToggleMark = (name: string) => (editor: SylApi) => {
+  const isActive = editor.isActive(name);
+  editor.setFormat({ [name]: !isActive });
+  return true;
+};
+
 export {
   addAttrsByConfig,
   checkMarkDisable,
@@ -145,6 +151,7 @@ export {
   getMarkDisable,
   isMatchObject,
   IUserAttrsConfig,
+  keymapToggleMark,
   setAlign,
   setDOMAttrByConfig,
 };

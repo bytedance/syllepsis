@@ -42,8 +42,12 @@
 
 .syl-image-fixer img {
   max-width: 100%;
+}
+
+.syl-image-fixer img:not([height]) {
   height: auto;
 }
+
 .syl-image-caption-input {
   padding: 6px 7px;
   width: 375px;
@@ -169,6 +173,27 @@
   left: 2%;
   top: 2%;
   animation: SylRotate 2s infinite;
+}
+
+.syl-image-failed {
+  position: relative;
+  display: inline-block;
+  background: #eee;
+  border-radius: 2px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.syl-image-failed .syl-image-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0;
+}
+
+.syl-selected-card .syl-image-failed {
+  outline: 1px solid #98ccfd;
 }
 
 .ProseMirror[contenteditable='false'] .syl-image-caption input:not(:focus) {

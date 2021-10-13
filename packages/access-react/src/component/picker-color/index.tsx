@@ -118,6 +118,7 @@ class ColorPicker extends React.Component<IColorProps, IColorPickerState> {
   public open = () => {
     this.fixPos();
     this.updateColor();
+    this.changeColor(this.state.color);
     this.setState({ open: true }, this.listenClose);
   };
   public toggleVisible = () => (this.state.open ? this.hide() : this.open());

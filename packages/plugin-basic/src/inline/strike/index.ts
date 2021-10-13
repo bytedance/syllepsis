@@ -1,9 +1,11 @@
 import { Inline, SylApi, SylController, SylPlugin } from '@syllepsis/adapter';
 
-import { checkMarkDisable } from '../../utils';
+import { checkMarkDisable, keymapToggleMark } from '../../utils';
 
 const STRIKE_PATTERN = /line-through/i;
 const NAME = 'strike';
+
+const toggleStrike = keymapToggleMark(NAME);
 
 const getAttrs = (value: string) => {
   if (STRIKE_PATTERN.test(value)) {
@@ -34,6 +36,10 @@ class Strike extends Inline<any> {
 
 class StrikeController extends SylController {
   public name = NAME;
+  public keymap = {
+    'Mod-d': toggleStrike,
+    'Mod-D': toggleStrike,
+  };
   public disable = (editor: SylApi) => checkMarkDisable(editor.view, NAME);
 }
 

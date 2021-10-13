@@ -61,13 +61,15 @@ describe('Test builtin plugin props config', () => {
     expect(html).toContain('image="image"');
 
     // delete after fail
-    await page.evaluate(() => {
+    await page.evaluate(async () => {
       editor.setHTML(`<img src="delete" image="image">`);
-      editor.command.image.updateImageUrl({
-        state: {},
-        getPos: () => 0,
-        attrs: { src: 'delete', width: 100, height: 100 },
-      });
+      try {
+        await editor.command.image.updateImageUrl({
+          state: {},
+          getPos: () => 0,
+          attrs: { src: 'delete', width: 100, height: 100 },
+        });
+      } catch {}
     });
 
     await page.waitForTimeout(100);
