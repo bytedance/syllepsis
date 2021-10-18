@@ -1,3 +1,10 @@
+## [0.0.22](https://github.com/bytedance/syllepsis/compare/v0.0.21...v0.0.22) (2021-10-18)
+
+
+### 🐞 Bug Fixers
+
+* **adapter:** The result of `getHTML` contains extra `ProseMirror-trailingBreak`, closes [#81](https://github.com/bytedance/syllepsis/issues/81)
+
 ## [0.0.21](https://github.com/bytedance/syllepsis/compare/v0.0.20...v0.0.21) (2021-10-13)
 
 
