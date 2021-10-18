@@ -104,11 +104,16 @@ const removeIgnoreContent = (div: HTMLElement) => {
     });
 };
 
-// when <br> or <img class="ProseMirror-separator"> after `inlineCard` is the last node, delete it
-const removeBrAfterInlineCard = (div: HTMLElement) => {
-  Array.from(div.querySelectorAll('img.ProseMirror-separator')).forEach(
-    node => node.parentElement && node.parentElement.removeChild(node),
+// remove <img class="ProseMirror-separator"> and .ProseMirror-trailingBreak
+const handleHackNode = (div: HTMLElement) => {
+  Array.from(div.querySelectorAll('.ProseMirror-separator')).map(
+    n => n.parentElement && n.parentElement.removeChild(n),
   );
+  Array.from(div.querySelectorAll('.ProseMirror-trailingBreak')).forEach(n => n.removeAttribute('class'));
+};
+
+// when <br> after `inlineCard` is the last node, delete it
+const removeBrAfterInlineCard = (div: HTMLElement) => {
   Array.from(div.querySelectorAll('syl-inline')).forEach(a => {
     if (
       a.nextElementSibling &&
@@ -135,7 +140,8 @@ const mergeContinuesEmptyLine = (node: HTMLElement) => {
   });
   let prevTag = '';
 
-  const isEmptyParagraph = (p: Element | null) => p && p.nodeName === 'P' && /^<br>+$/.test(p.innerHTML);
+  const isEmptyParagraph = (p: Element | null) =>
+    p && p.nodeName === 'P' && (/^<br>+$/.test(p.innerHTML) || !p.innerHTML);
 
   const judgeMerge = (judgeNode: Node) => {
     let res = false;
@@ -208,6 +214,7 @@ const formatGetHTML = (root: HTMLElement, config: IFormatHTMLConfig, sylPlugins:
     .replace(/(<[^>]*)(contenteditable=[^\s|/|>]*\s?)/g, '$1');
 
   handleDOMSpec(div);
+  handleHackNode(div);
   removeBrAfterInlineCard(div);
   config && config.mergeEmpty && mergeContinuesEmptyLine(div);
   removeEmptyTagAtEndOfHtml(div);
