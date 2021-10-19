@@ -16,6 +16,7 @@ declare module '@syllepsis/adapter' {
       getVisible: () => boolean;
       enable: () => void;
       disable: () => void;
+      getEnable: () => boolean;
     };
   }
 }
@@ -136,6 +137,7 @@ class ToolbarInlineLoader extends BaseModule<IToolbarInlineOption> {
       show: () => this.tracePos(undefined, true),
       hide: this.hide,
       getVisible: () => this.visible,
+      getEnable: () => this.isEnable,
       enable: this.enable,
       disable: this.disable,
     });
