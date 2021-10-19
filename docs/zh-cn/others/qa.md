@@ -1,3 +1,7 @@
+## Q：能否异步加载`Controller`?
+
+**A：** 可以通过`asyncController`加载`Controller`，参考[例子](/zh-cn/chapters/syl-plugin?id=基本结构)
+
 ## Q：Chrome89+行首输入中文多出第一个字符？
 
 **A：** 升级`prosemirror-view`版本至`^1.17.4`，注意不要引入多个`prosemirror-view`。

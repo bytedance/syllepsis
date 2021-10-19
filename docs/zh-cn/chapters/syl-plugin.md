@@ -1,5 +1,16 @@
 # 所有配置
 
+## 基本结构
+
+```typescript
+class SylPlugin {
+  public name: string;
+  public Schema: typeof Formattable;
+  // 也可以通过 asyncController: () => Promise<typeof SylController> 异步加载 Controller, 共存会覆盖Controller
+  public Controller: typeof SylController;
+}
+```
+
 ## Schema
 
 节点类型以及渲染的定义

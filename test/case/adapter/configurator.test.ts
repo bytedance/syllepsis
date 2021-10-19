@@ -50,6 +50,11 @@ describe('configurator test', () => {
 
     expect(result).toBe(true);
   });
+
+  test('support asynchronous loading controller', async () => {
+    const result = await page.evaluate(() => editor.command.async_controller.test());
+    expect(result).toBe(true);
+  });
 });
 
 describe('Controller config test', () => {
