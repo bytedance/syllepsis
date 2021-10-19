@@ -142,7 +142,6 @@ class CustomCtrlCenter {
         }
       });
     });
-
     this.handleProps();
   };
 
@@ -186,9 +185,9 @@ class CustomCtrlCenter {
   };
 }
 
-const CreateCustomCtrlPlugin = (adapter: SylApi, customProps: Array<ICustomCtrlConfig>) => {
+const createCustomCtrlPlugin = (adapter: SylApi, customProps?: Array<ICustomCtrlConfig>) => {
   const ctrlCenter = new CustomCtrlCenter(adapter, customProps);
   return new CtrlPlugin<ICustomCtrlConfig | Array<ICustomCtrlConfig>>(ctrlCenter.spec, ctrlCenter);
 };
 
-export { CreateCustomCtrlPlugin, ICustomCtrlConfig };
+export { createCustomCtrlPlugin, ICustomCtrlConfig };

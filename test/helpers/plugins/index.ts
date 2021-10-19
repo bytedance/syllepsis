@@ -26,7 +26,6 @@ const testPlugins: any = [
   IgnoreTagPlugin,
   new UnderlinePlugin(),
   new HeaderPlugin(),
-  CardPlugin,
   {
     plugin: CardPlugin,
     controllerProps: {

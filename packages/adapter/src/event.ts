@@ -9,7 +9,8 @@ enum LocalEvent {
   ON_FOCUS = 'focus',
   EDITOR_WILL_UNMOUNT = 'editor-will-unmount',
   SWITCH_LAYER = 'switch-layer',
-  LOCALE_CHANGE = 'locale-change'
+  LOCALE_CHANGE = 'locale-change',
+  CONFIG_PLUGIN_CHANGE = 'config-plugin-change',
 }
 
 interface EventChannel {

@@ -68,6 +68,7 @@ class ToolbarLoader extends BaseModule<IToolbarOption> {
     });
 
     adapter.on(EventChannel.LocalEvent.ON_CHANGE, this.traceEditable);
+    adapter.on(EventChannel.LocalEvent.CONFIG_PLUGIN_CHANGE, this.render);
 
     this.render();
   }
@@ -95,18 +96,18 @@ class ToolbarLoader extends BaseModule<IToolbarOption> {
     this.render();
   }
 
-  public render() {
+  public render = () => {
     this.bridge.setProps({
       editor: this.adapter,
       option: this.option,
       toolbarLib: new ToolbarLib({ editor: this.adapter, option: this.option }),
     });
-  }
+  };
 
   public destructor() {
-    if (this.option.mount) {
-      this.option.mount = null;
-    }
+    if (this.option.mount) this.option.mount = null;
+    this.adapter.off(EventChannel.LocalEvent.ON_CHANGE, this.traceEditable);
+    this.adapter.off(EventChannel.LocalEvent.CONFIG_PLUGIN_CHANGE, this.render);
     this.bridge.unmount();
   }
 }

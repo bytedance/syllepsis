@@ -20,30 +20,30 @@ class CardSchema extends Card<any> {
   public name = 'card';
   public attrs = {
     id: {
-      default: ''
-    }
+      default: '',
+    },
   };
   public textMatcher = [
     {
       matcher: /{-- Card --}/,
       handler() {
         return { id: '' };
-      }
+      },
     },
     {
       matcher: /{-- CardSkip --}/,
       handler() {
         return null;
-      }
-    }
+      },
+    },
   ];
   public parseDOM = [];
   public props = {
     handleClickOn: (editor: SylApi) => false,
-    transformPastedHTML: (editor: SylApi, html: string) => html
+    transformPastedHTML: (editor: SylApi, html: string) => html,
   };
   public ViewMap = {
-    template: ({ attrs }: any) => CardView(attrs)
+    template: ({ attrs }: any) => CardView(attrs),
   };
 }
 
@@ -51,14 +51,14 @@ class CardController extends SylController<any> {
   public name = 'card';
 
   public command = {
-    test
+    test,
   };
 
   public keymap = {
     'Ctrl-i': (editor: any) => {
       editor.setHTML('keymap');
       return true;
-    }
+    },
   };
 
   public eventHandler = {
@@ -68,19 +68,19 @@ class CardController extends SylController<any> {
     },
 
     handleDOMEvents: {
-      mouseup: () => false
+      mouseup: () => false,
     },
 
-    transformPastedHTML: (editor: SylApi, html: string) => html
+    transformPastedHTML: (editor: SylApi, html: string) => html,
   };
 
-  public appendTransaction(tr: any) {
+  public transformGetHTML = (html: string) => html.replace(/transformGetHTML/g, '');
+
+  public appendTransaction = (tr: any) => {
     if (tr.doc.textContent === 'appendTransaction') {
       return tr.insertText('appendedTransaction', 0, 18);
     }
-  }
-
-  public transformGetHTML = (html: string) => html.replace(/transformGetHTML/g, '');
+  };
 }
 
 class CardPlugin extends SylPlugin<any> {

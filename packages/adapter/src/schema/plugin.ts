@@ -53,21 +53,25 @@ class SylPlugin<T = any> {
     }
   }
 
+  public registerController = (Constructor = this.Controller, props?: T) => {
+    if (!this.editor) return;
+    this.Controller = Constructor;
+    this.$controller = new Constructor(this.editor, props || this.props || {});
+    if (!this.$controller.name) this.$controller.name = this.name;
+    this.editor.on(
+      EventChannel.LocalEvent.EDITOR_WILL_UNMOUNT,
+      this.$controller.editorWillUnmount.bind(this.$controller),
+    );
+  };
+
   public init(editor: SylApi, options: ISylPluginProps) {
     this.editor = editor;
+    this.props = { ...this.props, ...options.controllerProps } as T;
 
-    const props = { ...this.props, ...options.controllerProps };
-
-    if (this.Controller) {
-      this.$controller = new this.Controller(this.editor, { ...this.props, ...options.controllerProps });
-      this.editor.on(
-        EventChannel.LocalEvent.EDITOR_WILL_UNMOUNT,
-        this.$controller.editorWillUnmount.bind(this.$controller),
-      );
-    }
+    if (this.Controller) this.registerController(this.Controller, this.props);
 
     if (this.Schema) {
-      const { view, schema, meta } = schemaMetaFactory(this.Schema, this.editor, props);
+      const { view, schema, meta } = schemaMetaFactory(this.Schema, this.editor, this.props);
       this.$schema = schema;
       this.$NodeView = view;
       if (this.$NodeView) {

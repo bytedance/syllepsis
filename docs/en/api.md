@@ -461,6 +461,12 @@ Used to add keymap handlers.
 
 Used to remove keymap handlers.
 
+### registerController
+
+`(name: string, Controller: typeof SylController, controllerProps?: Types.StringMap<any>) => void;`
+
+Used to register `Controller`。
+
 ## Event
 
 ```typescript

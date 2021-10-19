@@ -1,3 +1,4 @@
+import { SylController } from '../../../packages/adapter/dist/es';
 import {
   BoldPlugin,
   BulletListPlugin,
@@ -12,6 +13,32 @@ import { ModuleCtor } from '../../helpers/modules';
 import { AudioPlugin } from '../../helpers/plugins/block-card-audio';
 import { ImagePlugin } from '../../helpers/plugins/block-card-image';
 import { VideoPlugin } from '../../helpers/plugins/block-card-video';
+
+class TestController extends SylController {
+  name = 'test_controller';
+
+  public keymap = {
+    'Shift-o': () => {
+      // @ts-ignore
+      window.__testControllerKeymap = true;
+      return false;
+    },
+  };
+
+  public eventHandler = {
+    handleClick: () => {
+      // @ts-ignore
+      window.__testControllerEventHandler = true;
+      return false;
+    },
+  };
+
+  public command = {
+    test: () => {
+      return true;
+    },
+  };
+}
 
 const editor = createEditor(
   '<h1>Header</h1>',
@@ -118,3 +145,5 @@ const editor = createEditor(
 
 // @ts-ignore
 window.editor = editor;
+
+editor.configurator.registerController('test_controller', TestController);
