@@ -7,9 +7,9 @@ import { EditorView, NodeView } from 'prosemirror-view';
 import { ISylApiAdapterOptions, SylApi } from './api';
 import { BasicCtrlPlugin, BSControlKey, IBasicCtrlConfig } from './basic/basic-ctrl';
 import { CtrlPlugin } from './basic/ctrl-plugin';
-import { CreateCustomCtrlPlugin, ICustomCtrlConfig } from './basic/custom-ctrl';
+import { createCustomCtrlPlugin, ICustomCtrlConfig } from './basic/custom-ctrl';
 import { DecorationPlugin } from './basic/decoration';
-import { basicKeymapPlugin, defaultKeymapPlugin, getCustomKeymapPlugins } from './basic/keymap';
+import { basicKeymapPlugin, createCustomKeymapPlugins, defaultKeymapPlugin, TSylKeymap } from './basic/keymap';
 import { createLifeCyclePlugin } from './basic/lifecycle/lifecycle-plugin';
 import { ruleBuilder } from './basic/text-shortcut/rule-builder';
 import { SHORTCUT_KEY } from './basic/text-shortcut/shortcut-plugin';
@@ -19,7 +19,16 @@ import { parseSylPluginConfig } from './libs/plugin-config-parse';
 import { ISylPluginConfig, Types } from './libs/types';
 import { LocaleStore } from './locale';
 import { IModuleType, ModuleManager } from './module';
-import { BaseCard, BaseCardView, basicSchema, IEventHandler, SchemaMeta, SylPlugin, TKeymapHandler } from './schema';
+import {
+  BaseCard,
+  BaseCardView,
+  basicSchema,
+  IEventHandler,
+  SchemaMeta,
+  SylController,
+  SylPlugin,
+  TKeymapHandler,
+} from './schema';
 import { createSchema, updateSchema } from './schema/normalize';
 
 // extra configuration support, never related to editing
@@ -109,17 +118,6 @@ const getNodeViewStringMap = (sylPlugins: SylPlugin<any>[], adapter: SylApi) =>
     return nodeViewMap;
   }, {} as Types.StringMap<(node: ProsemirrorNode, view: EditorView, getPos: boolean | (() => number)) => NodeView>);
 
-const collectCommands = (adapter: SylApi, initedSylPlugins: SylPlugin<any>[]) => {
-  initedSylPlugins.forEach((sylPlugin: unknown) => {
-    if (!(sylPlugin as SylPlugin<any>).$controller) return;
-    const plugin = sylPlugin as SylPlugin<any>;
-    const pluginCommand = plugin.$controller && plugin.$controller.command;
-    if (pluginCommand) {
-      adapter.addCommand(plugin.name, pluginCommand);
-    }
-  });
-};
-
 const setConfiguration = (
   baseConfig: Types.StringMap<any>,
   configProps: Types.StringMap<any>,
@@ -137,6 +135,7 @@ class SylConfigurator {
   public mount: HTMLElement;
   public view: EditorView;
   public moduleManage?: ModuleManager;
+  private adapter?: SylApi;
   private localStore?: LocaleStore;
   public domParser?: DOMParser;
 
@@ -146,10 +145,10 @@ class SylConfigurator {
   private sylPluginInstances: Array<SylPlugin> = [];
 
   // relate to custom ctrl
-  private customCtrlPlugin?: CtrlPlugin<ICustomCtrlConfig>;
+  private customCtrlPlugin?: CtrlPlugin<ICustomCtrlConfig | ICustomCtrlConfig[]>;
 
   // relate to keymap
-  private customKeyMapPlugin?: CtrlPlugin<Types.StringMap<TKeymapHandler>>;
+  private customKeyMapPlugin?: CtrlPlugin<TSylKeymap | TSylKeymap[]>;
 
   // configuration that pass to BasicCtrlPlugin
   public basicConfiguration: Required<IBasicCtrlConfig> = {
@@ -182,9 +181,7 @@ class SylConfigurator {
     scrollMargin: 0,
   };
 
-  public keymapConfiguration: Required<IKeymapConfig> = {
-    keymap: {},
-  };
+  public keymapConfiguration: TSylKeymap = {};
 
   // prosemirror-plugin
   public plugins: Array<Plugin> = [history()];
@@ -211,6 +208,9 @@ class SylConfigurator {
   }
 
   public init(adapter: SylApi, module: Types.StringMap<IModuleType> = {}) {
+    this.adapter = adapter;
+    this.customCtrlPlugin = createCustomCtrlPlugin(adapter, [this.customConfiguration]);
+    this.customKeyMapPlugin = createCustomKeymapPlugins(adapter, [this.keymapConfiguration]);
     this.installSylPlugins(adapter);
     this.installModule(adapter, module);
     this.constructParser();
@@ -243,17 +243,10 @@ class SylConfigurator {
   };
 
   private installSylPlugins = (adapter: SylApi) => {
-    const { initedSylPlugins, keyMaps, nativePlugins } = parseSylPluginConfig(this.sylPluginConfigs, adapter);
-    collectCommands(adapter, initedSylPlugins);
-
-    this.sylPluginInstances = initedSylPlugins;
-    this.initNativePlugin(adapter, keyMaps, nativePlugins);
-
+    const { sylPlugins, nativePlugins } = parseSylPluginConfig(this.sylPluginConfigs, adapter);
+    this.initNativePlugin(adapter, sylPlugins, nativePlugins);
     this.schema = createSchema(
-      updateSchema(
-        this.schema.spec,
-        this.sylPluginInstances.map(p => p && p.$schemaMeta).filter(p => p) as SchemaMeta[],
-      ),
+      updateSchema(this.schema.spec, sylPlugins.map(p => p && p.$schemaMeta).filter(p => p) as SchemaMeta[]),
     );
 
     const newProseState = EditorState.create({
@@ -263,7 +256,7 @@ class SylConfigurator {
 
     this.view.setProps({
       state: newProseState,
-      nodeViews: getNodeViewStringMap(this.sylPluginInstances, adapter),
+      nodeViews: getNodeViewStringMap(sylPlugins, adapter),
       dispatchTransaction: dispatchTransactionFactory({
         view: this.view,
         emitter: this.baseConfiguration.emitter,
@@ -271,36 +264,24 @@ class SylConfigurator {
       }),
     });
 
+    this.sylPluginInstances = sylPlugins;
     this.extraConfiguration.autoFocus && this.view.focus();
   };
 
   private initNativePlugin(
     adapter: SylApi,
-    keyMaps: Types.StringMap<any>[],
+    sylPlugins: SylPlugin[],
     nativePlugins: { top: Plugin[]; bottom: Plugin[] },
   ) {
-    const $schemaMetas = this.sylPluginInstances.map(p => p && p.$schemaMeta!).filter(p => p);
-    const $controllerMetas = this.sylPluginInstances.map(p => p && p.$controller!).filter(p => p);
-    const textShortCutPlugin = ruleBuilder($schemaMetas, $controllerMetas, !this.baseConfiguration.disableShortcut);
-
-    this.customCtrlPlugin = CreateCustomCtrlPlugin(
-      adapter,
-      this.sylPluginInstances.reduce(
-        (result, plugin) => {
-          if (plugin) {
-            const config: ICustomCtrlConfig = {};
-            if (plugin.$controller) {
-              if (plugin.$controller.eventHandler) config.eventHandler = plugin.$controller.eventHandler;
-              if (plugin.$controller.appendTransaction) config.appendTransaction = plugin.$controller.appendTransaction;
-              Object.keys(config).length && result.push(config);
-            }
-          }
-          return result;
-        },
-        [this.customConfiguration] as Array<ICustomCtrlConfig>,
-      ),
+    const textShortCutPlugin = ruleBuilder(
+      sylPlugins.map(p => p && p.$schemaMeta!).filter(p => p),
+      !this.baseConfiguration.disableShortcut,
     );
-    this.customKeyMapPlugin = getCustomKeymapPlugins(adapter, [this.keymapConfiguration.keymap, ...keyMaps]);
+
+    this.installController(
+      adapter,
+      sylPlugins.map(s => s.$controller!).filter(s => s),
+    );
 
     this.plugins.push(
       ...nativePlugins.top,
@@ -316,6 +297,56 @@ class SylConfigurator {
       createLifeCyclePlugin(adapter),
     );
   }
+
+  private installController = (adapter: SylApi, sylControllers: SylController[]) => {
+    this.collectCommands(adapter, sylControllers);
+    this.customCtrlPlugin!.registerProps(sylControllers);
+    this.customKeyMapPlugin!.registerProps(sylControllers.filter(c => c.keymap).map(c => c.keymap!));
+  };
+
+  private collectCommands = (adapter: SylApi, sylControllers: SylController[]) => {
+    sylControllers.forEach((sylController: SylController) => {
+      sylController?.command && adapter.addCommand(sylController.name, sylController.command);
+    });
+  };
+
+  public registerController = (
+    name: string,
+    Controller: typeof SylController,
+    controllerProps?: Types.StringMap<any>,
+  ) => {
+    let plugin: SylPlugin | null = null;
+    this.sylPluginInstances.some(instance => {
+      if (instance.name === name) {
+        plugin = instance;
+        plugin.registerController(Controller, controllerProps);
+        return true;
+      }
+    });
+    if (!plugin) {
+      plugin = new SylPlugin();
+      plugin.name = name;
+      plugin.Controller = Controller;
+      plugin.init(this.adapter!, { controllerProps });
+      this.sylPluginInstances.push(plugin);
+    }
+
+    this.installController(this.adapter!, [plugin.$controller!]);
+    this.emit(EventChannel.LocalEvent.CONFIG_PLUGIN_CHANGE);
+  };
+
+  public unregisterController = (name: string) => {
+    const isChange = this.sylPluginInstances.some(plugin => {
+      if (plugin.name === name && plugin.$controller) {
+        this.customCtrlPlugin?.unregisterProps(plugin.$controller);
+        plugin.$controller.keymap && this.customKeyMapPlugin?.unregisterProps(plugin.$controller.keymap);
+        if (plugin.$controller.command) delete this.adapter?.command[name];
+        plugin.unregisterController();
+        return true;
+      }
+    });
+    isChange && this.emit(EventChannel.LocalEvent.CONFIG_PLUGIN_CHANGE);
+  };
 
   private setExtraConfiguration = (config: IConfiguration) =>
     setConfiguration(this.extraConfiguration, config, (key, val, oldVal) => {
@@ -375,13 +406,13 @@ class SylConfigurator {
     this.customCtrlPlugin?.unregisterProps({ eventHandler });
   };
 
-  private setKeymapConfiguration = (keymap?: Types.StringMap<TKeymapHandler>) => {
-    if (this.keymapConfiguration.keymap !== keymap || !keymap) this.unregisterKeymap(this.keymapConfiguration.keymap);
-    this.keymapConfiguration.keymap = keymap || {};
-    this.registerKeymap(this.keymapConfiguration.keymap);
+  private setKeymapConfiguration = (keymap?: TSylKeymap) => {
+    if (this.keymapConfiguration !== keymap || !keymap) this.unregisterKeymap(this.keymapConfiguration);
+    this.keymapConfiguration = keymap || {};
+    this.registerKeymap(this.keymapConfiguration);
   };
 
-  public registerKeymap = (keymap: Types.StringMap<TKeymapHandler>) => {
+  public registerKeymap = (keymap: TSylKeymap) => {
     this.customKeyMapPlugin && this.customKeyMapPlugin.registerProps(keymap);
   };
 

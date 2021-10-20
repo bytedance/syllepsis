@@ -12,6 +12,7 @@ import { InlineCardTextPlugin } from './inline-card-text';
 import { IsolatingPlugin } from './isolating-block';
 import { PastePlugin } from './paste-handler';
 import { SylPlugin, SylSchema } from '../../../packages/adapter/dist/es';
+import { AsyncControllerPlugin } from './async-controller';
 
 const key = new PluginKey('nativePlugin');
 
@@ -26,7 +27,6 @@ const testPlugins: any = [
   IgnoreTagPlugin,
   new UnderlinePlugin(),
   new HeaderPlugin(),
-  CardPlugin,
   {
     plugin: CardPlugin,
     controllerProps: {
@@ -53,6 +53,7 @@ const testPlugins: any = [
   nativePlugin,
   IsolatingPlugin,
   new PastePlugin(),
+  new AsyncControllerPlugin(),
 ];
 
 export { testPlugins };

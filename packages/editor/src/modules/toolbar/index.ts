@@ -84,8 +84,6 @@ interface TPluginConfig {
   active?: (editor: SylApi) => boolean;
 }
 
-const UtilsMap = {};
-
 interface IToolbarUtil {
   name: string;
   icon?: any;
@@ -110,14 +108,12 @@ class ToolbarLib {
   public contents: ToolContent[] = [];
   public editor: SylApi;
   public option: IToolbarOption;
-  private usedUtils: any;
 
   constructor(props: IToolbarLibProps) {
     const { editor, option } = props;
     this.editor = editor;
     this.option = option;
 
-    this.usedUtils = option.utils ? Object.assign({}, UtilsMap, option.utils) : Object.assign({}, UtilsMap);
     this.getTools();
   }
 
@@ -141,15 +137,13 @@ class ToolbarLib {
       } else if ('content' in toolName) {
         return this.buildMoreTools(toolName);
       }
-    } else {
+    } else if (typeof toolName === 'string') {
       if (toolName === DIVIDER) {
         return { type: TOOL_TYPE.DIVIDER };
       } else {
         const pluginConfig = this.getSylPluginConfigByName(toolName);
         if (pluginConfig && pluginConfig.toolbar) {
           return this.buildButtonTool(toolName, pluginConfig as TPluginConfig);
-        } else if (this.usedUtils[toolName]) {
-          return this.buildUtilsTool(toolName);
         }
       }
     }
@@ -197,35 +191,6 @@ class ToolbarLib {
         disable,
         active,
         icon: icons[toolName] || toolbar.icon,
-      },
-    };
-  }
-
-  public buildUtilsTool(toolName: string) {
-    let Util = this.usedUtils[toolName];
-    let props = {};
-    if (Util.props) {
-      props = Util.props;
-    }
-    if (Util.util) {
-      Util = Util.util;
-    }
-    const { name, icon, handler, disable, active, tooltip, getAttrs, type, ...rest } = new Util(this.editor, props);
-    const { tooltips = {}, icons = {}, showNames = {} } = this.option;
-    return {
-      type: type || TOOL_TYPE.BUTTON,
-      name,
-      tooltip: tooltips[toolName],
-      toolbar: {
-        className: name,
-        showName: showNames[toolName] || tooltips[toolName] || name,
-        icon: icons[toolName] || icon,
-        handler,
-        disable,
-        tooltip,
-        active,
-        getAttrs,
-        ...rest,
       },
     };
   }

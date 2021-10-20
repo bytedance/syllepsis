@@ -1,6 +1,5 @@
 import { FORMAT_TYPE, SchemaMeta, SylController } from '../../schema';
 import { blockLeafShortcut } from './block-leaf-shortcut';
-import { controllerShortcut } from './controller-shortcut';
 import { inlineLeafShortcut } from './inline-leaf-shortcut';
 import { TextShortcut, TextShortcutPlugin } from './shortcut-plugin';
 import { textblockTypeTextShortcut } from './text-block-shortcut';
@@ -9,15 +8,10 @@ import { textMarkShortcut } from './text-mark-shortcut';
  * it build textmatcher as textblockshortcut and return a
  * TextShortcutPlugin instance
  */
-const ruleBuilder = (
-  $schemaMetas: SchemaMeta[],
-  $controllerMetas: SylController[],
-  enable = true,
-): TextShortcutPlugin => {
+const ruleBuilder = ($schemaMetas: SchemaMeta[], enable = true): TextShortcutPlugin => {
   const rules: TextShortcut[] = [];
-  const $metas = [...$controllerMetas, ...$schemaMetas];
 
-  for (const $meta of $metas) {
+  for (const $meta of $schemaMetas) {
     const name = $meta.name;
     const textMatcher = ($meta instanceof SylController ? $meta.textMatcher : $meta.config.textMatcher) || [];
 
@@ -27,11 +21,6 @@ const ruleBuilder = (
       if (!Array.isArray(regexps)) regexps = [regexps];
 
       for (const regexp of regexps) {
-        // SylController textMatcher
-        if ($meta instanceof SylController) {
-          rules.push(controllerShortcut(regexp, name, textMatcherItem));
-          continue;
-        }
         // schema textMatcher
         switch ($meta.formatType) {
           case FORMAT_TYPE.BLOCK_ATOM:

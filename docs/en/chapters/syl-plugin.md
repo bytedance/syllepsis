@@ -1,5 +1,16 @@
 # All configurations
 
+## Basic Structure
+
+```typescript
+class SylPlugin {
+  public name: string;
+  public Schema: typeof Formattable;
+  // You can also load `Controller` asynchronously through `asyncController: () => Promise<typeof SylController>`, and coexistence will overwrite `Controller`
+  public Controller: typeof SylController;
+}
+```
+
 ## Schema
 
 Definition of node type and rendering
@@ -7,39 +18,39 @@ Definition of node type and rendering
 ```typescript
 // Block is Node, Inline corresponds to Mark
 // attribute reference: https://prosemirror.net/docs/ref/#model.NodeSpec
-import {Block, Inline} from'@syllepsis/adapter';
+import { Block, Inline } from '@syllepsis/adapter';
 
 // One more custom ViewMap property than Inline and Block
 // which can be implemented with different rendering libraries
 // and cannot contain editable content by default
-import {Card, InlineCard} from'@syllepsis/access-react';
+import { Card, InlineCard } from '@syllepsis/access-react';
 ```
 
 On the basis of `prosemirror`, we provide some custom `Spec` to define node performance
 
 ### Special attributes of inline elements
 
-| Configuration name | Interpretation | Example |
-| ------------ | ------------------------------------ -------------------------------------------------- -------------------------------------------- | ----- ---------------- |
-| notClear | will not be cleared by SylApi.clearFormat when it is true | notClear = true |
-| notStore | When it is true, delete the element content and then enter it will not save the element structure | notStore = true |
-| getText | Use inline cards with attrs.text to specify whether to get text when SylApi.getText() | getText = false |
-| inclusive | When false, the element structure will not be inherited when inputting behind the element | inclusive = false |
-| excludeMarks | Indicates that inline elements/cards cannot contain inline elements | excludeMarks ='bold' |
-| fixCursor | When the inline element is non-text or the presence of padding or marin causes the cursor position to be incorrect, the default is false (when it is `true`, the cursor will not be displayed in the `Chrome88` version) | fixCursor = false |
+| Configuration name | Interpretation                                                                                                                                                                                                           | Example              |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------- |
+| notClear           | will not be cleared by SylApi.clearFormat when it is true                                                                                                                                                                | notClear = true      |
+| notStore           | When it is true, delete the element content and then enter it will not save the element structure                                                                                                                        | notStore = true      |
+| getText            | Use inline cards with attrs.text to specify whether to get text when SylApi.getText()                                                                                                                                    | getText = false      |
+| inclusive          | When false, the element structure will not be inherited when inputting behind the element                                                                                                                                | inclusive = false    |
+| excludeMarks       | Indicates that inline elements/cards cannot contain inline elements                                                                                                                                                      | excludeMarks ='bold' |
+| fixCursor          | When the inline element is non-text or the presence of padding or marin causes the cursor position to be incorrect, the default is false (when it is `true`, the cursor will not be displayed in the `Chrome88` version) | fixCursor = false    |
 
 ### Block-level element special attributes
 
-| Configuration name | Interpretation | Example |
-| ------------ | ------------------------------------ ------------------ | --------------------- |
-| excludeMarks | Inline elements that cannot be included in block-level elements/cards | excludeMarks ='bold' |
-| notLastLine | Declare that the block-level element cannot be in the last line (a blank line will be automatically inserted at this time) | notLastLine = true |
+| Configuration name | Interpretation                                                                                                             | Example              |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------- | -------------------- |
+| excludeMarks       | Inline elements that cannot be included in block-level elements/cards                                                      | excludeMarks ='bold' |
+| notLastLine        | Declare that the block-level element cannot be in the last line (a blank line will be automatically inserted at this time) | notLastLine = true   |
 
 ### Special attributes of inline elements
 
-| Configuration name | Interpretation | Example |
-| -------------- | ---------------------------------- -------------------------------------------------- ----- | ---------------------- |
-| traceSelection | Used to control whether you need to track the text selection and update props.isSelected (when a large number of nodes are all selected, it will have a significant impact on performance) | traceSelection = false |
+| Configuration name | Interpretation                                                                                                                                                                             | Example                |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------- |
+| traceSelection     | Used to control whether you need to track the text selection and update props.isSelected (when a large number of nodes are all selected, it will have a significant impact on performance) | traceSelection = false |
 
 ### ViewMap
 
@@ -71,7 +82,7 @@ interface IToolbar {
   icon?: any | ((editor: SylApi, attrs: Types.StringMap<any>, extra: any) => any); // button icon
   handler?(editor: SylApi): void; // Click the button callback
   showName?: string | boolean; // The name displayed when in the drop-down list
-  getRef? (ref: HTMLElement | null): void; // Get the DOM mounted by the button
+  getRef?(ref: HTMLElement | null): void; // Get the DOM mounted by the button
 }
 
 interface IMatcherConfig<MatcherType = RegExp | RegExp[], HandlerType = TextMatcherHandler> {
@@ -145,8 +156,8 @@ class SylController<T extends Types.StringMap<any> = any> {
   public textMatcher?: Array<IMatcherConfig<RegExp | RegExp[], TextMatcherHandler>>;
   public props: Partial<T> = {};
   public command?: IControllerCommand;
-  public disable? (editor: SylApi): boolean; // judge to disable
-  public active? (editor: SylApi): boolean; // Determine whether to highlight
+  public disable?(editor: SylApi): boolean; // judge to disable
+  public active?(editor: SylApi): boolean; // Determine whether to highlight
   public eventHandler?: IEventHandler;
   public keymap?: Types.StringMap<TKeymapHandler>;
   public transformGetHTML?(html: string): string; // Process the data when getHTML

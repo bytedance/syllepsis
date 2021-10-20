@@ -119,7 +119,7 @@ class KeymapCtrl {
   }
 }
 
-const getCustomKeymapPlugins = (adapter: SylApi, customKeyMaps: Array<TSylKeymap>) => {
+const createCustomKeymapPlugins = (adapter: SylApi, customKeyMaps?: Array<TSylKeymap>) => {
   const ctrl = new KeymapCtrl(adapter, customKeyMaps);
   return new CtrlPlugin(ctrl.spec, ctrl);
 };
@@ -128,8 +128,9 @@ export {
   BASIC_KEYMAP_KEY,
   basicKeymapPlugin,
   composeKeymap,
+  createCustomKeymapPlugins,
   CUSTOM_KEYMAP_KEY,
   DEFAULT_KEYMAP_KEY,
   defaultKeymapPlugin,
-  getCustomKeymapPlugins,
+  TSylKeymap,
 };

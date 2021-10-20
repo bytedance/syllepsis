@@ -39,9 +39,17 @@ class SylPlugin<T = any> {
   public $schemaMeta: SchemaMeta<any> | null = null;
   public $NodeView: Formattable['NodeView'] | null = null;
   public Controller: ControllerType = SylController;
+  public asyncController: (() => Promise<ControllerType>) | null = null;
   public Schema: FormattableType | null = null;
   private editor: SylApi | null = null;
   private props: T | null = null;
+  private controllerUnmountEvent = () => {};
+
+  private handleAsyncController = async () => {
+    if (!this.asyncController || !this.editor) return;
+    const Controller = await this.asyncController();
+    this.editor.configurator.registerController(this.name, Controller);
+  };
 
   static getName() {
     return new this().name;
@@ -53,21 +61,31 @@ class SylPlugin<T = any> {
     }
   }
 
+  public registerController = (Constructor = this.Controller, props?: T) => {
+    if (!this.editor) return;
+    this.Controller = Constructor;
+    this.$controller = new Constructor(this.editor, props || this.props || {});
+    if (!this.$controller.name) this.$controller.name = this.name;
+    this.controllerUnmountEvent = this.$controller.editorWillUnmount.bind(this.$controller);
+    this.editor.on(EventChannel.LocalEvent.EDITOR_WILL_UNMOUNT, this.controllerUnmountEvent);
+  };
+
+  public unregisterController = () => {
+    if (!this.editor || !this.$controller) return;
+    this.editor.off(EventChannel.LocalEvent.EDITOR_WILL_UNMOUNT, this.controllerUnmountEvent);
+    this.controllerUnmountEvent = () => {};
+    this.$controller = null;
+  };
+
   public init(editor: SylApi, options: ISylPluginProps) {
     this.editor = editor;
+    this.props = { ...this.props, ...options.controllerProps } as T;
 
-    const props = { ...this.props, ...options.controllerProps };
-
-    if (this.Controller) {
-      this.$controller = new this.Controller(this.editor, { ...this.props, ...options.controllerProps });
-      this.editor.on(
-        EventChannel.LocalEvent.EDITOR_WILL_UNMOUNT,
-        this.$controller.editorWillUnmount.bind(this.$controller),
-      );
-    }
+    if (this.Controller) this.registerController(this.Controller, this.props);
+    if (this.asyncController) this.handleAsyncController();
 
     if (this.Schema) {
-      const { view, schema, meta } = schemaMetaFactory(this.Schema, this.editor, props);
+      const { view, schema, meta } = schemaMetaFactory(this.Schema, this.editor, this.props);
       this.$schema = schema;
       this.$NodeView = view;
       if (this.$NodeView) {

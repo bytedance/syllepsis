@@ -2,12 +2,11 @@ import { Plugin } from 'prosemirror-state';
 
 import { SylApi } from '../api';
 import { SylPlugin, SylUnionPlugin } from '../schema';
-import { IConfigPluginObj, ISylPluginConfig, ISylPluginProps, Types } from './types';
+import { IConfigPluginObj, ISylPluginConfig, ISylPluginProps } from './types';
 
 // parse the configuration of Plugins
 const parseSylPluginConfig = (sylPluginConfigs: ISylPluginConfig[], adapter: SylApi) => {
-  const initedSylPlugins: SylPlugin<any>[] = [];
-  const keyMaps: Types.StringMap<any>[] = [];
+  const sylPlugins: SylPlugin<any>[] = [];
   const nativePlugins: { top: Plugin[]; bottom: Plugin[] } = { top: [], bottom: [] };
 
   // the custom `Plugin.spec.prioritize` indicates whether to register first
@@ -17,14 +16,7 @@ const parseSylPluginConfig = (sylPluginConfigs: ISylPluginConfig[], adapter: Syl
 
   const registerPlugin = (sylPlugin: SylPlugin, props: ISylPluginProps) => {
     sylPlugin.init(adapter, props);
-    initedSylPlugins.push(sylPlugin);
-
-    let keyMap = {};
-    if (sylPlugin.$controller && sylPlugin.$controller.keymap) {
-      keyMap = sylPlugin.$controller.keymap;
-    }
-
-    keyMap && keyMaps.push(keyMap);
+    sylPlugins.push(sylPlugin);
   };
 
   const registerUnionPlugin = (unionPlugin: SylUnionPlugin, props: ISylPluginProps) => {
@@ -67,8 +59,7 @@ const parseSylPluginConfig = (sylPluginConfigs: ISylPluginConfig[], adapter: Syl
   sylPluginConfigs.forEach(parseConfig);
 
   return {
-    initedSylPlugins,
-    keyMaps,
+    sylPlugins,
     nativePlugins,
   };
 };

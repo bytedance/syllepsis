@@ -1,3 +1,7 @@
+## Q：Can the `Controller` be loaded asynchronously?
+
+**A：** You can load `Controller` through `asyncController`，see [example](/en/chapters/syl-plugin?id=basic-structure)
+
 ## Q: Is the first character in Chinese input at the beginning of the line in Chrome89+?
 
 **A:** Upgrade the version of `prosemirror-view` to `^1.17.4`, and be careful not to introduce multiple `prosemirror-view`.
@@ -12,7 +16,7 @@
 
 ## Q: What configuration items does the plug-in have, such as pictures, videos, audio uploads, etc.?
 
-**A:** The configuration supported by the currently provided components can be found in the [plugins](/en/plugins/README) chapter, such as [picture](/en/plugins/image), [video]( /en/plugins/video).
+**A:** The configuration supported by the currently provided components can be found in the [plugins](/en/plugins/README) chapter, such as [picture](/en/plugins/image), [video](/en/plugins/video).
 
 ## Q: How to get the data of existing nodes?
 
@@ -20,7 +24,7 @@
 
 ## Q: Why doesn't setHTML trigger'text-change'?
 
-A: The `silent` parameter of [setHTML](/en/api?id=sethtml) controls whether the event is triggered. When `silent` is `true`, it will not be triggered (default value). If you need to trigger, please change it to `false `.
+A: The `silent` parameter of [setHTML](/en/api?id=sethtml) controls whether the event is triggered. When `silent` is `true`, it will not be triggered (default value). If you need to trigger, please change it to `false`.
 
 ## Q: How to set the style of the selected card?
 

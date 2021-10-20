@@ -330,6 +330,7 @@ class ToolbarInlineLoader extends BaseModule<IToolbarInlineOption> {
     // do not trigger `mouseUp` when drop
     this.adapter.root.addEventListener('drop', this.handleMouseUp);
     this.adapter.on(EventChannel.LocalEvent.ON_BLUR, this.checkHide);
+    this.adapter.on(EventChannel.LocalEvent.CONFIG_PLUGIN_CHANGE, this.render);
   }
 
   public setProps(option: IToolbarInlineOption) {
@@ -337,21 +338,22 @@ class ToolbarInlineLoader extends BaseModule<IToolbarInlineOption> {
     this.render();
   }
 
-  public render() {
+  public render = () => {
     this.bridge.setProps({
       editor: this.adapter,
       option: this.option,
-      visible: false,
-      activeFormat: {},
+      visible: this.visible,
+      activeFormat: this.adapter.getFormat(),
       toolbarLib: new ToolbarLib({ editor: this.adapter, option: this.option }),
     });
-  }
+  };
 
   public destructor() {
     document.body.removeEventListener('mouseup', this.handleMouseUp);
     document.body.removeEventListener('click', this.storedClick);
     this.adapter.view.dom.removeEventListener('mousedown', this.handleMouseDown);
     this.adapter.off(EventChannel.LocalEvent.ON_BLUR, this.checkHide);
+    this.adapter.off(EventChannel.LocalEvent.CONFIG_PLUGIN_CHANGE, this.render);
     this.adapter.root.removeEventListener('drop', this.handleMouseUp);
     this.adapter.root.removeChild(this.dom);
     this.bridge.unmount();

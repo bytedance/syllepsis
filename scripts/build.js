@@ -5,14 +5,11 @@ const baseExternals = [
   'prosemirror-history',
   'prosemirror-keymap',
   'prosemirror-model',
-  'prosemirror-transform'
+  'prosemirror-transform',
 ];
 
-const checkIsExternal = externals => source => {
+const checkIsExternal = externals => source =>
   // 匹配 ^external
-  return !externals
-    .concat(baseExternals)
-    .every(external => !new RegExp(`^${external}(?![-|a-z|A-Z|_])`, 'g').test(source));
-};
+  !externals.concat(baseExternals).every(external => !new RegExp(`^${external}(?![-|a-z|A-Z|_])`, 'g').test(source));
 
 export { checkIsExternal };

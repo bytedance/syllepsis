@@ -460,6 +460,18 @@ type TKeymapHandler = (
 
 用于移除快捷键监听。
 
+### registerController
+
+`(name: string, Controller: typeof SylController, controllerProps?: Types.StringMap<any>) => void;`
+
+用于注册`Controller`。
+
+### unregisterController
+
+`(name: string) => void;`
+
+用于卸载`Controller`。
+
 ## Event
 
 ```typescript
