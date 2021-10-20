@@ -8,7 +8,7 @@ import { ToolbarLib } from '../..';
 declare module '@syllepsis/adapter' {
   interface ISylApiCommand {
     toolbar?: {
-      getAvailable: () => boolean;
+      getEnable: () => boolean;
       enable: () => void;
       disable: () => void;
     };
@@ -64,7 +64,7 @@ class ToolbarLoader extends BaseModule<IToolbarOption> {
     adapter.addCommand('toolbar', {
       enable: this.enable,
       disable: this.disable,
-      getAvailable: () => !this.$dom.classList.contains(DISABLE_CLASS),
+      getEnable: () => !this.$dom.classList.contains(DISABLE_CLASS),
     });
 
     adapter.on(EventChannel.LocalEvent.ON_CHANGE, this.traceEditable);
