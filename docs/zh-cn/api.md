@@ -466,6 +466,12 @@ type TKeymapHandler = (
 
 用于注册`Controller`。
 
+### unregisterController
+
+`(name: string) => void;`
+
+用于卸载`Controller`。
+
 ## Event
 
 ```typescript

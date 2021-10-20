@@ -51,6 +51,19 @@ describe('configurator test', () => {
     expect(result).toBe(true);
   });
 
+  test('can unregisterController', async () => {
+    await page.evaluate(() => {
+      window.__testControllerKeymap = false;
+      editor.configurator.unregisterController('test_controller');
+    });
+    await page.keyboard.down('Shift');
+    await page.keyboard.press('o');
+    await page.keyboard.up('Shift');
+    const result = await page.evaluate(() => window.__testControllerKeymap);
+
+    expect(result).toBe(false);
+  });
+
   test('support asynchronous loading controller', async () => {
     const result = await page.evaluate(() => editor.command.async_controller.test());
     expect(result).toBe(true);

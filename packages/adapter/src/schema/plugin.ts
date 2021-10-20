@@ -43,6 +43,7 @@ class SylPlugin<T = any> {
   public Schema: FormattableType | null = null;
   private editor: SylApi | null = null;
   private props: T | null = null;
+  private controllerUnmountEvent = () => {};
 
   private handleAsyncController = async () => {
     if (!this.asyncController || !this.editor) return;
@@ -65,10 +66,15 @@ class SylPlugin<T = any> {
     this.Controller = Constructor;
     this.$controller = new Constructor(this.editor, props || this.props || {});
     if (!this.$controller.name) this.$controller.name = this.name;
-    this.editor.on(
-      EventChannel.LocalEvent.EDITOR_WILL_UNMOUNT,
-      this.$controller.editorWillUnmount.bind(this.$controller),
-    );
+    this.controllerUnmountEvent = this.$controller.editorWillUnmount.bind(this.$controller);
+    this.editor.on(EventChannel.LocalEvent.EDITOR_WILL_UNMOUNT, this.controllerUnmountEvent);
+  };
+
+  public unregisterController = () => {
+    if (!this.editor || !this.$controller) return;
+    this.editor.off(EventChannel.LocalEvent.EDITOR_WILL_UNMOUNT, this.controllerUnmountEvent);
+    this.controllerUnmountEvent = () => {};
+    this.$controller = null;
   };
 
   public init(editor: SylApi, options: ISylPluginProps) {

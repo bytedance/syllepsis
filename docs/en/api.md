@@ -467,6 +467,12 @@ Used to remove keymap handlers.
 
 Used to register `Controller`。
 
+### unregisterController
+
+`(name: string) => void;`
+
+Used to unregister `Controller`。
+
 ## Event
 
 ```typescript

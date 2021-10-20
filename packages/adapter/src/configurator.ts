@@ -335,6 +335,19 @@ class SylConfigurator {
     this.emit(EventChannel.LocalEvent.CONFIG_PLUGIN_CHANGE);
   };
 
+  public unregisterController = (name: string) => {
+    const isChange = this.sylPluginInstances.some(plugin => {
+      if (plugin.name === name && plugin.$controller) {
+        this.customCtrlPlugin?.unregisterProps(plugin.$controller);
+        plugin.$controller.keymap && this.customKeyMapPlugin?.unregisterProps(plugin.$controller.keymap);
+        if (plugin.$controller.command) delete this.adapter?.command[name];
+        plugin.unregisterController();
+        return true;
+      }
+    });
+    isChange && this.emit(EventChannel.LocalEvent.CONFIG_PLUGIN_CHANGE);
+  };
+
   private setExtraConfiguration = (config: IConfiguration) =>
     setConfiguration(this.extraConfiguration, config, (key, val, oldVal) => {
       if (key === 'spellCheck') {
