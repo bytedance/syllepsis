@@ -4,12 +4,11 @@ import { isMatchObject } from '@syllepsis/plugin-basic';
 import cls from 'classnames';
 import React from 'react';
 
-import { Icons } from '../../../component';
+import { Icons, ListItem } from '../../../component';
 import { ToolDisplay } from '../utils';
 import { IProp } from '.';
 import { SelectBase } from './base';
 import { getConfigVal } from './button';
-import { ListItem } from './utils';
 
 class SelectForToolbar extends SelectBase<{
   name: IProp['name'];
