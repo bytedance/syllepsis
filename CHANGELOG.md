@@ -1,3 +1,31 @@
+# [0.1.0](https://github.com/bytedance/syllepsis/compare/v0.0.22...v0.1.0) (2021-10-22)
+
+
+### 🎉 Features
+
+* **adapter:** `configurator` supports `registerController` method, closes [#80](https://github.com/bytedance/syllepsis/issues/80)
+* **adapter:** `configurator` supports `unregisterController` method
+* **SylPlugin:** `SylPlugin` supports `asyncController` to be used to load `Controller` asynchronously
+* **toolbar:** `tooltips` option supports `false` to disable `tooltip`
+* **toolbarInline:** `toolbarInline` supports command `getEnable`
+
+
+### 🐞 Bug Fixers
+
+* ensure the dropdown menus of `color`, `background`, `emoji` display in visible area, closes [#84](https://github.com/bytedance/syllepsis/issues/84)
+
+
+### 🔨 Refactor
+
+* **Controller:** remove `Controller` supports of `textMatcher`
+* **toolbar:** renamed the `toolbar` command from `getAvaliable` to `getEnable`
+
+
+### BREAKING CHANGE
+
+* **Controller:** `Controller` no longer supports `textMatcher`
+* **toolbar:** `toolbar` command no longer supports `getAvaliable`
+
 ## [0.0.22](https://github.com/bytedance/syllepsis/compare/v0.0.21...v0.0.22) (2021-10-18)
 
 
