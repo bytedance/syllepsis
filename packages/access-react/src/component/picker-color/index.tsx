@@ -3,11 +3,13 @@ import './style.css';
 import { SylApi } from '@syllepsis/adapter';
 import React from 'react';
 
+import { calculateShowLeft } from '../utils';
 import { ColorSelector } from './color-selector';
 
 interface IColorPickerState {
   open: boolean;
   color: string;
+  marginLeft: number;
 }
 
 interface IColorProps {
@@ -19,17 +21,10 @@ interface IColorProps {
   mountDOM: HTMLElement;
 }
 
-const PICKER_WIDTH = 225;
-
 class ColorPicker extends React.Component<IColorProps, IColorPickerState> {
   picker?: HTMLDivElement;
   $btn: HTMLElement | null;
   sel = '';
-
-  state = {
-    open: false,
-    color: '',
-  };
 
   constructor(props: IColorProps) {
     super(props);
@@ -37,6 +32,7 @@ class ColorPicker extends React.Component<IColorProps, IColorPickerState> {
     this.state = {
       color,
       open: false,
+      marginLeft: 0,
     };
     this.$btn = this.props.mountDOM.querySelector('.syl-toolbar-button');
   }
@@ -44,13 +40,7 @@ class ColorPicker extends React.Component<IColorProps, IColorPickerState> {
   private fixPos() {
     const { mountDOM } = this.props;
     if (!mountDOM || !this.picker || !this.picker.parentElement) return;
-    const rect = this.props.mountDOM.getBoundingClientRect();
-    const avWidth = window.innerWidth;
-    if (avWidth - rect.left < PICKER_WIDTH) {
-      this.picker.parentElement.setAttribute('style', `margin-left: -${PICKER_WIDTH - (rect.right - rect.left)}px`);
-    } else {
-      this.picker.parentElement.setAttribute('style', '');
-    }
+    this.setState({ marginLeft: calculateShowLeft(this.picker, mountDOM) });
   }
 
   private getColor = () => {
@@ -124,11 +114,15 @@ class ColorPicker extends React.Component<IColorProps, IColorPickerState> {
   public toggleVisible = () => (this.state.open ? this.hide() : this.open());
 
   render() {
-    const { open, color } = this.state;
+    const { open, color, marginLeft } = this.state;
     const { name, defaultColor } = this.props;
-    if (!open) return null;
     return (
-      <div className="syl-color-picker-container" data-syl-toolbar="true" ref={el => el && (this.picker = el)}>
+      <div
+        className="syl-color-picker-container"
+        data-syl-toolbar="true"
+        ref={el => el && (this.picker = el)}
+        style={{ visibility: open ? 'visible' : 'hidden', ...(marginLeft ? { marginLeft } : {}) }}
+      >
         <ColorSelector name={name} selectedColor={color} onClick={this.changeColor} resetColor={defaultColor} />
       </div>
     );

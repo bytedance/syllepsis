@@ -7,7 +7,7 @@ import { IRenderer } from '../../renderer';
 interface IToolbarOption {
   mount?: Element | null;
   tools: Array<ToolConfig>;
-  tooltips?: Types.StringMap<Tooltip>;
+  tooltips?: Types.StringMap<Tooltip> | false;
   showNames?: Types.StringMap<string>;
   icons?: Types.StringMap<any>;
   className?: string;
@@ -184,7 +184,7 @@ class ToolbarLib {
     return {
       type: toolbar.type || TOOL_TYPE.BUTTON,
       name,
-      tooltip: tooltips[toolName],
+      tooltip: tooltips ? tooltips[toolName] : false,
       showName,
       toolbar: {
         ...toolbar,

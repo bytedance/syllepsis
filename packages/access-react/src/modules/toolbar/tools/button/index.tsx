@@ -3,10 +3,9 @@ import './style.css';
 import classnames from 'classnames';
 import React, { useState } from 'react';
 
-import { Icons } from '../../../../component';
+import { IconButton, Icons, ITooltipProps, ListItem, Tooltip } from '../../../../component';
 import { ToolDisplay } from '../../utils';
 import { IProp } from '../index';
-import { IconButton, ITooltipProps, ListItem, Tooltip } from '../utils';
 
 const noop = () => {};
 

@@ -3,10 +3,10 @@ import { IToolbarOption, TMoreContent } from '@syllepsis/editor';
 import classnames from 'classnames';
 import React from 'react';
 
+import { IPopperProps, List, Popper } from '../../../component';
 import { ToolDisplay } from '../utils';
 import { IProp } from '.';
 import { ButtonForToolbar, getConfigVal } from './button';
-import { IPopperProps, List, Popper } from './utils';
 
 interface ISelectBase extends Partial<IProp> {
   editor: SylApi;

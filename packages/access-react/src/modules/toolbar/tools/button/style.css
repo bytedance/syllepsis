@@ -6,6 +6,10 @@
   vertical-align: middle;
 }
 
+.syl-toolbar-tool.static {
+  margin: 0 8px;
+}
+
 .syl-toolbar-tool.active .syl-toolbar-button {
   background: #e8e8e8;
 }
@@ -22,7 +26,7 @@
   cursor: pointer;
   min-width: 26px;
   min-height: 26px;
-  margin: 12px 8px;
+  margin: 12px 0;
   border: 1px transparent solid;
   border-radius: 4px;
 }
@@ -172,10 +176,6 @@
   font-family: PingFangSC;
   color: #222222;
   vertical-align: middle;
-}
-
-.syl-toolbar-tool.inline {
-  padding: 8px 0;
 }
 
 .syl-toolbar-tool-horizon.inline {

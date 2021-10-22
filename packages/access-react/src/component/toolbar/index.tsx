@@ -4,9 +4,9 @@ import { EventChannel, SylApi } from '@syllepsis/adapter';
 import { ToolbarInlineLoader } from '@syllepsis/editor';
 import React, { useCallback, useEffect, useState } from 'react';
 
+import { List, Popper } from '../../component';
 import { ToolbarInline } from '../../modules/toolbar/render/inline';
 import { ButtonForToolbar } from '../../modules/toolbar/tools';
-import { List, Popper } from '../../modules/toolbar/tools/utils';
 import { ToolDisplay } from '../../modules/toolbar/utils';
 import { ReactRenderer } from '../../render-bridge';
 import { Modal, ModalContent, ModalFooter, ModalTitle } from '../modal';

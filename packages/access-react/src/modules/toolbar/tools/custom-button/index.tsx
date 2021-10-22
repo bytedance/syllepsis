@@ -4,7 +4,7 @@ import { SylApi } from '@syllepsis/adapter';
 import { TCustomContent } from '@syllepsis/editor';
 import React from 'react';
 
-import { Tooltip } from '../utils';
+import { Tooltip } from '../../../../component';
 
 const CustomButton = ({ render, name, tooltip: configTooltip, editor }: TCustomContent & { editor: SylApi }) => {
   const renderContent = () => render(editor);
