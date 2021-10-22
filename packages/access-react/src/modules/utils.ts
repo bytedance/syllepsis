@@ -3,7 +3,7 @@ import { IToolbarOption } from '@syllepsis/editor';
 import { Toolbar, ToolbarInline } from './toolbar';
 
 const toolbar: Omit<IToolbarOption, 'RenderBridge'> = {
-  menuDistance: 4,
+  menuDistance: 12,
   tools: [],
   icons: {},
   tooltips: {},

@@ -101,12 +101,17 @@ class TableButton {
       } else {
         const $toolbar = this.$button.parentElement;
         if ($toolbar) {
-          const buttonRect = this.$button.getBoundingClientRect();
-          const toolbarRect = $toolbar.getBoundingClientRect();
-          const width = this.$wrapper.offsetWidth;
-          if (buttonRect.left + this.$wrapper.offsetWidth > toolbarRect.right) {
-            style += `left: -${width - (toolbarRect.right - buttonRect.left)}px;`;
+          let left = 0;
+          const domWidth = this.$wrapper.clientWidth;
+          const mountRect = this.$button.getBoundingClientRect();
+          const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+
+          if (mountRect.left < 0) {
+            left = -mountRect.left;
+          } else if (mountRect.left + domWidth > viewportWidth) {
+            left = -(domWidth - (viewportWidth - mountRect.left));
           }
+          left && (style += `left: ${left}px;`);
         }
       }
 
