@@ -13,35 +13,30 @@ Even if you can't find a suitable plug-in, don't be discouraged. Syllepsis provi
 
 ### Text style
 
-| plugin              | description     | plugin         | markdown                                     | parameters                       | introduction              |
-| ------------------- | --------------- | -------------- | -------------------------------------------- | -------------------------------- | ------------------------- |
-| `BoldPlugin`        | Bold            | `bold`         | `**Text**` + `space`                         |                                  | `@syllepsis/plugin-basic` |
-| `ItalicPlugin`      | Italic          | `italic`       | `*Text*` + `space`                           |                                  | `@syllepsis/plugin-basic` |
-| `UnderlinePlugin`   | Underline       | `underline`    | `~text~` + `space` <br/>`++text++` + `space` |                                  | `@syllepsis/plugin-basic` |
-| `ColorPlugin`       | Text color      | `color`        |                                              | [Link](/en/plugins/color)        | `@syllepsis/access-*`     |
-| `FontSizePlugin`    | Font size       | `font_size`    |                                              | [Link](/en/plugins/font-size)    | `@syllepsis/plugin-basic` |
-| `BackgroundPlugin`  | Text background | `background`   |                                              | [Link](/en/plugins/background)   | `@syllepsis/access-*`     |
-| `LetterSpacePlugin` | Font spacing    | `letter_space` |                                              | [Link](/en/plugins/letter-space) | `@syllepsis/plugin-basic` |
-
-### Text type
-
-| Plug-in name   | Description        | Icon     | markdown                                               | Parameters | Introduction |
-| -------------- | ------------------ | -------- | ------------------------------------------------------ | ---------- | ------------ |
-| `HeaderPlugin` | Header             | `header` | `#` + `space` <br> `##` + `space` <br> `###` + `space` |            |              |
-| `StrikePlugin` | Strikethrough text | `strike` | `~~Text~~` + `space`                                   |            |              |
-| `SupPlugin`    | Superscript text   | `sup`    |                                                        |            |              |
-| `SubPlugin`    | Subscript text     | `sub`    |                                                        |            |              |
+| plugin              | description         | plugin         | markdown                                     | parameters                       | introduction              |
+| ------------------- | ------------------- | -------------- | -------------------------------------------- | -------------------------------- | ------------------------- |
+| `BoldPlugin`        | Bold                | `bold`         | `**Text**` + `space`                         |                                  | `@syllepsis/plugin-basic` |
+| `ItalicPlugin`      | Italic              | `italic`       | `*Text*` + `space`                           |                                  | `@syllepsis/plugin-basic` |
+| `UnderlinePlugin`   | Underline           | `underline`    | `~text~` + `space` <br/>`++text++` + `space` |                                  | `@syllepsis/plugin-basic` |
+| `StrikePlugin`      | Strike through text | `strike`       | `~~Text~~` + `space`                         |                                  | `@syllepsis/plugin-basic` |
+| `FontSizePlugin`    | Font size           | `font_size`    |                                              | [Link](/en/plugins/font-size)    | `@syllepsis/plugin-basic` |
+| `LetterSpacePlugin` | Font spacing        | `letter_space` |                                              | [Link](/en/plugins/letter-space) | `@syllepsis/plugin-basic` |
+| `SupPlugin`         | Superscript text    | `sup`          |                                              |                                  | `@syllepsis/plugin-basic` |
+| `SubPlugin`         | Subscript text      | `sub`          |                                              |                                  | `@syllepsis/plugin-basic` |
+| `BackgroundPlugin`  | Text background     | `background`   |                                              | [Link](/en/plugins/background)   | `@syllepsis/access-*`     |
+| `ColorPlugin`       | Text color          | `color`        |                                              | [Link](/en/plugins/color)        | `@syllepsis/access-*`     |
 
 ### Text block type
 
-| Plug-in name        | Description    | Icon           | markdown                           | Parameters                       | Introduction                                                  |
-| ------------------- | -------------- | -------------- | ---------------------------------- | -------------------------------- | ------------------------------------------------------------- |
-| `ParagraphPlugin`   | Paragraph      | `paragraph`    |                                    | [Link](/en/plugins/paragraph)    | `@syllepsis/plugin-basic`                                     |
-| `ListItemPlugin`    | List element   | `list-item`    |                                    | [Link](/en/plugins/list-item)    | `@syllepsis/plugin-basic`                                     |
-| `BulletListPlugin`  | Unordered list | `bullet_list`  | `-` + `space` <br/> `*` + `space`  |                                  | `@syllepsis/plugin-basic` (depends on the `list_item` plugin) |
-| `OrderedListPlugin` | Ordered list   | `ordered_list` | `number` + `.` + `space`           |                                  | `@syllepsis/plugin-basic` (depends on the `list_item` plugin) |
-| `BlockQuotePlugin`  | Quotation      | `block_quote`  | `>` + `space` <br/> `》` + `space` |                                  | `@syllepsis/plugin-basic`                                     |
-| `CodeBlockPlugin`   | Code block     | `code_block`   | `` + `space` <br/> `` + `Enter`    | [Link](zh-cn/plugins/code-block) | `@syllepsis/plugin-code-block`                                |
+| Plug-in name        | Description    | Icon           | markdown                                               | Parameters                       | Introduction                                                  |
+| ------------------- | -------------- | -------------- | ------------------------------------------------------ | -------------------------------- | ------------------------------------------------------------- |
+| `ParagraphPlugin`   | Paragraph      | `paragraph`    |                                                        | [Link](/en/plugins/paragraph)    | `@syllepsis/plugin-basic`                                     |
+| `HeaderPlugin`      | Header         | `header`       | `#` + `space` <br> `##` + `space` <br> `###` + `space` |                                  | `@syllepsis/plugin-basic`                                     |
+| `ListItemPlugin`    | List element   | `list-item`    |                                                        | [Link](/en/plugins/list-item)    | `@syllepsis/plugin-basic`                                     |
+| `BulletListPlugin`  | Unordered list | `bullet_list`  | `-` + `space` <br/> `*` + `space`                      |                                  | `@syllepsis/plugin-basic` (depends on the `list_item` plugin) |
+| `OrderedListPlugin` | Ordered list   | `ordered_list` | `number` + `.` + `space`                               |                                  | `@syllepsis/plugin-basic` (depends on the `list_item` plugin) |
+| `BlockQuotePlugin`  | Quotation      | `block_quote`  | `>` + `space` <br/> `》` + `space`                     |                                  | `@syllepsis/plugin-basic`                                     |
+| `CodeBlockPlugin`   | Code block     | `code_block`   | `` + `space` <br/> `` + `Enter`                        | [Link](zh-cn/plugins/code-block) | `@syllepsis/plugin-code-block`                                |
 
 ### Atomic Type
 

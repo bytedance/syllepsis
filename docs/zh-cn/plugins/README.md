@@ -11,30 +11,25 @@ Syllepsis 已内置了一系列的基础插件，可在 ↓↓ 列表 ↓↓ 中
 
 ### 文本样式
 
-| plugin              | 描述     | plugin         | markdown                                   | 参数                                | 引入                      |
-| ------------------- | -------- | -------------- | ------------------------------------------ | ----------------------------------- | ------------------------- |
-| `BoldPlugin`        | 粗体     | `bold`         | `**文字**` + `空格`                        |                                     | `@syllepsis/plugin-basic` |
-| `ItalicPlugin`      | 斜体     | `italic`       | `*文字*` + `空格`                          |                                     | `@syllepsis/plugin-basic` |
-| `UnderlinePlugin`   | 下划线   | `underline`    | `~文字~` + `空格` <br/>`++文字++` + `空格` |                                     | `@syllepsis/plugin-basic` |
-| `ColorPlugin`       | 文本颜色 | `color`        |                                            | [Link](zh-cn/plugins/color)         | `@syllepsis/access-*`     |
-| `FontSizePlugin`    | 字体大小 | `font_size`    |                                            | [Link](/zh-cn/plugins/font-size)    | `@syllepsis/plugin-basic` |
-| `BackgroundPlugin`  | 文本背景 | `background`   |                                            | [Link](zh-cn/plugins/background)    | `@syllepsis/access-*`     |
-| `LetterSpacePlugin` | 字体间距 | `letter_space` |                                            | [Link](/zh-cn/plugins/letter-space) | `@syllepsis/plugin-basic` |
-
-### 文本类型
-
-| 插件名         | 描述       | 内置 icon 标识 | markdown                                            | 参数 | 引入 |
-| -------------- | ---------- | -------------- | --------------------------------------------------- | ---- | ---- |
-| `HeaderPlugin` | 标题       | `header`       | `#` + `空格` <br> `##` + `空格` <br> `###` + `空格` |      |      |
-| `StrikePlugin` | 删除线文本 | `strike`       | `~~文字~~` + `空格`                                 |      |      |
-| `SupPlugin`    | 上标文本   | `sup`          |                                                     |      |      |
-| `SubPlugin`    | 下标文本   | `sub`          |                                                     |      |      |
+| plugin              | 描述       | 内置 icon 标识 | markdown                                   | 参数                                | 引入                      |
+| ------------------- | ---------- | -------------- | ------------------------------------------ | ----------------------------------- | ------------------------- |
+| `BoldPlugin`        | 粗体       | `bold`         | `**文字**` + `空格`                        |                                     | `@syllepsis/plugin-basic` |
+| `ItalicPlugin`      | 斜体       | `italic`       | `*文字*` + `空格`                          |                                     | `@syllepsis/plugin-basic` |
+| `UnderlinePlugin`   | 下划线     | `underline`    | `~文字~` + `空格` <br/>`++文字++` + `空格` |                                     | `@syllepsis/plugin-basic` |
+| `StrikePlugin`      | 删除线文本 | `strike`       | `~~文字~~` + `空格`                        |                                     | `@syllepsis/plugin-basic` |
+| `FontSizePlugin`    | 字体大小   | `font_size`    |                                            | [Link](/zh-cn/plugins/font-size)    | `@syllepsis/plugin-basic` |
+| `LetterSpacePlugin` | 字体间距   | `letter_space` |                                            | [Link](/zh-cn/plugins/letter-space) | `@syllepsis/plugin-basic` |
+| `SupPlugin`         | 上标文本   | `sup`          |                                            |                                     | `@syllepsis/plugin-basic` |
+| `SubPlugin`         | 下标文本   | `sub`          |                                            |                                     | `@syllepsis/plugin-basic` |
+| `BackgroundPlugin`  | 文本背景   | `background`   |                                            | [Link](zh-cn/plugins/background)    | `@syllepsis/access-*`     |
+| `ColorPlugin`       | 文本颜色   | `color`        |                                            | [Link](zh-cn/plugins/color)         | `@syllepsis/access-*`     |
 
 ### 文本块类型
 
 | 插件名              | 描述     | 内置 icon 标识 | markdown                                                                                                     | 参数                             | 引入                                                |
 | ------------------- | -------- | -------------- | ------------------------------------------------------------------------------------------------------------ | -------------------------------- | --------------------------------------------------- |
 | `ParagraphPlugin`   | 段落     | `paragraph`    |                                                                                                              | [Link](/zh-cn/plugins/paragraph) | `@syllepsis/plugin-basic`                           |
+| `HeaderPlugin`      | 标题     | `header`       | `#` + `空格` <br> `##` + `空格` <br> `###` + `空格`                                                          |                                  | `@syllepsis/plugin-basic`                           |
 | `ListItemPlugin`    | 列表元素 | `list-item`    |                                                                                                              | [Link](/zh-cn/plugins/list-item) | `@syllepsis/plugin-basic`                           |
 | `BulletListPlugin`  | 无序列表 | `bullet_list`  | `-` + `空格` <br/> `*` + `空格`                                                                              |                                  | `@syllepsis/plugin-basic` (依赖于 `list_item` 插件) |
 | `OrderedListPlugin` | 有序列表 | `ordered_list` | `number` + `.` + `空格`                                                                                      |                                  | `@syllepsis/plugin-basic`(依赖于 `list_item` 插件)  |
