@@ -1,3 +1,10 @@
+## [0.1.1](https://github.com/bytedance/syllepsis/compare/v0.1.0...v0.1.1) (2021-11-16)
+
+
+### 🐞 Bug Fixers
+
+* treat `paragraph` as a not defining `node`, closes [#86](https://github.com/bytedance/syllepsis/issues/86)
+
 # [0.1.0](https://github.com/bytedance/syllepsis/compare/v0.0.22...v0.1.0) (2021-10-22)
 
 
@@ -91,10 +98,10 @@
 
 ### 🎉 Features
 
+* **adapter:** SylApi: support `dispatchEvent` for triggering events, closes [#49](https://github.com/bytedance/syllepsis/issues/49)
 * support `eventHandler` props to register `eventHandler`, closes [#44](https://github.com/bytedance/syllepsis/issues/44)
 * support `keymap` props to register `keymap`, closes [#52](https://github.com/bytedance/syllepsis/issues/52)
 * support config `scrollThreshold` and `scrollMargin`, closes [#54](https://github.com/bytedance/syllepsis/issues/54)
-* **adapter:** SylApi: support `dispatchEvent` for triggering events, closes [#49](https://github.com/bytedance/syllepsis/issues/49)
 
 
 ### 🔨 Refactor
