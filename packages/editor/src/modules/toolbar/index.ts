@@ -15,7 +15,6 @@ interface IToolbarOption {
   tipDistance?: number;
   onToolClick?: (editor: SylApi, name: string) => void;
   Component?: any;
-  utils?: Types.StringMap<Types.Ctor<IToolbarUtil> | { props?: Types.StringMap<any>; util: Types.Ctor<IToolbarUtil> }>;
   trigger?: TTrigger; // dropdown menu trigger method
   menuDirection?: 'up' | 'down' | 'up-start' | 'down-start' | string; // position of dropdown menu
   menuDistance?: number;
