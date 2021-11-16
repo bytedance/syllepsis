@@ -22,6 +22,7 @@ class Doc extends SylSchema<never> {
 
 class Paragraph extends Block<IParagraphAttrs> {
   public name = 'paragraph';
+  public defining = false;
 
   public defaultFontSize = 16;
   public canMatch = (dom: HTMLParagraphElement) => true;
