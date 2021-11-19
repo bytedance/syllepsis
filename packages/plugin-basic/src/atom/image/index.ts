@@ -98,11 +98,18 @@ const uploadImg = async (editor: SylApi, src: string, fileName: string, config: 
 const insertImageInEditor = (
   editor: SylApi,
   dataInfos: { image?: HTMLImageElement; attrs?: { src: string; [key: string]: any } }[],
-  pos: number,
   config: Partial<ImageProps>,
 ) => {
+  const pos = editor.view.state.selection.from;
+  const $pos = editor.view.state.doc.resolve(pos);
+  const images = [...dataInfos];
   const insertNodes = { type: 'doc', content: [] as INodeInfo[] };
-  dataInfos.forEach(({ image, attrs }) => {
+  // when depth >= 2 and contained in table, inserting images will not update the selection,causes it to be inserted in reverse order
+  const isInTable = $pos.node(1)?.type?.name === 'table' && $pos.depth >= 2;
+  if(isInTable){
+    images.reverse();
+  }
+  images.forEach(({ image, attrs }) => {
     if (!image || !attrs) return;
     const imageAttrs: Partial<ImageAttrs> = {
       width: config.uploadMaxWidth ? Math.min(image.naturalWidth, config.uploadMaxWidth) : image.naturalWidth,
@@ -111,9 +118,13 @@ const insertImageInEditor = (
       align: 'center',
       ...attrs,
     };
-    insertNodes.content.push({ type: PLUGIN_NAME, attrs: imageAttrs });
+    if(isInTable) {
+      editor.insert({ type: PLUGIN_NAME, attrs: imageAttrs });
+    } else {
+      insertNodes.content.push({ type: PLUGIN_NAME, attrs: imageAttrs });
+    }
   });
-  if (insertNodes.content.length) editor.insert(insertNodes, pos);
+  if (insertNodes.content.length && !isInTable) editor.insert(insertNodes, pos);
 };
 
 // get the picture file and judge whether to upload it in advance
@@ -146,7 +157,7 @@ const insertImageWithFiles = async (editor: SylApi, files: File[], config: Parti
     ),
   );
 
-  insertImageInEditor(editor, results, editor.view.state.selection.from, config);
+  insertImageInEditor(editor, results, config);
 };
 
 const updateImageUrl = async (editor: SylApi, props: IUpdateImageProps, config: ImageProps) => {
