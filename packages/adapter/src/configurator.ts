@@ -125,8 +125,9 @@ const setConfiguration = (
 ) => {
   Object.keys(baseConfig).forEach(key => {
     if (configProps[key] !== undefined && baseConfig[key] !== configProps[key]) {
-      cb && cb(key, configProps[key], baseConfig[key]);
+      const preValue = baseConfig[key];
       baseConfig[key] = configProps[key];
+      cb && cb(key, configProps[key], preValue);
     }
   });
 };
