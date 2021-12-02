@@ -1,3 +1,10 @@
+## [0.1.2](https://github.com/bytedance/syllepsis/compare/v0.1.1...v0.1.2) (2021-12-02)
+
+
+### 🐞 Bug Fixers
+
+* **adapter:** updating the `placeholder` configuration does not take effect directly
+
 ## [0.1.1](https://github.com/bytedance/syllepsis/compare/v0.1.0...v0.1.1) (2021-11-16)
 
 
