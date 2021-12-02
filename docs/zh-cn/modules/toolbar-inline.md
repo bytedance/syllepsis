@@ -19,7 +19,7 @@ import { SylEditor } from '@syllepsis/access-react';
     module={
       toolbar: {
         Ctor: ToolbarInlineLoader,
-        options: { ... }
+        option: { ... }
       }
     }
   />
@@ -65,7 +65,7 @@ import { SylEditor } from '@syllepsis/access-react';
     module={
       toolbar: {
         Ctor: ToolbarInlineLoader,
-        options: {
+        option: {
           tools: ['bold', '|']
         }
       }

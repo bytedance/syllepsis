@@ -9,7 +9,7 @@ import { ToolbarLoader } from '@syllepsis/editor';
   module={
     toolbar: {
       Ctor: ToolbarLoader,
-      options: { xxx },
+      option: { xxx },
     },
   }
  />
@@ -44,7 +44,7 @@ import { SylEditor } from '@syllepsis/access-react';
     module={
       toolbar: {
         Ctor: ToolbarLoader,
-        options: {
+        option: {
           // 显示加粗按钮和分割线
           tools: ['bold', '｜']
         }
