@@ -6,7 +6,7 @@
     "examples/*"
   ],
   "scripts": {
-    "initialize": "lerna clean --yes && lerna bootstrap && lerna link",
+    "initialize": "rm -rf node_modules && lerna clean --yes && lerna bootstrap && lerna link",
     "create:package": "node ./scripts/create-package.js",
     "build": "lerna exec --no-private --stream -- yarn build",
     "build:adapter": "lerna exec --scope @syllepsis/adapter yarn build",
