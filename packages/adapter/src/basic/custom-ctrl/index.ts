@@ -21,6 +21,27 @@ type THandlersCenter = Partial<
 
 const transEvents = ['transformPastedHTML', 'transformPastedText', 'clipboardTextParser', 'transformPasted'];
 
+interface ICustomCtrlConfig extends Omit<EditorProps, keyof IEventHandler> {
+  eventHandler?: IEventHandler;
+  appendTransaction?: SylController['appendTransaction'];
+}
+
+const CUSTOM_CTRL_ACCEPT: Record<keyof ICustomCtrlConfig, boolean> = {
+  createSelectionBetween: true,
+  domParser: true,
+  clipboardParser: true,
+  clipboardTextParser: true,
+  nodeViews: true,
+  clipboardSerializer: true,
+  decorations: true,
+  editable: true,
+  attributes: true,
+  scrollThreshold: true,
+  scrollMargin: true,
+  appendTransaction: true,
+  eventHandler: true,
+};
+
 // transEvents means only transport one parameter
 const transEventChain = (adapter: SylApi, handles: Array<TransEventHandler>, ...content: any) => {
   if (!adapter.view.editable) return content[0];
@@ -42,10 +63,6 @@ const chainEvent = (
   if (!adapter.view.editable) return false;
   return handlers.some(handler => (handler as TEventHandler)(adapter, ...args));
 };
-interface ICustomCtrlConfig extends EditorProps {
-  eventHandler?: IEventHandler;
-  appendTransaction?: SylController['appendTransaction'];
-}
 
 class CustomCtrlCenter {
   private adapter: SylApi;
@@ -136,12 +153,13 @@ class CustomCtrlCenter {
               groupData(this.eventHandler, event, handler);
             }
           });
-        } else {
+        } else if (CUSTOM_CTRL_ACCEPT[configName]) {
           // @ts-ignore
           this.props[configName] = config[configName];
         }
       });
     });
+
     this.handleProps();
   };
 
@@ -163,7 +181,7 @@ class CustomCtrlCenter {
               filterData(this.eventHandler, key, config.eventHandler![key]);
             }
           });
-        } else {
+        } else if (CUSTOM_CTRL_ACCEPT[configName]) {
           // @ts-ignore
           this.props[configName] = undefined;
         }
@@ -190,4 +208,4 @@ const createCustomCtrlPlugin = (adapter: SylApi, customProps?: Array<ICustomCtrl
   return new CtrlPlugin<ICustomCtrlConfig | Array<ICustomCtrlConfig>>(ctrlCenter.spec, ctrlCenter);
 };
 
-export { createCustomCtrlPlugin, ICustomCtrlConfig };
+export { createCustomCtrlPlugin, CUSTOM_CTRL_ACCEPT, ICustomCtrlConfig };
