@@ -1,0 +1,32 @@
+{
+  "name": "@syllepsis/plugin-placeholder",
+  "author": "lijianle <lijianle@bytedance.com>",
+  "description": "plugin to support dynamic import",
+  "version": "0.0.0",
+  "main": "dist/lib/index.js",
+  "module": "dist/es/index.js",
+  "umd": "dist/umd/index.js",
+  "typings": "dist/es/index.d.ts",
+  "license": "MIT",
+  "sideEffects": [
+    "*.css"
+  ],
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "prebuild": "rimraf ./dist",
+    "build:es": "cross-env NODE_ENV=production && tsc --target es5 && copyfiles \"./src/**/*.css\" ./dist/es -u 1",
+    "build:cjs": "cross-env NODE_ENV=production && tsc  --target es5 --module commonjs --outDir 'dist/lib' && copyfiles \"./src/**/*.css\" ./dist/lib -u 1",
+    "build:umd": "cross-env NODE_ENV=production && vite build",
+    "build": "yarn build:es && yarn build:cjs && yarn build:umd",
+    "watch": "cross-env NODE_ENV=development && copyfiles \"./src/**/*.css\" ./dist/es -u 1 && tsc -w",
+    "prepublish": "yarn build"
+  },
+  "dependencies": {
+    "@syllepsis/adapter": "^0.1.2",
+    "@syllepsis/plugin-basic": "^0.1.2",
+    "clipboard": "^2.0.8"
+  }
+}

@@ -1,0 +1,140 @@
+.placeholder-wrapper {
+  position: relative;
+  border: 1px solid transparent;
+  border-radius: 2px;
+}
+.placeholder-wrapper.left {
+  margin: 0 auto 0 0;
+}
+.placeholder-wrapper.right {
+  margin: 0 0 0 auto;
+}
+.placeholder-wrapper.center {
+  margin: 0 auto;
+}
+.placeholder-wrapper:hover {
+  border-color: #e6f0ff;
+}
+.placeholder-wrapper:hover button.close {
+  opacity: 1;
+}
+.placeholder-wrapper.selected {
+  border-color: cornflowerblue;
+}
+.placeholder-wrapper.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: white;
+  z-index: 1000;
+}
+.placeholder-wrapper.fullscreen.selected {
+  border-color: transparent;
+}
+.placeholder-wrapper.fullscreen .content {
+  width: 100%;
+  height: 100%;
+}
+.placeholder-wrapper .i-icon svg {
+  display: block;
+}
+.placeholder-wrapper .content.full {
+  width: 100%;
+  height: 100%;
+}
+.placeholder-wrapper button {
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+.placeholder-wrapper button span {
+  display: inline-block;
+}
+.placeholder-wrapper button.close {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  padding: 1px;
+  background: #b2b2b2;
+  border-radius: 50%;
+  opacity: 0;
+  z-index: 2;
+  text-align: center;
+  transition: opacity .2s linear;
+  font-size: 0;
+}
+.btn-wrapper {
+  position: absolute;
+  display: inline-flex;
+  top: -60px;
+  left: 50%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  transform: translateX(-50%);
+  z-index: 100;
+  box-shadow: 0 3px 6px #000000;
+  align-items: center;
+  justify-content: center;
+}
+.btn-wrapper button {
+  display: inline-flex;
+  min-width: 25px;
+  height: 28px;
+  line-height: 28px;
+  border-radius: 4px;
+  background: transparent;
+  font-size: 0;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+.btn-wrapper button .icon {
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+}
+.btn-wrapper button .text {
+  display: inline-flex;
+  height: 24px;
+  font-size: 16px;
+  margin: 0 4px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.btn-wrapper button:hover {
+  background-color: #f5f5f5;
+}
+.btn-wrapper button:active {
+  background: #e6e6e6;
+}
+.btn-fullscreen-wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 99;
+  padding: 12px;
+  transition: opacity .2s linear;
+  opacity: .7;
+}
+.btn-fullscreen-wrapper:hover {
+  opacity: 1;
+}
+.btn-fullscreen-wrapper .placeholder-offscreen {
+  display: flex;
+  padding: 4px;
+  background: white;
+  border-radius: 50%;
+  border: 1px solid #dadce0;
+}

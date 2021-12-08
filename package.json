@@ -74,7 +74,8 @@
     "@syllepsis/editor": "file:packages/editor",
     "@syllepsis/plugin-basic": "file:packages/plugin-basic",
     "@syllepsis/plugin-code-block": "file:packages/plugin-code-block",
-    "@syllepsis/plugin-table": "file:packages/plugin-table"
+    "@syllepsis/plugin-table": "file:packages/plugin-table",
+    "@syllepsis/plugin-placeholder": "file:packages/plugin-placeholder"
   },
   "config": {
     "commitizen": {
