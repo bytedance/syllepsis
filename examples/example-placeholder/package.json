@@ -1,0 +1,29 @@
+{
+  "name": "example-placeholder",
+  "version": "1.0.0",
+  "private": true,
+  "description": "start syl with react & import plugin-placeholder",
+  "main": "index.html",
+  "scripts": {
+    "start": "vite --force --open"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@codemirror/basic-setup": "^0.19.0",
+    "@codemirror/commands": "^0.19.5",
+    "@codemirror/lang-javascript": "^0.19.3",
+    "@codemirror/view": "^0.19.27",
+    "@icon-park/react": "^1.3.5",
+    "@syllepsis/access-react": "*",
+    "@syllepsis/adapter": "*",
+    "@syllepsis/editor": "*",
+    "@syllepsis/plugin-basic": "*",
+    "@syllepsis/plugin-code-block": "*",
+    "@syllepsis/plugin-placeholder": "*",
+    "@syllepsis/plugin-table": "*",
+    "antd": "^4.17.2",
+    "classnames": "^2.3.1",
+    "less": "^4.1.2",
+    "lodash": "^4.17.21"
+  }
+}

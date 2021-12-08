@@ -244,8 +244,7 @@ const ToolWrapper = React.forwardRef((props: ToolWrapperProps, ref: any) => {
         }
         {/* normal btn */}
         {
-          // (isFullscreen || hover) && !!fullscreen && toolsConfig.length > 0 &&
-          true &&
+          (isFullscreen || hover) && !!fullscreen && toolsConfig.length > 0 &&
           <div className="btn-wrapper" data-ignore-adapt={true}
                onMouseEnter={handleMouseEnter}
                onMouseLeave={handleMouseLeave}>
