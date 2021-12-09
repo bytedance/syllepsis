@@ -1,7 +1,7 @@
 // @ts-nocheck
 const CardView = (props: IProps = {}) => {
   if (props.id) {
-    return `<div id="${props.id}">Card</div>`;
+    return `<div id='${props.id}'>Card</div>`;
   }
   return '<div>Card</div>';
 };
@@ -16,8 +16,8 @@ describe('API.getHTML test', () => {
   });
   it('get empty when no child in templ', async () => {
     const html = await page.evaluate(() => {
-      var a = '';
-      var listenChange = () => {
+      let a = '';
+      const listenChange = () => {
         a = editor.getHTML();
       };
       editor.on('state-change', listenChange);
@@ -94,13 +94,13 @@ describe('API.getHTML test', () => {
 
   it('it can get trigger switch-layer', async () => {
     const res = await page.evaluate(() => {
-      var type = 'template';
-      var listen = _type => {
+      let type = 'template';
+      const listen = _type => {
         type = _type;
       };
       editor.setHTML(`<p>{-- Card --}</p>`);
       editor.on('switch-layer', listen);
-      var html = editor.getHTML({ layerType: 'test' });
+      const html = editor.getHTML({ layerType: 'test' });
       editor.off('switch-layer', listen);
       return {
         html,

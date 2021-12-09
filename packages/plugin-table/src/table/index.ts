@@ -5,6 +5,7 @@ import merge from 'lodash.merge';
 import { columnResizing, isInTable, tableEditing } from 'prosemirror-tables';
 import { NodeView } from 'prosemirror-view';
 
+import { tableCellSelfResizing } from './cell-self-resizing';
 import { BUTTON_DEFAULT_CONFIG, IMenuConfig } from './component/menu-button';
 import { ITableProps, TABLE_CONFIG } from './const';
 import { createTableCellPlugin } from './table-cell';
@@ -40,7 +41,7 @@ class TablePlugin extends SylUnionPlugin<ITablePluginProps> {
     if (config.table.useTableHeader) sylPlugins.push({ plugin: createTableHeaderPlugin(config.table) });
 
     return {
-      nativePlugins: [columnResizing(config.columnResize), tableEditing(config.table), TableHelperPlugin(editor)],
+      nativePlugins: [columnResizing(config.columnResize), tableEditing(config.table), TableHelperPlugin(editor), tableCellSelfResizing()],
       sylPlugins,
     };
   }
