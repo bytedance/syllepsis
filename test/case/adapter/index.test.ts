@@ -12,6 +12,7 @@ require('./dom-event.test');
 require('./shortcut.test');
 require('./sylApi.test');
 require('./props.test');
+require('./image-in-block.test');
 require('./configurator.test');
 
 require('./other.test');
