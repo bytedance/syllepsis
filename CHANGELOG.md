@@ -1,3 +1,10 @@
+## [0.1.4](https://github.com/bytedance/syllepsis/compare/v0.1.3...v0.1.4) (2021-12-09)
+
+
+### 🐞 Bug Fixers
+
+* Fix the problem that pictures cannot be inserted in the table;  table row self resizing when a card containing the width attr is inserted;
+
 ## [0.1.3](https://github.com/bytedance/syllepsis/compare/v0.1.2...v0.1.3) (2021-12-09)
 
 
