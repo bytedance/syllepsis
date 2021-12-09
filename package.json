@@ -17,6 +17,7 @@
     "watch:editor": "lerna exec --scope @syllepsis/editor yarn watch & sleep 1s",
     "watch:plugin": "lerna exec --parallel --scope @syllepsis/plugin-* yarn watch & sleep 3s",
     "watch:react": "lerna exec --scope @syllepsis/access-react yarn watch & sleep 5s",
+    "watch:doc": "docsify serve docs",
     "start:adapter": "yarn watch:adapter & lerna exec --scope example-adapter yarn start",
     "start:example": "yarn watch:adapter && yarn watch:editor && yarn watch:plugin && yarn watch:react ",
     "start:react": "yarn start:example && lerna exec --scope example-react yarn start",

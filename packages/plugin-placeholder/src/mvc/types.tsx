@@ -73,7 +73,7 @@ interface IPluginData {
 
   // inject when exec
   __isInit?: boolean,
-  __init?: () => any,
+  init?: () => any,
   __comp?: TPromise
 }
 

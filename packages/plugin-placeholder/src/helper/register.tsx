@@ -173,7 +173,7 @@ function appendPluginConfig(preData: { [key: string]: IPluginData }, appendData:
     const { name } = eachPluginData;
     if (name) {
       const tempPluginData = deepCopy(eachPluginData);
-      tempPluginData.__init = getInitFunction(eachPluginData);
+      tempPluginData.init = getInitFunction(eachPluginData);
       if (!preData[name]) {
         preData[name] = tempPluginData;
       }
@@ -189,7 +189,7 @@ function assignPluginConfig(preData: { [key: string]: IPluginData }, appendData:
     const { name } = eachPluginData;
     if (name) {
       const tempPluginData = deepCopy(eachPluginData);
-      tempPluginData.__init = getInitFunction(eachPluginData);
+      tempPluginData.init = getInitFunction(eachPluginData);
       if (!preData[name]) {
         preData[name] = tempPluginData;
       }
@@ -198,8 +198,8 @@ function assignPluginConfig(preData: { [key: string]: IPluginData }, appendData:
 }
 
 function getInitFunction(eachPluginData: IPluginData) {
-  const { name, url, __init } = eachPluginData;
-  if (__init) {
+  const { name, url, init } = eachPluginData;
+  if (init) {
     console.warn('do not repeat init');
     return;
   }
@@ -242,13 +242,13 @@ function execPlugin(name: string, editor: SylApi) {
         reject(`not support plugin ${name}`);
         return false;
       }
-      const { __init } = currPluginData;
-      if (!__init) {
-        reject('config should have __init function ');
+      const { init } = currPluginData;
+      if (!init) {
+        reject('config should have init function ');
         return false;
       }
 
-      __init().then(async (config: IConfigData) => {
+      init().then(async (config: IConfigData) => {
         const { initTools, meta, data } = config;
 
         if (initTools && !currPluginData.__isInit) {

@@ -55,17 +55,14 @@ declare global {
 const dynamicImport = {
   components: {
     'Menu': {
-      __init: () => import('./components/menu/index')
+      init: () => import('./components/menu/index')
     },
     'Todo': {
-      __init: () => import('./components/todo/index')
+      init: () => import('./components/todo/index')
     },
     'Code': {
-      __init: () => import('./components/code/index')
+      init: () => import('./components/code/index')
     },
-    'MxGraph': {
-      __init: () => import('./components/mxgraph/index')
-    }
   }
 }
 
