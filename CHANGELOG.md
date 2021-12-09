@@ -1,6 +1,19 @@
 ## [0.1.3](https://github.com/bytedance/syllepsis/compare/v0.1.2...v0.1.3) (2021-12-09)
 
 
+### 🎉 Features
+
+* example-placeholder
+* placeholder plugin
+
+
+### 🐞 Bug Fixers
+
+* **adapter:** duplicate props of `IEventHandler` and `EditorProps` will confilct, closes [#91](https://github.com/bytedance/syllepsis/issues/91)
+
+## [0.1.3](https://github.com/bytedance/syllepsis/compare/v0.1.2...v0.1.3) (2021-12-09)
+
+
 ### 🐞 Bug Fixers
 
 * **adapter:** duplicate props of `IEventHandler` and `EditorProps` will confilct, closes [#91](https://github.com/bytedance/syllepsis/issues/91)
