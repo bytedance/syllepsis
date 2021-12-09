@@ -43,6 +43,15 @@ function Loading() {
   return <span className="loading"/>
 }
 
+function getInnerWidth() {
+  const container = document.querySelector('.ProseMirror') as HTMLElement;
+  const style = window.getComputedStyle(container);
+  const paddingLeft = parseInt(style.paddingLeft);
+  const paddingRight = parseInt(style.paddingRight);
+  const width = container.getBoundingClientRect().width - paddingLeft - paddingRight;
+  return width;
+}
+
 function PlaceholderMask(props: {
   editor: SylApi;
   attrs: IPlaceholderData;
@@ -154,6 +163,8 @@ function PlaceholderMask(props: {
       const nextCardData = isHistory ? deepCopy(cardData) : cardData;
       if (typeof _data === 'string') {
         nextCardData.data = _data;
+      } else if (Array.isArray(_data)) {
+        nextCardData.data = [..._data];
       } else if (typeof _data === 'object') {
         nextCardData.data = Object.assign(nextCardData.data, { ..._data });
       } else {
@@ -195,8 +206,7 @@ function PlaceholderMask(props: {
   // update placeholder width size
   useEffect(() => {
     const updateMaxWidth = () => {
-      const container = document.querySelector('.ProseMirror') as HTMLElement;
-      setMaxWidth(container.getBoundingClientRect().width);
+      setMaxWidth(getInnerWidth());
     }
     updateMaxWidth();
     window.addEventListener('resize', updateMaxWidth);
@@ -211,8 +221,7 @@ function PlaceholderMask(props: {
     let initHeight = height;
     if (!width) {
       // use container width when params width not assign
-      const container = document.querySelector('.ProseMirror') as HTMLElement;
-      initWidth = container.getBoundingClientRect().width;
+      initWidth = getInnerWidth();
     }
     if (!initHeight) {
       if (ratio) {
@@ -228,8 +237,7 @@ function PlaceholderMask(props: {
 
   const onResize = useCallback((options: { width?: number, height: number }, updateData?: boolean) => {
     let { width: toWidth, height: toHeight } = options;
-    const container = document.querySelector('.ProseMirror') as HTMLElement;
-    const maxWidth = container.getBoundingClientRect().width;
+    const maxWidth = getInnerWidth();
     toHeight = Math.max(1, toHeight);
     toWidth = toWidth || maxWidth;
     if (width !== toWidth || height !== toHeight) {
@@ -305,4 +313,5 @@ function PlaceholderMask(props: {
 
 export {
   PlaceholderMask,
+  getInnerWidth
 }

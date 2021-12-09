@@ -7,56 +7,65 @@
 ## 使用
 
 ```typescript
-import PlaceHolder from '@syllepsis/placeholder';
+import "./styles.css";
+import React from "react";
+import { SylEditor } from "@syllepsis/access-react";
+import { PlaceholderPlugin } from "@syllepsis/plugin-placeholder";
 
-plugins: [
-  new PlaceHolder({
-    components: {
-      'Todo': {
-        init: () => import('./todo')
-      },
-    }
-  })
-]
+export default function () {
+  return (
+    <SylEditor
+      plugins={[
+        new PlaceholderPlugin({
+          components: {
+            'Todo': {
+              init: () => import("./components/todo")
+            }
+          }
+        })
+      ]}
+  />
+);
+}
+
 ```
 
 在`todo/index.js`中，有以下约束
 
 ```typescript
 // todo/index.js
-import React from 'react';
 // 一些基础能力
-const meta = {}
+const meta = {};
 const data = {
-  content: 'Hello Component'
-} 
+  content: "Hello Component"
+};
 
 // 加载后执行
-async function initTools(editor: any, meta: any, data: any, key: string) {
+async function initTools(editor, meta, data, key) {
   editor.dynamicPlugins.insertPlaceholder(key, meta, data, 0);
 }
 
 // 执行editor.dynamicPlugins.insertPlaceholder时才执行
 function initComp() {
-    return () => import('./comp');
+  return () => import("./comp");
 }
 
-export {
-    meta,
-    data,
-    initComp,
-    initTools
-}
+export { meta, data, initComp, initTools };
+
 ```
 
 ```typescript
 // todo/comp.tsx
+import React from 'react';
+
 const YourComponent = React.forwardRef((props, ref) => {
   // data，在插入时，为声明的data
   // update后，data为Update的数据
   const { data, updata } = props;
   return <div>{ data.content }</div>;
 })
+
+export default YourComponent;
 ```
 
 

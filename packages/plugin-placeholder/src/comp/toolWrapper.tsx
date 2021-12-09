@@ -7,6 +7,7 @@ import debounce from 'lodash.debounce';
 import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 import { updateKeydown } from '../mvc/controller';
+import { getInnerWidth } from '../mvc/mask';
 
 let preWidth = 0;
 let preHeight = 0;
@@ -70,8 +71,7 @@ const ToolWrapper = React.forwardRef((props: ToolWrapperProps, ref: any) => {
   useEffect(() => {
     const calcSizeByRatio = () => {
       if (ratio) {
-        const container = document.querySelector('.ProseMirror') as HTMLElement;
-        const ratioWidth = container.getBoundingClientRect().width;
+        const ratioWidth = getInnerWidth();
         const ratioHeight = ratioWidth * ratio;
         onResize({
           width: ratioWidth,
@@ -94,8 +94,7 @@ const ToolWrapper = React.forwardRef((props: ToolWrapperProps, ref: any) => {
       let adaptWidth = 0;
       const rect = contentWrapperRef.current.getBoundingClientRect();
       // adaptWidth = rect.width;
-      const container = document.querySelector('.ProseMirror') as HTMLElement;
-      adaptWidth = container.getBoundingClientRect().width;
+      adaptWidth = getInnerWidth();
 
       onResize({
         width: adaptWidth + 2,
