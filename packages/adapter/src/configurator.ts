@@ -7,7 +7,7 @@ import { EditorView, NodeView } from 'prosemirror-view';
 import { ISylApiAdapterOptions, SylApi } from './api';
 import { BasicCtrlPlugin, BSControlKey, IBasicCtrlConfig } from './basic/basic-ctrl';
 import { CtrlPlugin } from './basic/ctrl-plugin';
-import { createCustomCtrlPlugin, ICustomCtrlConfig } from './basic/custom-ctrl';
+import { createCustomCtrlPlugin, CUSTOM_CTRL_ACCEPT, ICustomCtrlConfig } from './basic/custom-ctrl';
 import { DecorationPlugin } from './basic/decoration';
 import { basicKeymapPlugin, createCustomKeymapPlugins, defaultKeymapPlugin, TSylKeymap } from './basic/keymap';
 import { createLifeCyclePlugin } from './basic/lifecycle/lifecycle-plugin';
@@ -55,27 +55,6 @@ interface IConfiguration extends IBaseConfig, IBasicCtrlConfig, ICustomCtrlConfi
 type TSylEventType = EventChannel['LocalEvent'] | string | symbol;
 
 const EDITOR_CHECK = ['autocomplete', 'autoCorrect', 'autoCapitalize'];
-const CONFIG_KEY_EXCLUDE_CUSTOM: Required<Record<
-  keyof Omit<IConfiguration & ISylApiAdapterOptions, keyof ICustomCtrlConfig>,
-  boolean
->> = {
-  spellCheck: true,
-  autoFocus: true,
-  onError: true,
-  onBlur: true,
-  onFocus: true,
-  emitter: true,
-  locale: true,
-  disable: true,
-  disableShortcut: true,
-  keymap: true,
-  placeholder: true,
-  dropCursor: true,
-  keepWhiteSpace: true,
-  keepLastLine: true,
-  module: true,
-  content: true,
-};
 
 const dispatchTransactionFactory = ({
   view,
@@ -394,7 +373,7 @@ class SylConfigurator {
     }
     Object.keys(props).forEach(key => {
       // @ts-ignore
-      if (!CONFIG_KEY_EXCLUDE_CUSTOM[key]) this.customConfiguration[key] = props[key];
+      if (CUSTOM_CTRL_ACCEPT[key]) this.customConfiguration[key] = props[key];
     });
     this.customCtrlPlugin?.registerProps(this.customConfiguration);
   };
