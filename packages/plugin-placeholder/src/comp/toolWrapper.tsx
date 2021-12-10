@@ -90,15 +90,12 @@ const ToolWrapper = React.forwardRef((props: ToolWrapperProps, ref: any) => {
   })
 
   const update = debounce(() => {
-    if (contentWrapperRef.current) {
-      let adaptWidth = 0;
+    if (contentWrapperRef.current && adapt) {
+      const adaptWidth = getInnerWidth();
       const rect = contentWrapperRef.current.getBoundingClientRect();
-      // adaptWidth = rect.width;
-      const container = document.querySelector('.ProseMirror') as HTMLElement;
-      adaptWidth = container.getBoundingClientRect().width;
 
       onResize({
-        width: adaptWidth + 2,
+        width: adaptWidth,
         height: rect.height + 2
       })
     }

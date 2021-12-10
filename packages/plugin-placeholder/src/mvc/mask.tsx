@@ -48,7 +48,8 @@ function getInnerWidth() {
   const style = window.getComputedStyle(container);
   const paddingLeft = parseInt(style.paddingLeft);
   const paddingRight = parseInt(style.paddingRight);
-  const width = container.getBoundingClientRect().width - paddingLeft - paddingRight;
+  const borderWidth = 1;
+  const width = container.getBoundingClientRect().width - paddingLeft - paddingRight - borderWidth * 2;
   return width;
 }
 
