@@ -17,8 +17,11 @@
     "watch:editor": "lerna exec --scope @syllepsis/editor yarn watch & sleep 1s",
     "watch:plugin": "lerna exec --parallel --scope @syllepsis/plugin-* yarn watch & sleep 3s",
     "watch:react": "lerna exec --scope @syllepsis/access-react yarn watch & sleep 5s",
+    "watch:code": "yarn watch:adapter && yarn watch:editor && yarn watch:plugin && yarn watch:react ",
+    "watch:doc": "docsify serve docs",
     "start:adapter": "yarn watch:adapter & lerna exec --scope example-adapter yarn start",
-    "start:react": "yarn watch:adapter && yarn watch:editor && yarn watch:plugin && yarn watch:react && lerna exec --scope example-react yarn start",
+    "start:react": "yarn watch:code && lerna exec --scope example-react yarn start",
+    "start:placeholder": "yarn watch:code && lerna exec --scope example-placeholder yarn start",
     "start:doc": "anywhere -d docs",
     "test": "jest --config jest.config.js ./test/index.test.ts",
     "lint": "eslint --fix 'packages/**/src/**/*.{ts,tsx}'",
@@ -74,7 +77,8 @@
     "@syllepsis/editor": "file:packages/editor",
     "@syllepsis/plugin-basic": "file:packages/plugin-basic",
     "@syllepsis/plugin-code-block": "file:packages/plugin-code-block",
-    "@syllepsis/plugin-table": "file:packages/plugin-table"
+    "@syllepsis/plugin-table": "file:packages/plugin-table",
+    "@syllepsis/plugin-placeholder": "file:packages/plugin-placeholder"
   },
   "config": {
     "commitizen": {
