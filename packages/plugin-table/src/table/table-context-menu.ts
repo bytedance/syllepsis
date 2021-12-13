@@ -140,6 +140,8 @@ class ContextMenuComponent {
     return $dom;
   }
 
+  private toolbarInlineStatus = false;
+
   show(e: MouseEvent) {
     const $menu = this.$container;
     $menu.style.display = 'block';
@@ -159,14 +161,19 @@ class ContextMenuComponent {
     const { top, left } = calculateMenuPosition(cursorRect, rect);
     $menu.style.top = `${top}px`;
     $menu.style.left = `${left}px`;
-    if (this.props.editor.command.toolbarInline) this.props.editor.command.toolbarInline.disable();
+    if (this.props.editor.command.toolbarInline) {
+      this.toolbarInlineStatus = this.props.editor.command.toolbarInline.getEnable();
+      this.props.editor.command.toolbarInline.disable();
+    }
   }
 
   hide = () => {
     const $menu = this.$container;
     if ($menu && $menu.style) {
       $menu.style.display = 'none';
-      if (this.props.editor.command.toolbarInline) this.props.editor.command.toolbarInline.enable();
+      if (this.props.editor.command.toolbarInline && this.toolbarInlineStatus) {
+        this.props.editor.command.toolbarInline.enable();
+      }
     }
   };
 }
