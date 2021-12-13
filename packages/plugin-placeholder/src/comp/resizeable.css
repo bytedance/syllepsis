@@ -1,0 +1,73 @@
+.resize-wrapper {
+}
+
+.resize-wrapper .lt {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 24px;
+  padding: 8px;
+}
+
+.resize-wrapper .lt:before {
+  display: block;
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: white;
+  border: 1px solid black;
+  border-radius: 100%;
+}
+
+.resize-wrapper .lt1 {
+  left: -12px;
+  top: -12px;
+  cursor: nw-resize;
+}
+
+.resize-wrapper .lt2 {
+  left: 50%;
+  top: -12px;
+  transform: translateX(-50%);
+  cursor: n-resize;
+}
+
+.resize-wrapper .lt3 {
+  left: calc(100% - 12px);
+  top: -12px;
+  cursor: ne-resize;
+}
+
+.resize-wrapper .lt4 {
+  left: calc(100% - 12px);
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: e-resize;
+}
+
+.resize-wrapper .lt5 {
+  left: calc(100% - 12px);
+  top: calc(100% - 12px);
+  cursor: se-resize;
+}
+
+.resize-wrapper .lt6 {
+  left: 50%;
+  top: calc(100% - 12px);
+  transform: translateX(-50%);
+  cursor: s-resize;
+}
+
+.resize-wrapper .lt7 {
+  left: -12px;
+  top: calc(100% - 12px);
+  cursor: sw-resize;
+}
+
+.resize-wrapper .lt8 {
+  left: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: w-resize;
+}

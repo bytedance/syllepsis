@@ -19,6 +19,7 @@
   - [音频](/zh-cn/plugins/audio.md)
   - [字体颜色](/en/plugins/color.md)
   - [背景颜色](/en/plugins/background.md)
+  - [占位插件（Beta）](/zh-cn/plugins/placeholder.md)
 - [props 配置](/zh-cn/props.md)
 - [API 接口](/zh-cn/api.md)
 - [Playground](/zh-cn/playground.md)
