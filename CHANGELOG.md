@@ -1,3 +1,10 @@
+## [0.1.5](https://github.com/bytedance/syllepsis/compare/v0.1.4...v0.1.5) (2021-12-13)
+
+
+### 🐞 Bug Fixers
+
+* `command.toolbarInline.disable()` does not working when using `TablePlugin`
+
 ## [0.1.4](https://github.com/bytedance/syllepsis/compare/v0.1.3...v0.1.4) (2021-12-09)
 
 
