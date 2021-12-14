@@ -1,5 +1,5 @@
 import { testPlugins } from './plugins';
-import { IModuleType, Types, SylApi } from '../../packages/adapter/dist/es';
+import { IModuleType, Types } from '../../packages/adapter/dist/es';
 import { SylEditorService } from '../../packages/editor/dist/es/Editor';
 
 const createEditor = (
@@ -39,6 +39,17 @@ const createEditor = (
     },
     scrollThreshold: 2,
     scrollMargin: 2,
+    appendTransaction: (tr, oldState, newState) => {
+      if (newState.doc.textContent === 'syl-append') {
+        return tr.insertText('syl-append');
+      }
+    },
+    filterTransaction: tr => {
+      if (tr.getMeta('syl-filter')) {
+        return false;
+      }
+      return true;
+    },
   });
 
   if (selection) editor.setSelection(selection);

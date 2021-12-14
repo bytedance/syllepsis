@@ -101,10 +101,10 @@ class KeymapCtrl {
     this.props.handleKeyDown = keydownHandler(composeKeymap(this.adapter, this.keyMapConfig));
   };
 
-  register(registerConfigs: Array<TSylKeymap> | TSylKeymap) {
+  register(registerConfigs: Array<TSylKeymap> | TSylKeymap, prioritized = false) {
     toArray(registerConfigs).forEach(keymap => {
       Object.keys(keymap).forEach(key => {
-        groupData(this.keyMapConfig, key, keymap[key]);
+        groupData(this.keyMapConfig, key, keymap[key], prioritized);
       });
     });
     this.handleProps();

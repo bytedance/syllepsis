@@ -1,7 +1,7 @@
 import { Plugin } from 'prosemirror-state';
 
 interface ICtrlPluginCtrl<T> {
-  register: (props: T) => void;
+  register: (props: T, prioritized?: boolean) => void;
   unregister: (props: T) => void;
 }
 
@@ -14,8 +14,8 @@ class CtrlPlugin<T> extends Plugin {
     this.ctrlCenter = ctrlCenter;
   }
 
-  public registerProps = (props: T) => {
-    this.ctrlCenter.register(props);
+  public registerProps = (props: T, prioritized?: boolean) => {
+    this.ctrlCenter.register(props, prioritized);
   };
 
   public unregisterProps = (props: T) => {
