@@ -31,5 +31,5 @@ import { SylEditor } from '@syllepsis/access-react';
 | keymap            | [`Record<string, TKeymapHandler>`](https://bytedance.github.io/syllepsis/#/zh-cn/chapters/syl-plugin?id=controller) | 可选，用于设置`keymap`（快捷键）处理函数。                                               |
 | scrollThreshold   | `number \| { top: number, left: number, right: number, bottom: number}`                                             | 可选，当光标距离可视区域为小于设置的值时，会触发`scrollMargin`，修正视窗位置，默认是 0。 |
 | scrollMargin      | `number \| { top: number, left: number, right: number, bottom: number}`                                             | 可选，触发修正后，焦点距离边界的值，默认是 5。                                           |
-| appendTransaction | `(tr: Transaction, oldState: EditorState, newState: EditorState): void | Transaction`                               | 可选，可用于在编辑器状态变化时追加`transaction`                                          |
+| appendTransaction | `(tr: Transaction, oldState: EditorState, newState: EditorState): void \| Transaction`                              | 可选，可用于在编辑器状态变化时追加`transaction`                                          |
 | filterTransaction | `(tr: Transaction, state: EditorState) => boolean`                                                                  | 可选，细粒度控制每个`tr`是否需要应用，返回`false`为不应用。                              |
