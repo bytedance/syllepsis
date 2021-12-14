@@ -1,3 +1,10 @@
+## [0.1.6](https://github.com/bytedance/syllepsis/compare/v0.1.5...v0.1.6) (2021-12-14)
+
+
+### 🎉 Features
+
+* support configuring `filterTransaction` in props and `Controller`
+
 ## [0.1.5](https://github.com/bytedance/syllepsis/compare/v0.1.4...v0.1.5) (2021-12-13)
 
 
