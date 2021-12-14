@@ -57,4 +57,49 @@ describe('CreateEditor', () => {
 
     expect(isPass).toBe(true);
   });
+
+  it('support appendTransaction', async () => {
+    const res = await page.evaluate(() => {
+      editor.setHTML('');
+      const { state, dispatch } = editor.view;
+      const tr = state.tr;
+      tr.insertText('syl-append');
+      dispatch(tr);
+      return editor.getHTML();
+    });
+
+    expect(res).toBe('<p>syl-appendsyl-append</p>');
+  });
+
+  it('support filterTransaction', async () => {
+    const res = await page.evaluate(() => {
+      editor.setHTML('');
+      const { state, dispatch } = editor.view;
+      const tr = state.tr;
+      tr.insertText('test');
+      tr.setMeta('syl-filter', 'true');
+      dispatch(tr);
+      return editor.getHTML();
+    });
+
+    expect(res).toBe('');
+  });
+
+  it('support update transaction config', async () => {
+    const res = await page.evaluate(() => {
+      editor.configurator.update({
+        appendTransaction: null,
+        filterTransaction: null,
+      });
+      editor.setHTML('');
+      const { state, dispatch } = editor.view;
+      const tr = state.tr;
+      tr.insertText('syl-append');
+      tr.setMeta('syl-filter', 'true');
+      dispatch(tr);
+      return editor.getHTML();
+    });
+
+    expect(res).toBe('<p>syl-append</p>');
+  });
 });
