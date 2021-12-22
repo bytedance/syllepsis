@@ -13,7 +13,6 @@ interface IAbleMeta {
   drag?: boolean,
   rotate?: boolean,
   resize?: boolean,
-  fullscreen?: boolean,
   matcher?: string,
   shortcut?: string,
   history: boolean,

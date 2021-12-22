@@ -2,12 +2,12 @@ import ClipboardJS from 'clipboard';
 
 import { getContentRefHandler } from '../comp/toolWrapper';
 import { deepCopy } from '../helper';
-import { defaultMeta } from '../helper/register';
+import { defaultMeta, Register } from '../helper/register';
 import { PLACEHOLDER_KEY } from './types';
 
 // event happened
 const happenedEvent: string[] = [];
-const eventCb: {
+let eventCb: {
   [key: string]: [value: () => void]
 } = {};
 
@@ -63,6 +63,11 @@ function ready(eventName: string, callback?: () => void) {
       }
     }
   }
+}
+
+function clear() {
+  happenedEvent.splice(0, happenedEvent.length);
+  eventCb = {};
 }
 
 /**
@@ -253,12 +258,23 @@ function initCopy() {
     }))();
 }
 
+interface DynamicApi {
+  insertPlaceholder: (name: string, _meta: any, data: any, index: number) => void,
+  copy: (copyParams: ICopyParams) => void,
+  ready: (eventName: string, callback?: () => void) => void,
+  clear: () => void,
+  isCard: (node: HTMLElement) => void,
+  download: (data: string, name: string) => void,
+  register: Register
+}
+
+
 /**
  * inject api
  * @param editor
  */
 function getInjectApi(editor: any) {
-  return {
+  const api: DynamicApi = {
     insertPlaceholder: (name: string, _meta: any, data: any, index: number) => {
       const meta = Object.assign(deepCopy(defaultMeta), _meta);
       const newData = { meta, data };
@@ -270,13 +286,17 @@ function getInjectApi(editor: any) {
     },
     copy,
     ready,
+    clear,
     isCard,
-    download
+    download,
+    register: new Register(editor)
   }
+  return api;
 }
 
 export {
   download,
+  DynamicApi,
   getInjectApi,
   getUnitId,
   PLACEHOLDER_ID_KEY,

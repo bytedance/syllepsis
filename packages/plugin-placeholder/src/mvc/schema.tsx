@@ -1,9 +1,8 @@
-import { Card } from '@syllepsis/adapter';
+import { Card, LocalEvent, SylApi } from '@syllepsis/adapter';
 import { addAttrsByConfig, IUserAttrsConfig } from '@syllepsis/plugin-basic';
 import React from 'react';
 
-import { inject } from '../helper/register';
-import { getInjectApi, getUnitId } from './api';
+import { DynamicApi, getInjectApi, getUnitId } from './api';
 import { PlaceholderMask } from './mask';
 import { IPlaceholderData, PLACEHOLDER_KEY } from './types';
 
@@ -16,19 +15,29 @@ interface IPlaceholderProps {
   components: any;
 }
 
+export interface IDynamicSylApi extends SylApi {
+  dynamicPlugins: DynamicApi
+}
+
 export class PlaceholderSchema extends Card<IPlaceholderData> {
   public props: IPlaceholderProps;
   public tagName = () => PLACEHOLDER_KEY;
   public name = PLACEHOLDER_KEY;
   public traceSelection = false;
 
-  constructor(editor: any, props: IPlaceholderProps) {
+  constructor(editor: SylApi, props: IPlaceholderProps) {
     super(editor, props);
-    inject(props.components, editor);
+
     addAttrsByConfig(props.addAttributes, this);
     this.props = props;
-    editor.dynamicPlugins = getInjectApi(editor);
-    editor.dynamicPlugins.ready('editor.init');
+    const dynamicPlugins = getInjectApi(editor);
+    // @ts-ignore
+    editor.dynamicPlugins = dynamicPlugins;
+    dynamicPlugins.register.inject(props.components);
+    dynamicPlugins.ready('editor.init');
+    editor.on(LocalEvent.EDITOR_WILL_UNMOUNT, () => {
+      dynamicPlugins.clear();
+    })
   }
 
   public parseDOM = [

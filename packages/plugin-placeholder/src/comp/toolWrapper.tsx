@@ -9,9 +9,6 @@ import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { updateKeydown } from '../mvc/controller';
 import { getInnerWidth } from '../mvc/mask';
 
-let preWidth = 0;
-let preHeight = 0;
-
 interface ToolWrapperProps {
   id: string,
   editor: SylApi,
@@ -23,7 +20,7 @@ interface ToolWrapperProps {
   height: number,
   selected: boolean,
   style: any,
-  fullscreen: boolean | undefined,
+  fullscreen: boolean,
   adapt: boolean,
   ratio?: number,
   onFullscreen: (isFullscreen: boolean) => void,
@@ -58,7 +55,6 @@ const ToolWrapper = React.forwardRef((props: ToolWrapperProps, ref: any) => {
     fullscreen, adapt, onResize, onFullscreen: toggleFullscreen, onClose
   } = props;
 
-  const [isFullscreen, setFullscreen] = useState(false);
   const [hover, setHover] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const contentWrapperRef = useRef<HTMLDivElement>(null);
@@ -88,6 +84,20 @@ const ToolWrapper = React.forwardRef((props: ToolWrapperProps, ref: any) => {
       }
     }
   })
+
+  useEffect(() => {
+    function preventDrag(event: any) {
+      event.preventDefault();
+    }
+    if (fullscreen && wrapperRef.current) {
+      wrapperRef.current.addEventListener('dragstart', preventDrag, { capture: true });
+      return () => {
+        if (wrapperRef.current) {
+          wrapperRef.current.addEventListener('dragstart', preventDrag);
+        }
+      }
+    }
+  }, [fullscreen])
 
   const update = debounce(() => {
     if (contentWrapperRef.current && adapt) {
@@ -153,10 +163,6 @@ const ToolWrapper = React.forwardRef((props: ToolWrapperProps, ref: any) => {
   }
 
   function onFullscreen(event?: any) {
-    preWidth = width;
-    preHeight = height;
-    setFullscreen(!isFullscreen);
-    onResize({ width: window.innerWidth, height: window.innerHeight });
     editor.disable();
     toggleFullscreen(true);
     if (event) {
@@ -186,8 +192,6 @@ const ToolWrapper = React.forwardRef((props: ToolWrapperProps, ref: any) => {
   }
 
   function onOffscreen(event?: any) {
-    setFullscreen(false);
-    onResize({ width: preWidth, height: preHeight });
     editor.enable();
     toggleFullscreen(false);
     if (event) {
@@ -227,21 +231,21 @@ const ToolWrapper = React.forwardRef((props: ToolWrapperProps, ref: any) => {
 
   return (
     <>
-      <div id={id} className={cs('placeholder-wrapper', className, { 'fullscreen': isFullscreen, 'selected': selected })}
-           ref={wrapperRef} style={style} onFocus={onFocus} onClick={onClick}
+      <div id={id} className={cs('placeholder-wrapper', className, { 'fullscreen': fullscreen, 'selected': selected })}
+           ref={wrapperRef} style={style} onFocus={onFocus} onClick={onClick} draggable={fullscreen}
            onMouseEnter={handleMouseEnter}
            onMouseLeave={handleMouseLeave}
            onCopy={handleCopy} onKeyDown={handleKeyDown} onKeyPress={handleKeyPress}>
         {/* close btn */}
         {
-          onClose && !isFullscreen &&
+          onClose && !fullscreen &&
           <button className="close" onClick={handleClose} data-ignore-adapt={true}>
             <Close theme="outline" size="12" fill="#fff"/>
           </button>
         }
         {/* normal btn */}
         {
-          (isFullscreen || hover) && !!fullscreen && toolsConfig.length > 0 &&
+          !fullscreen && hover && toolsConfig.length > 0 &&
           <div className="btn-wrapper" data-ignore-adapt={true}
                onMouseEnter={handleMouseEnter}
                onMouseLeave={handleMouseLeave}>
@@ -262,7 +266,7 @@ const ToolWrapper = React.forwardRef((props: ToolWrapperProps, ref: any) => {
         }
         {/* fullscreen btn */}
         {
-          fullscreen && isFullscreen &&
+          fullscreen &&
           <div className="btn-fullscreen-wrapper" data-ignore-adapt={true}>
             <button className="placeholder-offscreen" onClick={onOffscreen}>
               <Close theme="outline" size="24" fill="#333"/>
@@ -275,7 +279,7 @@ const ToolWrapper = React.forwardRef((props: ToolWrapperProps, ref: any) => {
         </div>
       </div>
       {/* fullscreen placeholder */}
-      {isFullscreen && <div style={{ width: preWidth, height: preHeight }}/>}
+      {fullscreen && <div style={{ width, height }}/>}
     </>
   );
 })

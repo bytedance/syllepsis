@@ -1,11 +1,12 @@
-import { EventChannel, LocalEvent, SylApi } from '@syllepsis/adapter';
+import { EventChannel, LocalEvent } from '@syllepsis/adapter';
 import cs from 'classnames';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { ResizeBox } from '../comp/resizeable';
 import { ToolWrapper } from '../comp/toolWrapper';
 import { deepCopy } from '../helper';
-import { getLazyComponentLoader, register, TRetry } from '../helper/register';
+import { TRetry } from '../helper/register';
+import { IDynamicSylApi } from './schema';
 import { getData, setData } from './store';
 import { IPlaceholderCompProps, IPlaceholderData, loadOrRenderType, unmountType } from './types';
 
@@ -54,7 +55,7 @@ function getInnerWidth() {
 }
 
 function PlaceholderMask(props: {
-  editor: SylApi;
+  editor: IDynamicSylApi;
   attrs: IPlaceholderData;
   getPos: () => number;
 }) {
@@ -95,7 +96,7 @@ function PlaceholderMask(props: {
 
   function nextCycle(time: loadOrRenderType) {
     if (realCycle.load === time) {
-      register(name, editor).then(() => {
+      editor.dynamicPlugins.register.register(name, editor).then(() => {
         if (realCycle.render === time) {
           setRender(true);
         }
@@ -167,7 +168,7 @@ function PlaceholderMask(props: {
       } else if (Array.isArray(_data)) {
         nextCardData.data = [..._data];
       } else if (typeof _data === 'object') {
-        nextCardData.data = Object.assign(nextCardData.data, { ..._data });
+        nextCardData.data = deepCopy(nextCardData.data);
       } else {
         console.error('params error: data should be string or object', _data);
       }
@@ -271,7 +272,7 @@ function PlaceholderMask(props: {
     }
   };
 
-  const lazyCompLoader = getLazyComponentLoader(name);
+  const lazyCompLoader = editor.dynamicPlugins.register.getLazyComponentLoader(name);
 
   // render component
   const RenderComponent = useMemo(() =>
@@ -302,9 +303,9 @@ function PlaceholderMask(props: {
 
   return (
     <ToolWrapper ref={tlRef} id={id} editor={editor} getPos={getPos}
-                 className={cs(typo?.align || 'left', name)} selected={selected} fullscreen={able?.fullscreen}
+                 className={cs(typo?.align || 'left', name)} selected={selected}
                  width={realWidth} height={realHeight} ratio={isDependOnRatio ? ratio : undefined} adapt={isAdapt}
-                 style={{ width: realWidth, height: realHeight }}
+                 style={{ width: realWidth, height: realHeight }} fullscreen={fullscreen}
                  onResize={onResize} resizeBox={resizeBox} contentRef={contentRef}
                  onFullscreen={setFullscreen} onClose={able && able.close === false ? undefined : onClose}>
       {content}
@@ -313,6 +314,6 @@ function PlaceholderMask(props: {
 }
 
 export {
-  PlaceholderMask,
-  getInnerWidth
+  getInnerWidth,
+  PlaceholderMask
 }
