@@ -1,4 +1,4 @@
-# [0.0.0](https://github.com/edeity/syllepsis/compare/v0.1.7-alpha.0...v0.0.0) (2021-12-23)
+# [0.0.0](https://github.com/edeity/syllepsis/compare/v0.1.7-alpha.1...v0.0.0) (2021-12-23)
 
 
 ### 🎉 Features
@@ -13,6 +13,7 @@
 * format example-placeholder
 * placeholder fullscreen resize & repeat init
 * typescript, remove <any> describe as possible
+* yarn build error
 
 ## [0.1.4](https://github.com/edeity/syllepsis/compare/v0.1.3...v0.1.4) (2021-12-09)
 
