@@ -199,7 +199,7 @@ const ToolWrapper = React.forwardRef((props: ToolWrapperProps, ref: React.Ref<IT
     }, 300);
   }
 
-  function onOffscreen(event?: any) {
+  function onOffscreen(event?: React.MouseEvent) {
     editor.enable();
     toggleFullscreen(false);
     if (event) {
