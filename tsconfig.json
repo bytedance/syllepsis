@@ -15,14 +15,7 @@
     "esModuleInterop": true,
     "types": ["node", "jest"],
     "allowJs": true,
-    "outDir": "dist/lib",
-    "baseUrl": ".",
-    "paths": {
-      "@syl-editor/adapter": ["./packages/adapter"],
-      "@syl-editor/editor": ["./packages/editor"],
-      "@syl-editor/plugin-basic": ["./packages/plugin-basic"],
-      "@syl-editor/react-syl-editor-v2": ["./packages/react-access"]
-    }
+    "outDir": "dist/lib"
   },
   "exclude": ["node_modules"]
 }
