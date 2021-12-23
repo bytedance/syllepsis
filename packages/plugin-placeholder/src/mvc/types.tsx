@@ -99,4 +99,5 @@ export {
   loadOrRenderType,
   PLACEHOLDER_KEY,
   TPromise,
-  unmountType}
+  unmountType
+}
