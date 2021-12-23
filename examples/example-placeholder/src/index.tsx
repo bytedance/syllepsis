@@ -55,19 +55,19 @@ declare global {
 const dynamicImport = {
   components: {
     'Menu': {
-      init: () => import('./components/menu')
+      init: () => import('./components/menu'),
     },
     'Todo': {
-      init: () => import('./components/todo')
+      init: () => import('./components/todo'),
     },
     'Code': {
-      init: () => import('./components/code')
+      init: () => import('./components/code'),
     },
     'Cat': {
-      init: () => import('./components/cat')
-    }
-  }
-}
+      init: () => import('./components/cat'),
+    },
+  },
+};
 
 const RichEditor = () => {
   const [plugins] = useState([
@@ -192,7 +192,7 @@ const RichEditor = () => {
     new ColorPlugin(),
     new BackgroundPlugin(),
     new EmojiPlugin(),
-    new PlaceholderPlugin(dynamicImport)
+    new PlaceholderPlugin(dynamicImport),
   ]);
 
   const [module] = useState({
@@ -268,7 +268,7 @@ const RichEditor = () => {
   return (
     <>
       <SylEditor
-        placeholder="please input..."
+        placeholder='please input...'
         getEditor={editor => {
           window.editor = editor;
         }}

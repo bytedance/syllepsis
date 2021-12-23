@@ -5,7 +5,7 @@ import { ExperimentIcon } from './icon';
 const meta = {
   typo: {
     width: 600,
-    height: 200
+    height: 200,
   },
   able: {
     resize: true,

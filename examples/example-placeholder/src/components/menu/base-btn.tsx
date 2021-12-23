@@ -14,9 +14,9 @@ function getCurrPara(editor: any, index: number) {
 
 const baseMenu = [
   {
-    icon: <CopyIcon/>,
+    icon: <CopyIcon />,
     content: 'Copy',
-    onClick: function (editor: any, index: number) {
+    onClick: function(editor: any, index: number) {
       const $para = getCurrPara(editor, index);
       if ($para) {
         editor.dynamicPlugins.copy({ node: $para });
@@ -24,12 +24,12 @@ const baseMenu = [
       } else {
         message.error('Copy Failure');
       }
-    }
+    },
   },
   {
-    icon: <CutIcon/>,
+    icon: <CutIcon />,
     content: 'Cut',
-    onClick: function (editor: any, index: number, length: number) {
+    onClick: function(editor: any, index: number, length: number) {
       const $para = getCurrPara(editor, index);
       if ($para) {
         editor.dynamicPlugins.copy({ node: $para });
@@ -39,20 +39,20 @@ const baseMenu = [
       } else {
         message.error('Cut Failure');
       }
-    }
+    },
   },
   {
-    icon: <DeleteIcon/>,
+    icon: <DeleteIcon />,
     content: 'Delete',
-    onClick: function (editor: any, index: number, length: number) {
+    onClick: function(editor: any, index: number, length: number) {
       editor.delete(index, length);
       console.log('delete', index, length);
       editor.setSelection({ index });
       message.success('Delete Success');
-    }
-  }
-]
+    },
+  },
+];
 
 export {
-  baseMenu
-}
+  baseMenu,
+};

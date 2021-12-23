@@ -5,8 +5,8 @@ export default defineConfig({
     rollupOptions: {
       input: {
         default: '/index.html',
-        mxgraph: './src/components/mxgraph/lib/index.html'
+        mxgraph: './src/components/mxgraph/lib/index.html',
       },
-    }
-  }
+    },
+  },
 });

@@ -168,7 +168,7 @@ function PlaceholderMask(props: {
       } else if (Array.isArray(_data)) {
         nextCardData.data = [..._data];
       } else if (typeof _data === 'object') {
-        nextCardData.data = deepCopy(nextCardData.data);
+        nextCardData.data = deepCopy(_data);
       } else {
         console.error('params error: data should be string or object', _data);
       }

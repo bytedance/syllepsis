@@ -44,7 +44,7 @@ function getValidParaNode(node: Element) {
   }
   return {
     node: aimNode,
-    isTable
+    isTable,
   };
 }
 
@@ -118,7 +118,7 @@ const HoverMenu = (props: IHoverMenuProps) => {
     setLeft(left - 32);
     const firstRect = paraNode.getClientRects()[0];
     // appear middle position
-    const isCard = paraNode.getAttribute('__syl_tag') === 'true'
+    const isCard = paraNode.getAttribute('__syl_tag') === 'true';
     if (firstRect.height && !isCard) {
       setTop(currTop + (firstRect.height - 24) / 2);
     } else {
@@ -136,7 +136,7 @@ const HoverMenu = (props: IHoverMenuProps) => {
   // insert behind
   function handleInsert(eachMenu: any) {
     const { onClick } = eachMenu;
-    const realIndex = empty ? index + length - 1 : index + length
+    const realIndex = empty ? index + length - 1 : index + length;
     onClick && onClick(editor, realIndex);
     editor.setSelection({ index: realIndex + 1 });
   }
@@ -176,17 +176,17 @@ const HoverMenu = (props: IHoverMenuProps) => {
     editor.dynamicPlugins.ready('menu.init');
     return () => {
       editor.off('menu.custom-item', addHoverMenu);
-    }
+    };
   }, []);
 
 
   useEffect(() => {
     const handleMouseDown = () => {
       mouseDown = true;
-    }
+    };
     const handleMouseUp = () => {
       mouseDown = false;
-    }
+    };
     const throttleMousemove = throttle((event: any) => {
       if (isScrolling || mouseDown || menuVisible) {
         return false;
@@ -209,7 +209,7 @@ const HoverMenu = (props: IHoverMenuProps) => {
       window.removeEventListener('mousemove', throttleMousemove);
       window.addEventListener('mousedown', handleMouseDown);
       window.addEventListener('mouseup', handleMouseUp);
-    }
+    };
   }, []);
 
 
@@ -230,29 +230,29 @@ const HoverMenu = (props: IHoverMenuProps) => {
 
     const hideMenu = (() => {
       setVisible(false);
-    })
+    });
 
     window.addEventListener('resize', hideMenu);
     editor.on('selection-change', debounceSelectionChanged);
     return () => {
       window.removeEventListener('resize', hideMenu);
       editor.off('selection-change', debounceSelectionChanged);
-    }
+    };
   }, []);
 
   const content = (
     <Menu className={cs('hover-menu')}
-          // onMouseMove={(e: Event) => e.stopPropagation()}
+      // onMouseMove={(e: Event) => e.stopPropagation()}
           onClick={() => handleMenuVisibleChange(false)}>
       {/* base btn */}
       {
-        !empty && <Menu.ItemGroup title="operation">
+        !empty && <Menu.ItemGroup title='operation'>
           {
             baseMenu.map((eachMenu: any) => {
               const { icon, content } = eachMenu;
               return <Menu.Item key={'base' + content}
                                 icon={icon}
-                                onClick={() => handleCLick(eachMenu)}>{content}</Menu.Item>
+                                onClick={() => handleCLick(eachMenu)}>{content}</Menu.Item>;
             })
           }
         </Menu.ItemGroup>
@@ -264,7 +264,7 @@ const HoverMenu = (props: IHoverMenuProps) => {
               customMenu.map((eachMenu: any) => {
                 const { icon, content } = eachMenu;
                 return <Menu.Item key={'custom' + content} icon={icon}
-                                  onClick={() => handleInsert(eachMenu)}>{content}</Menu.Item>
+                                  onClick={() => handleInsert(eachMenu)}>{content}</Menu.Item>;
               })
             }
           </>
@@ -273,7 +273,7 @@ const HoverMenu = (props: IHoverMenuProps) => {
             customMenu.map((eachMenu: any) => {
               const { icon, content } = eachMenu;
               return <Menu.Item key={'custom' + content} icon={icon}
-                                onClick={() => handleInsert(eachMenu)}>{content}</Menu.Item>
+                                onClick={() => handleInsert(eachMenu)}>{content}</Menu.Item>;
             })
           }
         </Menu.ItemGroup>
@@ -290,11 +290,11 @@ const HoverMenu = (props: IHoverMenuProps) => {
       <Dropdown overlay={content} trigger={['hover']} onVisibleChange={handleMenuVisibleChange}>
         <div className={cs('hover-menu-btn', { visible })} style={{ left, top }}>
           {
-            empty ? <AddIcon/> : <ModifyIcon/>
+            empty ? <AddIcon /> : <ModifyIcon />
           }
         </div>
       </Dropdown>
-      <div className="hover-style" ref={refHoverDiv}/>
+      <div className='hover-style' ref={refHoverDiv} />
     </>
   );
 };
@@ -310,13 +310,15 @@ async function init(editor: any) {
         const root = document.querySelector('#editor') as HTMLElement;
         root.appendChild(wrapper);
       }
-      ReactDOM.render(<HoverMenu editor={editor} ready={() => {resolve('')}}/>, wrapper);
+      ReactDOM.render(<HoverMenu editor={editor} ready={() => {
+        resolve('');
+      }} />, wrapper);
     });
-  })
+  });
 }
 
 export {
   getValidParaNode,
   init,
-  isRoot
-}
+  isRoot,
+};
