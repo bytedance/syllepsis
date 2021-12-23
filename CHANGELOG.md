@@ -1,8 +1,9 @@
-# [0.0.0](https://github.com/edeity/syllepsis/compare/v0.1.8-alpha.1...v0.0.0) (2021-12-23)
+# [0.0.0](https://github.com/edeity/syllepsis/compare/v0.1.8-alpha.2...v0.0.0) (2021-12-23)
 
 
 ### 🐞 Bug Fixers
 
+* change placeholder dependecies
 * republish again
 * republish for lint
 
