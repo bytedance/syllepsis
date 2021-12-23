@@ -2,7 +2,7 @@
   "name": "@syllepsis/plugin-placeholder",
   "author": "lijianle <lijianle@bytedance.com>",
   "description": "plugin to support dynamic import",
-  "version": "0.1.8-alpha.1",
+  "version": "0.1.8-alpha.2",
   "main": "dist/lib/index.js",
   "module": "dist/es/index.js",
   "umd": "dist/umd/index.js",
