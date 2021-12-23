@@ -1,4 +1,15 @@
+<<<<<<< HEAD
 # [0.0.0](https://github.com/edeity/syllepsis/compare/v0.1.7-beta.0...v0.0.0) (2021-12-23)
+=======
+## [0.1.7](https://github.com/bytedance/syllepsis/compare/v0.1.6...v0.1.7) (2021-12-23)
+
+
+### 🐞 Bug Fixers
+
+* type defination file error retains relative path, closes [#96](https://github.com/bytedance/syllepsis/issues/96)
+
+## [0.1.6](https://github.com/bytedance/syllepsis/compare/v0.1.5...v0.1.6) (2021-12-14)
+>>>>>>> github_master
 
 
 ### 🎉 Features
