@@ -1,4 +1,4 @@
-# [0.0.0](https://github.com/edeity/syllepsis/compare/v0.1.7-alpha.1...v0.0.0) (2021-12-23)
+# [0.0.0](https://github.com/edeity/syllepsis/compare/v0.1.7-beta.0...v0.0.0) (2021-12-23)
 
 
 ### 🎉 Features
@@ -12,6 +12,7 @@
 * `command.toolbarInline.disable()` does not working when using `TablePlugin`
 * format example-placeholder
 * placeholder fullscreen resize & repeat init
+* revert version
 * typescript, remove <any> describe as possible
 * yarn build error
 
