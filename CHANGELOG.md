@@ -1,15 +1,21 @@
-<<<<<<< HEAD
-# [0.0.0](https://github.com/edeity/syllepsis/compare/v0.1.7-beta.0...v0.0.0) (2021-12-23)
-=======
-## [0.1.7](https://github.com/bytedance/syllepsis/compare/v0.1.6...v0.1.7) (2021-12-23)
+## [0.1.7](https://github.com/edeity/syllepsis/compare/v0.1.7-alpha.1...v0.1.7) (2021-12-23)
+
+
+### 🎉 Features
+
+* placeholder plugin
 
 
 ### 🐞 Bug Fixers
 
-* type defination file error retains relative path, closes [#96](https://github.com/bytedance/syllepsis/issues/96)
+* format example-placeholder
+* placeholder fullscreen resize & repeat init
+* revert version
+* type defination file error retains relative path, closes [#96](https://github.com/edeity/syllepsis/issues/96)
+* typescript, remove <any> describe as possible
+* yarn build error
 
-## [0.1.6](https://github.com/bytedance/syllepsis/compare/v0.1.5...v0.1.6) (2021-12-14)
->>>>>>> github_master
+## [0.1.7](https://github.com/edeity/syllepsis/compare/v0.1.7-alpha.1...v0.1.7) (2021-12-23)
 
 
 ### 🎉 Features
@@ -23,7 +29,7 @@
 * `command.toolbarInline.disable()` does not working when using `TablePlugin`
 * format example-placeholder
 * placeholder fullscreen resize & repeat init
-* revert version
+* type defination file error retains relative path, closes [#96](https://github.com/edeity/syllepsis/issues/96)
 * typescript, remove <any> describe as possible
 * yarn build error
 
