@@ -24,6 +24,7 @@ const transEvents = ['transformPastedHTML', 'transformPastedText', 'clipboardTex
 interface ICustomCtrlConfig extends Omit<EditorProps, keyof IEventHandler> {
   eventHandler?: IEventHandler;
   appendTransaction?: SylController['appendTransaction'];
+  filterTransaction?: SylController['filterTransaction'];
 }
 
 const CUSTOM_CTRL_ACCEPT: Record<keyof ICustomCtrlConfig, boolean> = {
@@ -40,6 +41,7 @@ const CUSTOM_CTRL_ACCEPT: Record<keyof ICustomCtrlConfig, boolean> = {
   scrollMargin: true,
   appendTransaction: true,
   eventHandler: true,
+  filterTransaction: true,
 };
 
 // transEvents means only transport one parameter
@@ -69,8 +71,9 @@ class CustomCtrlCenter {
   private appendTransactions: Array<NonNullable<SylController['appendTransaction']>> = [];
   private eventHandler: THandlersCenter = {};
   private props: EditorProps = {};
+  private filterTransactions: Array<NonNullable<SylController['filterTransaction']>> = [];
 
-  // group appendTransaction handler
+  // group `appendTransaction` handler
   private handleAppendTransaction = (trs: Transaction[], oldState: EditorState, _newState: EditorState) => {
     let newState = _newState;
     const tr = newState.tr;
@@ -83,6 +86,17 @@ class CustomCtrlCenter {
       }
     });
     if (appended) return tr;
+  };
+
+  // group `filterTransaction` handler
+  private handleFilterTransaction = (tr: Transaction, state: EditorState) => {
+    let isPass = true;
+    this.filterTransactions.some(handler => {
+      isPass = handler(tr, state);
+      return !isPass;
+    });
+
+    return isPass;
   };
 
   private defaultDomEventHandler = (event: Event) =>
@@ -130,11 +144,13 @@ class CustomCtrlCenter {
     this.ensureDOMEvents();
   };
 
-  public register = (registerConfigs: ICustomCtrlConfig | Array<ICustomCtrlConfig>) => {
+  public register = (registerConfigs: ICustomCtrlConfig | Array<ICustomCtrlConfig>, prioritized = false) => {
     toArray(registerConfigs).forEach(config => {
       (Object.keys(config) as Array<keyof ICustomCtrlConfig>).forEach((configName: keyof ICustomCtrlConfig) => {
-        if (configName === 'appendTransaction') {
-          this.appendTransactions.push(config.appendTransaction!);
+        if (configName === 'appendTransaction' && config.appendTransaction) {
+          this.appendTransactions[prioritized ? 'unshift' : 'push'](config.appendTransaction);
+        } else if (configName === 'filterTransaction' && config.filterTransaction) {
+          this.filterTransactions[prioritized ? 'unshift' : 'push'](config.filterTransaction);
         } else if (configName === 'eventHandler') {
           const eventHandler = config.eventHandler;
           (Object.keys(eventHandler!) as Array<keyof IEventHandler>).forEach((event: keyof IEventHandler) => {
@@ -146,11 +162,11 @@ class CustomCtrlCenter {
               (Object.keys(domEventHandler) as Array<keyof NonNullable<IEventHandler['handleDOMEvents']>>).forEach(
                 (key: keyof NonNullable<IEventHandler['handleDOMEvents']>) => {
                   if (!domEventHandler[key]) return;
-                  groupData(this.eventHandler.handleDOMEvents, key, domEventHandler[key]);
+                  groupData(this.eventHandler.handleDOMEvents, key, domEventHandler[key], prioritized);
                 },
               );
             } else {
-              groupData(this.eventHandler, event, handler);
+              groupData(this.eventHandler, event, handler, prioritized);
             }
           });
         } else if (CUSTOM_CTRL_ACCEPT[configName]) {
@@ -168,6 +184,8 @@ class CustomCtrlCenter {
       (Object.keys(config) as Array<keyof ICustomCtrlConfig>).forEach((configName: keyof ICustomCtrlConfig) => {
         if (configName === 'appendTransaction') {
           filterData(this, 'appendTransactions', config.appendTransaction);
+        } else if (configName === 'filterTransaction') {
+          filterData(this, 'filterTransactions', config.filterTransaction);
         } else if (configName === 'eventHandler') {
           (Object.keys(config.eventHandler!) as Array<keyof IEventHandler>).forEach((key: keyof IEventHandler) => {
             if (key === 'handleDOMEvents') {
@@ -200,6 +218,7 @@ class CustomCtrlCenter {
     key: new PluginKey('customControl'),
     props: this.props,
     appendTransaction: this.handleAppendTransaction,
+    filterTransaction: this.handleFilterTransaction,
   };
 }
 

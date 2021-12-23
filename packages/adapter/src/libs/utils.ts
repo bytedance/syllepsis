@@ -57,9 +57,9 @@ const toArray = <T>(arg: T) => {
   if (arg instanceof Array) return arg as ToArray<T>;
   return [arg] as ToArray<T>;
 };
-const groupData = (target: any, key: string, handler: any) => {
+const groupData = (target: any, key: string, handler: any, prioritized: boolean) => {
   if (!Array.isArray(target[key])) target[key] = [];
-  target[key].push(handler);
+  target[key][prioritized ? 'unshift' : 'push'](handler);
 };
 
 const filterData = (target: any, key: string, handler: any) => {

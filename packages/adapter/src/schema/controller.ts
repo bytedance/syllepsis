@@ -87,7 +87,9 @@ class SylController<T extends Types.StringMap<any> = any> {
   public keymap?: Types.StringMap<TKeymapHandler>;
   public transformGetHTML?(html: string): string;
   // return `Transaction` only when the state needs to be processed
-  public appendTransaction?(tr: Transaction, oldState: EditorState, _newState: EditorState): void | Transaction;
+  public appendTransaction?(tr: Transaction, oldState: EditorState, newState: EditorState): void | Transaction;
+  // return `false` when need to ignore `transaction`
+  public filterTransaction?(tr: Transaction, state: EditorState): boolean;
 
   constructor(editor: SylApi, props: Partial<T>) {
     this.editor = editor;

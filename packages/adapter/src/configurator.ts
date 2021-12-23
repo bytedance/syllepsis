@@ -368,14 +368,16 @@ class SylConfigurator {
   }
 
   private setCustomConfiguration = (props: ICustomCtrlConfig) => {
-    if (props.hasOwnProperty('eventHandler') || props.eventHandler !== this.customConfiguration.eventHandler) {
-      this.customConfiguration.eventHandler && this.unregisterEventHandler(this.customConfiguration.eventHandler);
-    }
-    Object.keys(props).forEach(key => {
-      // @ts-ignore
-      if (CUSTOM_CTRL_ACCEPT[key]) this.customConfiguration[key] = props[key];
+    (Object.keys(props) as Array<keyof ICustomCtrlConfig>).forEach(key => {
+      if (CUSTOM_CTRL_ACCEPT[key]) {
+        if (this.customConfiguration[key]) {
+          this.customCtrlPlugin?.unregisterProps({ [key]: this.customConfiguration[key] });
+        }
+        // @ts-ignore
+        this.customConfiguration[key] = props[key];
+      }
     });
-    this.customCtrlPlugin?.registerProps(this.customConfiguration);
+    this.customCtrlPlugin?.registerProps(this.customConfiguration, true);
   };
 
   public registerEventHandler = (eventHandler: IEventHandler) => {
