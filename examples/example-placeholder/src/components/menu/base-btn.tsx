@@ -1,6 +1,6 @@
-import { message } from 'antd';
 import React from 'react';
 
+import { message } from '../ui/message';
 import { CopyIcon, CutIcon, DeleteIcon } from './icon';
 import { getValidParaNode, isRoot } from './panel';
 

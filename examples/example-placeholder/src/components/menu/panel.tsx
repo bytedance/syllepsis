@@ -1,14 +1,13 @@
 import './panel.less';
-import 'antd/dist/antd.css';
 
 import { IDynamicSylApi } from '@syllepsis/plugin-placeholder';
-import { Dropdown, Menu } from 'antd';
 import cs from 'classnames';
 import debounce from 'lodash.debounce';
 import throttle from 'lodash.throttle';
 import React, { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 
+import { Dropdown } from '../ui/dropdown';
 import { baseMenu } from './base-btn';
 import { AddIcon, ModifyIcon } from './icon';
 
@@ -247,44 +246,41 @@ const HoverMenu = (props: IHoverMenuProps) => {
   }, []);
 
   const content = (
-    <Menu className={cs('hover-menu')}
-      // onMouseMove={(e: Event) => e.stopPropagation()}
-          onClick={() => handleMenuVisibleChange(false)}>
+    <div className="hover-menu">
       {/* base btn */}
       {
-        !empty && <Menu.ItemGroup title='operation'>
+        !empty &&
+        <div className="item-group">
           {
             baseMenu.map((eachMenu: IMenuItem) => {
               const { icon, content } = eachMenu;
-              return <Menu.Item key={'base' + content}
-                                icon={icon}
-                                onClick={() => handleCLick(eachMenu)}>{content}</Menu.Item>;
+              return <div className="item"
+                          key={'base' + content}
+                          onClick={() => handleCLick(eachMenu)}>
+                <span className="icon">{icon}</span>
+                <span className="content">{content}</span>
+              </div>;
             })
           }
-        </Menu.ItemGroup>
+        </div>
       }
       {/* insert */}
       {
-        empty ? <>
-            {
-              customMenu.map((eachMenu: IMenuItem) => {
-                const { icon, content } = eachMenu;
-                return <Menu.Item key={'custom' + content} icon={icon}
-                                  onClick={() => handleInsert(eachMenu)}>{content}</Menu.Item>;
-              })
-            }
-          </>
-          : customMenu.length > 0 && <Menu.ItemGroup title={'insert below'}>
-          {
-            customMenu.map((eachMenu: IMenuItem) => {
-              const { icon, content } = eachMenu;
-              return <Menu.Item key={'custom' + content} icon={icon}
-                                onClick={() => handleInsert(eachMenu)}>{content}</Menu.Item>;
-            })
-          }
-        </Menu.ItemGroup>
+        customMenu.length > 0 &&
+        <div className="item-group"> {
+          customMenu.map((eachMenu: IMenuItem) => {
+            const { icon, content } = eachMenu;
+            return <div className="item"
+                        key={'custom' + content}
+                        onClick={() => handleInsert(eachMenu)}>
+              <span className="icon">{icon}</span>
+              <span className="content">{content}</span>
+            </div>
+          })
+        }
+        </div>
       }
-    </Menu>
+    </div>
   );
 
   if (left <= 0 && top <= 0) {
@@ -293,7 +289,7 @@ const HoverMenu = (props: IHoverMenuProps) => {
 
   return (
     <>
-      <Dropdown overlay={content} trigger={['hover']} onVisibleChange={handleMenuVisibleChange}>
+      <Dropdown content={content} onVisibleChange={handleMenuVisibleChange}>
         <div className={cs('hover-menu-btn', { visible })} style={{ left, top }}>
           {
             empty ? <AddIcon /> : <ModifyIcon />
