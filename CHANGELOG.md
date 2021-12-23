@@ -1,3 +1,11 @@
+# [0.0.0](https://github.com/edeity/syllepsis/compare/v0.1.8-alpha.1...v0.0.0) (2021-12-23)
+
+
+### 🐞 Bug Fixers
+
+* republish again
+* republish for lint
+
 ## [0.1.7](https://github.com/edeity/syllepsis/compare/v0.1.7-alpha.1...v0.1.7) (2021-12-23)
 
 
