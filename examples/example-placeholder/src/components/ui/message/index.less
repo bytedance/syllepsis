@@ -1,0 +1,37 @@
+.message-wrapper {
+  z-index: 1010;
+}
+.message {
+  display: inline-block;
+  position: fixed;
+  top: -20px;
+  margin: 0 auto;
+  left: 50%;
+  transform: translate(-50%);
+  background: white;
+  padding: 10px 16px;
+  border-radius: 2px;
+
+  opacity: 0;
+  transition: top .2s, opacity .2s;
+  box-shadow: 0 3px 6px -4px #0000001f, 0 6px 16px #00000014, 0 9px 28px 8px #0000000d;
+
+  &.active {
+    top: 12px;
+    opacity: 1;
+  }
+  .icon {
+    vertical-align: -0.125em;
+    margin-right: 10px;
+  }
+  &.success {
+    .icon {
+      color: #52c41a;
+    }
+  }
+  &.error {
+    .icon {
+      color: #ff4d4f;
+    }
+  }
+}
