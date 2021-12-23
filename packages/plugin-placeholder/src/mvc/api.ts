@@ -3,7 +3,8 @@ import ClipboardJS from 'clipboard';
 import { getContentRefHandler } from '../comp/toolWrapper';
 import { deepCopy } from '../helper';
 import { defaultMeta, Register } from '../helper/register';
-import { PLACEHOLDER_KEY } from './types';
+import { IDynamicSylApi } from './schema';
+import { IMeta, PLACEHOLDER_KEY } from './types';
 
 // event happened
 const happenedEvent: string[] = [];
@@ -92,8 +93,8 @@ function copy(copyParams: ICopyParams) {
 }
 
 function isCard(node: HTMLElement) {
-  return (node.getAttribute && node.getAttribute('__syl_tag') === 'true')
-    || (node.dataset && node.dataset.cardData)
+  return !!((node.getAttribute && node.getAttribute('__syl_tag') === 'true')
+    || (node.dataset && node.dataset.cardData))
 }
 
 function isInputElement(node: HTMLElement) {
@@ -162,7 +163,7 @@ async function getFilterData(htmlString: string) {
       // allow custom data
       if (handle && handle.getCopyData) {
         // fix: hack make sure getCopyData is sync
-        const res = await delay(handle.getCopyData) as { text: any, html: any };
+        const res = await delay(handle.getCopyData) as { text: string, html: any };
         const { text: resText, html: resHtml } = res;
         if (text) {
           text += '\n';
@@ -258,12 +259,12 @@ function initCopy() {
     }))();
 }
 
-interface DynamicApi {
-  insertPlaceholder: (name: string, _meta: any, data: any, index: number) => void,
+interface IDynamicApi {
+  insertPlaceholder: (name: string, meta: IMeta, data: any, index: number) => void,
   copy: (copyParams: ICopyParams) => void,
   ready: (eventName: string, callback?: () => void) => void,
   clear: () => void,
-  isCard: (node: HTMLElement) => void,
+  isCard: (node: HTMLElement) => boolean,
   download: (data: string, name: string) => void,
   register: Register
 }
@@ -273,11 +274,11 @@ interface DynamicApi {
  * inject api
  * @param editor
  */
-function getInjectApi(editor: any) {
-  const api: DynamicApi = {
-    insertPlaceholder: (name: string, _meta: any, data: any, index: number) => {
-      const meta = Object.assign(deepCopy(defaultMeta), _meta);
-      const newData = { meta, data };
+function getInjectApi(editor: IDynamicSylApi) {
+  const api: IDynamicApi = {
+    insertPlaceholder: (name: string, meta: IMeta, data: any, index: number) => {
+      const newMeta = Object.assign(deepCopy(defaultMeta), meta);
+      const newData = { meta: newMeta, data };
       newData.meta[PLACEHOLDER_ID_KEY] = getUnitId();
       newData.meta.name = name;
       editor.insertCard(
@@ -296,9 +297,9 @@ function getInjectApi(editor: any) {
 
 export {
   download,
-  DynamicApi,
   getInjectApi,
   getUnitId,
+  IDynamicApi,
   PLACEHOLDER_ID_KEY,
   ready
 }

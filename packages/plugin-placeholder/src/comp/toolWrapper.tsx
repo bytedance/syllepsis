@@ -13,26 +13,30 @@ interface ToolWrapperProps {
   id: string,
   editor: SylApi,
   contentRef: any,
-  resizeBox: any,
-  getPos: any,
+  resizeBox: JSX.Element,
+  getPos: () => number,
   className: string,
   width: number,
   height: number,
   selected: boolean,
-  style: any,
+  style: React.CSSProperties,
   fullscreen: boolean,
   adapt: boolean,
   ratio?: number,
   onFullscreen: (isFullscreen: boolean) => void,
   onResize: (options: { width: number, height: number }, updateData?: boolean) => void,
-  onClose?: (event: any) => void,
+  onClose?: (event: React.MouseEvent) => void,
   children: React.ReactChild
+}
+
+interface IToolsApi {
+  fullscreen: (active: boolean) => void;
 }
 
 interface IToolsConfig {
   content?: string,
-  icon?: any,
-  onClick: (api: any) => void
+  icon?: JSX.Element,
+  onClick: (event: React.MouseEvent) => void
 }
 
 const cacheContentRefHandler: {
@@ -47,7 +51,11 @@ function getContentRefHandler(id: string) {
   return null;
 }
 
-const ToolWrapper = React.forwardRef((props: ToolWrapperProps, ref: any) => {
+interface IToolWrapperRef {
+  getBoundingClientRect: () => void;
+}
+
+const ToolWrapper = React.forwardRef((props: ToolWrapperProps, ref: React.Ref<IToolWrapperRef>) => {
 
   const {
     id, editor, contentRef, resizeBox, getPos, className,
@@ -86,7 +94,7 @@ const ToolWrapper = React.forwardRef((props: ToolWrapperProps, ref: any) => {
   })
 
   useEffect(() => {
-    function preventDrag(event: any) {
+    function preventDrag(event: DragEvent) {
       event.preventDefault();
     }
     if (fullscreen && wrapperRef.current) {
@@ -127,7 +135,7 @@ const ToolWrapper = React.forwardRef((props: ToolWrapperProps, ref: any) => {
     }
   }, []);
 
-  const onFocus = (event: any) => {
+  const onFocus = (event: React.FocusEvent) => {
     const pos = getPos();
     const { index, length } = editor.getSelection();
     // only update when selection changed
@@ -141,11 +149,11 @@ const ToolWrapper = React.forwardRef((props: ToolWrapperProps, ref: any) => {
     editor.setSelection({ index: pos, length: 1, scrollIntoView: false });
   }
 
-  const handleCopy = (event: any) => {
+  const handleCopy = (event: React.ClipboardEvent) => {
     event.stopPropagation();
   }
 
-  const handleClose = (event: any) => {
+  const handleClose = (event: React.MouseEvent) => {
     if (onClose) {
       onClose(event);
       event.stopPropagation();
@@ -153,16 +161,16 @@ const ToolWrapper = React.forwardRef((props: ToolWrapperProps, ref: any) => {
     }
   }
 
-  const handleKeyDown = (event: any) => {
-    updateKeydown(event.target);
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    updateKeydown(event.target as HTMLElement);
     event.stopPropagation();
   }
 
-  const handleKeyPress = (event: any) => {
+  const handleKeyPress = (event: React.KeyboardEvent) => {
     event.stopPropagation();
   }
 
-  function onFullscreen(event?: any) {
+  function onFullscreen(event?: React.MouseEvent) {
     editor.disable();
     toggleFullscreen(true);
     if (event) {
@@ -212,7 +220,7 @@ const ToolWrapper = React.forwardRef((props: ToolWrapperProps, ref: any) => {
     }
   }
 
-  const api = {
+  const api: IToolsApi = {
     fullscreen: (active: boolean) => {
       if (active) {
         onFullscreen();
@@ -252,7 +260,7 @@ const ToolWrapper = React.forwardRef((props: ToolWrapperProps, ref: any) => {
             {
               toolsConfig.map((eachConfig: IToolsConfig, index: number) => {
                 const { content, icon, onClick } = eachConfig;
-                return <button key={index} onClick={(event: any) => {
+                return <button key={index} onClick={(event: React.MouseEvent) => {
                   event.stopPropagation();
                   event.preventDefault();
                   onClick(event);
@@ -286,5 +294,6 @@ const ToolWrapper = React.forwardRef((props: ToolWrapperProps, ref: any) => {
 
 export {
   getContentRefHandler,
+  IToolsApi,
   ToolWrapper
 };

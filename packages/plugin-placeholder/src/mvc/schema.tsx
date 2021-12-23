@@ -1,8 +1,9 @@
 import { Card, LocalEvent, SylApi } from '@syllepsis/adapter';
 import { addAttrsByConfig, IUserAttrsConfig } from '@syllepsis/plugin-basic';
+import { Node } from 'prosemirror-model';
 import React from 'react';
 
-import { DynamicApi, getInjectApi, getUnitId } from './api';
+import { getInjectApi, getUnitId, IDynamicApi } from './api';
 import { PlaceholderMask } from './mask';
 import { IPlaceholderData, PLACEHOLDER_KEY } from './types';
 
@@ -16,7 +17,7 @@ interface IPlaceholderProps {
 }
 
 export interface IDynamicSylApi extends SylApi {
-  dynamicPlugins: DynamicApi
+  dynamicPlugins: IDynamicApi
 }
 
 export class PlaceholderSchema extends Card<IPlaceholderData> {
@@ -30,7 +31,7 @@ export class PlaceholderSchema extends Card<IPlaceholderData> {
 
     addAttrsByConfig(props.addAttributes, this);
     this.props = props;
-    const dynamicPlugins = getInjectApi(editor);
+    const dynamicPlugins = getInjectApi(editor as IDynamicSylApi);
     // @ts-ignore
     editor.dynamicPlugins = dynamicPlugins;
     dynamicPlugins.register.inject(props.components);
@@ -58,7 +59,7 @@ export class PlaceholderSchema extends Card<IPlaceholderData> {
     }
   ];
 
-  public toDOM = (node: any) => ({
+  public toDOM = (node: Node) => ({
     0: 'div',
     1: {
       'data-card-data': JSON.stringify(node.attrs)

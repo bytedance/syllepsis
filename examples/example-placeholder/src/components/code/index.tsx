@@ -1,3 +1,4 @@
+import { IDynamicSylApi, IMeta } from '@syllepsis/plugin-placeholder';
 import React from 'react';
 
 import { CodeIcon } from './icon';
@@ -10,13 +11,13 @@ const data = {
   doc,
 };
 
-async function initTools(editor: any, meta: any, data: any, key: string) {
+async function initTools(editor: IDynamicSylApi, meta: IMeta, data: any, key: string) {
   return new Promise((resolve) => {
     editor.dynamicPlugins.ready('menu.init', () => {
       editor.emit('menu.custom-item', {
         icon: <CodeIcon />,
         content: 'Code',
-        onClick(editor: any, index: number) {
+        onClick(editor: IDynamicSylApi, index: number) {
           editor.dynamicPlugins.insertPlaceholder(key, meta, data, index);
         },
       });
@@ -30,8 +31,8 @@ function initComp() {
 }
 
 export {
-  meta,
   data,
   initComp,
   initTools,
+  meta,
 };

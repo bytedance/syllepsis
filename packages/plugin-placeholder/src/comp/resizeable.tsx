@@ -41,7 +41,7 @@ function ResizeBox(props: {
   let resizeWidth = Math.min(width, maxWidth);
   let resizeHeight = height;
 
-  function onMouseDown(event: any, name: ltList) {
+  function onMouseDown(event: React.MouseEvent<HTMLSpanElement>, name: ltList) {
     const { clientX, clientY } = event;
     startX = clientX;
     startY = clientY;

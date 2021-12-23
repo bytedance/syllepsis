@@ -1,6 +1,7 @@
 import './panel.less';
 import 'antd/dist/antd.css';
 
+import { IDynamicSylApi } from '@syllepsis/plugin-placeholder';
 import { Dropdown, Menu } from 'antd';
 import cs from 'classnames';
 import debounce from 'lodash.debounce';
@@ -12,8 +13,14 @@ import { baseMenu } from './base-btn';
 import { AddIcon, ModifyIcon } from './icon';
 
 interface IHoverMenuProps {
-  editor: any;
-  ready: any;
+  editor: IDynamicSylApi;
+  ready: () => void;
+}
+
+interface IMenuItem {
+  icon: JSX.Element,
+  content: string,
+  onClick: (editor: IDynamicSylApi, index: number, length?: number) => void,
 }
 
 function isRoot(node: HTMLElement) {
@@ -25,7 +32,7 @@ function isTableNode(node: HTMLElement) {
   return node && node.nodeType === 1 && node.tagName === 'TABLE';
 }
 
-function getValidParaNode(node: Element) {
+function getValidParaNode(node: Node) {
   let aimNode: any = node;
   let nextNode: any = node.parentElement;
   let isEnd = false;
@@ -58,7 +65,7 @@ const HoverMenu = (props: IHoverMenuProps) => {
   const [left, setLeft] = useState(-1);
   const [top, setTop] = useState(-1);
   const [visible, setVisible] = useState(true);
-  const [customMenu, setCustomMenu] = useState<any>([]);
+  const [customMenu, setCustomMenu] = useState<[IMenuItem?]>([]);
   const [index, setIndex] = useState(0);
   const [length, setLength] = useState(0);
   const [empty, setEmpty] = useState(true);
@@ -94,12 +101,11 @@ const HoverMenu = (props: IHoverMenuProps) => {
     }
 
     // get index & length
-    const currIndex = editor.view.posAtDOM(paraNode);
-    let $pos = editor.view.state.doc.resolve(currIndex);
+    const currIndex = editor.view.posAtDOM(paraNode, 0);
+    const $pos = editor.view.state.doc.resolve(currIndex);
     if ($pos.depth === 0) {
-      $pos = $pos.nodeAfter;
       setIndex(currIndex);
-      setLength($pos.nodeSize);
+      setLength($pos.nodeAfter.nodeSize);
     } else {
       setIndex(isTable ? currIndex - 1 : currIndex);
       setLength($pos.parent.nodeSize - 1);
@@ -128,13 +134,13 @@ const HoverMenu = (props: IHoverMenuProps) => {
     currParaNode = paraNode;
   }
 
-  function handleCLick(eachMenu: any) {
+  function handleCLick(eachMenu: IMenuItem) {
     const { onClick } = eachMenu;
     onClick && onClick(editor, index, length);
   }
 
   // insert behind
-  function handleInsert(eachMenu: any) {
+  function handleInsert(eachMenu: IMenuItem) {
     const { onClick } = eachMenu;
     const realIndex = empty ? index + length - 1 : index + length;
     onClick && onClick(editor, realIndex);
@@ -164,9 +170,9 @@ const HoverMenu = (props: IHoverMenuProps) => {
 
   // allow append buttons
   useEffect(() => {
-    function addHoverMenu(menuInfo: any) {
+    function addHoverMenu(menuInfo: IMenuItem) {
       customMenu.push(menuInfo);
-      customMenu.sort((before: any, after: any) => before.content < after.content ? 1 : -1);
+      customMenu.sort((before: IMenuItem, after: IMenuItem) => before.content < after.content ? 1 : -1);
       console.log(customMenu);
       setCustomMenu([...customMenu]);
     }
@@ -187,7 +193,7 @@ const HoverMenu = (props: IHoverMenuProps) => {
     const handleMouseUp = () => {
       mouseDown = false;
     };
-    const throttleMousemove = throttle((event: any) => {
+    const throttleMousemove = throttle((event: MouseEvent) => {
       if (isScrolling || mouseDown || menuVisible) {
         return false;
       }
@@ -203,11 +209,11 @@ const HoverMenu = (props: IHoverMenuProps) => {
       setMenuPosition(result.pos);
     }, 64);
     window.addEventListener('mousedown', handleMouseDown, { capture: true });
-    window.addEventListener('mouseup', handleMouseUp, { capture: true });
     window.addEventListener('mousemove', throttleMousemove);
+    window.addEventListener('mouseup', handleMouseUp, { capture: true });
     return () => {
-      window.removeEventListener('mousemove', throttleMousemove);
       window.addEventListener('mousedown', handleMouseDown);
+      window.removeEventListener('mousemove', throttleMousemove);
       window.addEventListener('mouseup', handleMouseUp);
     };
   }, []);
@@ -248,7 +254,7 @@ const HoverMenu = (props: IHoverMenuProps) => {
       {
         !empty && <Menu.ItemGroup title='operation'>
           {
-            baseMenu.map((eachMenu: any) => {
+            baseMenu.map((eachMenu: IMenuItem) => {
               const { icon, content } = eachMenu;
               return <Menu.Item key={'base' + content}
                                 icon={icon}
@@ -261,7 +267,7 @@ const HoverMenu = (props: IHoverMenuProps) => {
       {
         empty ? <>
             {
-              customMenu.map((eachMenu: any) => {
+              customMenu.map((eachMenu: IMenuItem) => {
                 const { icon, content } = eachMenu;
                 return <Menu.Item key={'custom' + content} icon={icon}
                                   onClick={() => handleInsert(eachMenu)}>{content}</Menu.Item>;
@@ -270,7 +276,7 @@ const HoverMenu = (props: IHoverMenuProps) => {
           </>
           : customMenu.length > 0 && <Menu.ItemGroup title={'insert below'}>
           {
-            customMenu.map((eachMenu: any) => {
+            customMenu.map((eachMenu: IMenuItem) => {
               const { icon, content } = eachMenu;
               return <Menu.Item key={'custom' + content} icon={icon}
                                 onClick={() => handleInsert(eachMenu)}>{content}</Menu.Item>;
@@ -299,7 +305,7 @@ const HoverMenu = (props: IHoverMenuProps) => {
   );
 };
 
-async function init(editor: any) {
+async function init(editor: IDynamicSylApi) {
   return new Promise((resolve) => {
     // register tools
     editor.dynamicPlugins.ready('editor.init', () => {

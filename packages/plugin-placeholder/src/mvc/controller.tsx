@@ -1,14 +1,18 @@
-import { SylController } from '@syllepsis/adapter';
+import { SylApi, SylController } from '@syllepsis/adapter';
 
 import { imgData } from '../img/drag';
 
-function getAble(event: any) {
+function getAble(event: DragEvent) {
   try {
-    const data = JSON.parse(event.target.querySelector('templ div').dataset.cardData);
-    if (data.meta.able) {
-      return data.meta.able;
-    } else {
-      return false;
+    const node = event.target as HTMLElement;
+    const templ = node.querySelector('templ div') as HTMLElement;
+    if (templ && templ.dataset && templ.dataset.cardData) {
+      const data = JSON.parse(templ.dataset.cardData);
+      if (data.meta.able) {
+        return data.meta.able;
+      } else {
+        return false;
+      }
     }
   } catch {
     return false;
@@ -39,15 +43,16 @@ function updateKeydown(node: HTMLElement) {
 class PlaceholderController extends SylController {
 
   public eventHandler = {
-    handleKeyDown(editor: any, view: any, event: any) {
-      isHappenInPlaceHolder = happenInPlaceHolder(event.target);
+    handleKeyDown(editor: SylApi, view: any, event: KeyboardEvent) {
+      const node = event.target as HTMLElement;
+      isHappenInPlaceHolder = happenInPlaceHolder(node);
       return false;
     },
-    handleTextInput(editor: any) {
+    handleTextInput() {
       return !!isHappenInPlaceHolder;
     },
     handleDOMEvents: {
-      dragstart: (editor: any, view: any, event: any) => {
+      dragstart: (editor: SylApi, view: any, event: DragEvent) => {
         const able = getAble(event);
         if (able) {
           // disable drag
@@ -57,7 +62,9 @@ class PlaceholderController extends SylController {
           } else {
             const img = new Image();
             img.src = imgData;
-            event.dataTransfer.setDragImage(img, 10, 10);
+            if (event.dataTransfer) {
+              event.dataTransfer.setDragImage(img, 10, 10);
+            }
             event.stopPropagation();
           }
         }

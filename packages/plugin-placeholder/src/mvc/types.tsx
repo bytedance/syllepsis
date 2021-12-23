@@ -35,14 +35,16 @@ interface ICycleMeta {
   unmount?: unmountType
 }
 
+interface IMeta {
+  id: string,
+  name: string,
+  typo?: ITypoMeta,
+  able?: IAbleMeta,
+  cycle?: ICycleMeta,
+}
+
 interface IPlaceholderData {
-  meta: {
-    id: string,
-    name: string,
-    typo?: ITypoMeta,
-    able?: IAbleMeta,
-    cycle?: ICycleMeta,
-  },
+  meta: IMeta,
   data: any,
 }
 
@@ -76,15 +78,25 @@ interface IPluginData {
   __comp?: TPromise
 }
 
+interface IPlaceholderRef {
+  getCopyData?: () => Promise<{ html?: string; text?: string; }>
+  getActiveTools?: () => [{
+    icon?: JSX.Element,
+    content: string,
+    onClick: () => void,
+  }],
+}
+
 export {
   IAbleMeta,
   ICycleMeta,
+  IMeta,
   IPlaceholderCompProps,
   IPlaceholderData,
+  IPlaceholderRef,
   IPluginData,
   ITypoMeta,
   loadOrRenderType,
   PLACEHOLDER_KEY,
   TPromise,
-  unmountType
-}
+  unmountType}

@@ -1,5 +1,6 @@
 import './comp.less';
 
+import { IDynamicSylApi } from '@syllepsis/plugin-placeholder';
 import React from 'react';
 
 interface ICatData {
@@ -12,7 +13,7 @@ interface ICatData {
 
 interface ILazyProps {
   data: ICatData,
-  editor: any,
+  editor: IDynamicSylApi,
   update: (data: any) => void,
   onFocus?: () => void,
   onBlur?: () => void,

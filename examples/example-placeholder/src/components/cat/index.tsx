@@ -1,6 +1,9 @@
+import { IMeta } from '@syllepsis/plugin-placeholder';
+import { IDynamicSylApi } from '@syllepsis/plugin-placeholder/dist/es/mvc/schema';
 import React from 'react';
 
 import { ExperimentIcon } from './icon';
+import { avatar } from './icon/avatar';
 
 const meta = {
   typo: {
@@ -16,16 +19,16 @@ const data = {
   name: 'Cat',
   desc: 'How bad could a kitty be?',
   role: 'Cheerleaders',
-  avatar: 'https://p26.toutiaoimg.com/large/pgc-image/e8cd855436bf4b15b4420c8e1b3503c0',
+  avatar,
 };
 
-async function initTools(editor: any, meta: any, data, key: string) {
+async function initTools(editor: IDynamicSylApi, meta: IMeta, data: any, key: string) {
   return new Promise((resolve) => {
     editor.dynamicPlugins.ready('menu.init', () => {
       editor.emit('menu.custom-item', {
         icon: <ExperimentIcon />,
         content: key,
-        onClick(editor: any, index: number) {
+        onClick(editor: IDynamicSylApi, index: number) {
           editor.dynamicPlugins.insertPlaceholder(key, meta, data, index);
         },
       });

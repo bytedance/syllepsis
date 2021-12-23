@@ -3,7 +3,7 @@ import axios from 'axios';
 import React, { lazy, Suspense, useCallback, useMemo, useState } from 'react';
 
 import { IDynamicSylApi } from '../mvc/schema';
-import { IPluginData, TPromise } from '../mvc/types';
+import { IMeta, IPluginData, TPromise } from '../mvc/types';
 import { isOk } from './http';
 import { deepCopy } from './index';
 
@@ -12,10 +12,10 @@ type TLoaderComponent = () => JSX.Element;
 type TRetryComponent = (props: { retry: TRetry }) => JSX.Element;
 
 interface IConfigData {
-  meta?: any,
+  meta: IMeta,
   data?: any,
-  initTools?: any,
-  initComp?: any
+  initTools?: (editor: IDynamicSylApi, meta: IMeta, data: any, name: string) => void,
+  initComp?: () => void
 }
 
 interface IPluginKeyValue {
@@ -271,7 +271,7 @@ class Register {
           editor.dynamicPlugins.ready('initTools.' + name);
         }
         resolve(config.initComp ? config.initComp() : '');
-      }).catch((error: any) => {
+      }).catch((error: Error) => {
         console.log('plugin init error', name, error);
         currPluginData.__isInit = false;
       });

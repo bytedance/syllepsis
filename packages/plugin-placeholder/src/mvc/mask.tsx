@@ -255,7 +255,7 @@ function PlaceholderMask(props: {
     }
   }, [cardData, editor]);
 
-  const onClose = (event: any) => {
+  const onClose = (event: MouseEvent) => {
     const pos = getPos();
     editor.deleteCard(pos);
     editor.setSelection({ index: pos });

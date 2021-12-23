@@ -1,20 +1,35 @@
 import './comp.less';
 
+import { IDynamicSylApi, IPlaceholderRef, IToolsApi } from '@syllepsis/plugin-placeholder';
 import cs from 'classnames';
 import React, { useImperativeHandle, useRef, useState } from 'react';
 
 import { ColumnIcon, DeleteIcon, GridIcon } from './icon';
 
-interface ILazyProps {
-  data: any,
-  editor: any,
-  api: any,
-  update: (data: any) => void,
+interface ITodoListData {
+  done: boolean,
+  text: string
 }
 
-interface ITodoProps {
-  done: boolean,
-  text: string,
+interface ITodoData {
+  todo?: [ITodoListData?],
+  done?: [ITodoListData?],
+}
+
+interface IQuadrantData {
+  [QUADRANT_TYPE.FIRST]?: ITodoData,
+  [QUADRANT_TYPE.SECOND]?: ITodoData,
+  [QUADRANT_TYPE.THIRD]?: ITodoData,
+  [QUADRANT_TYPE.FORTH]? : ITodoData,
+}
+
+
+interface ILazyProps {
+  data: IQuadrantData,
+  editor: IDynamicSylApi,
+  api: IToolsApi,
+  fullscreen: boolean,
+  update: (data: IQuadrantData) => void,
 }
 
 const enum QUADRANT_TYPE {
@@ -25,7 +40,7 @@ const enum QUADRANT_TYPE {
 }
 
 interface IQuadrantProps {
-  data: any,
+  data: ITodoData,
   type: QUADRANT_TYPE,
   placeholder: string,
   onChange: (data, type) => void
@@ -41,8 +56,8 @@ interface ITodoListProps {
 interface ITodoWrapperProps {
   className?: string,
   defaultDone: boolean,
-  data: any,
-  change: (data: ITodoProps, value: boolean, isDelete?: boolean) => void,
+  data: [ITodoListData?],
+  change: (data: ITodoListData, value: boolean, isDelete?: boolean) => void,
 }
 
 const TodoList = (props: ITodoListProps) => {
@@ -71,7 +86,7 @@ const TodoWrapper = (props: ITodoWrapperProps) => {
 
 const Quadrant = (props: IQuadrantProps) => {
 
-  const { type, placeholder, onChange, data = { todo: [], done: [] } } = props;
+  const { type, placeholder, onChange, data ={ todo: [], done: [] } } = props;
   const { todo, done } = data;
 
   const inputRef = useRef(null);
@@ -80,12 +95,11 @@ const Quadrant = (props: IQuadrantProps) => {
     onChange({ todo: [...todo], done: [...done] }, type);
   };
 
-  const change = (data: ITodoProps, value: boolean, isDelete: boolean) => {
+  const change = (data: ITodoListData, value: boolean, isDelete: boolean) => {
     const deleteData = value === true ? todo : done;
     const appendData = value === true ? done : todo;
     const index = deleteData.indexOf(data);
     const changeData = deleteData.splice(index, 1);
-    // 假如是Delete，则不需要变换状态
     if (isDelete !== true) {
       appendData.push(changeData[0]);
     }
@@ -110,7 +124,7 @@ const Quadrant = (props: IQuadrantProps) => {
   </div>);
 };
 
-const Todo = React.forwardRef((props: ILazyProps, ref) => {
+const Todo = React.forwardRef((props: ILazyProps, ref: React.Ref<IPlaceholderRef>) => {
   const { data, api, update, fullscreen } = props;
   const [isColumn, setIsColumn] = useState(false);
   const todoData = data;
