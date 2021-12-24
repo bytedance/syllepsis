@@ -8,7 +8,7 @@ module.exports = {
   globals: {
     page: 'readonly',
   },
-  plugins: ['@typescript-eslint', 'react', 'import', 'simple-import-sort', 'no-chinese'],
+  plugins: ['@typescript-eslint', 'react', 'import', 'simple-import-sort'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
@@ -57,8 +57,6 @@ module.exports = {
     'import/no-duplicates': 'error',
     'import/no-unused-modules': 'error',
     'no-async-promise-executor': 'off',
-    'no-chinese/no-chinese': 'error',
-    'no-chinese/no-console-chinese': 'error',
     'no-cond-assign': 'off',
     'no-eq-null': 'error',
     'no-extra-boolean-cast': 'off',

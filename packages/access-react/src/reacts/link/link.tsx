@@ -225,7 +225,6 @@ class LinkModal extends React.PureComponent<ILinkModalProps, ILinkModalState> {
     if (e.keyCode === 13 || e.key === 'Enter') this.handleConfirm();
   };
 
-  /* eslint-disable no-chinese/no-chinese */
   public render() {
     const { text, href, insertType, errorText } = this.state;
     const { editor } = this.props;

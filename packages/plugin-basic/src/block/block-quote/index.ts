@@ -9,7 +9,6 @@ class BlockQuote extends Block<any> {
 
   public textMatcher = [
     {
-      // eslint-disable-next-line no-chinese/no-chinese
       matcher: [/^>\s$/, /^》\s$/],
     },
   ];
