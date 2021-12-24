@@ -59,7 +59,7 @@ export class PlaceholderSchema extends Card<IPlaceholderData> {
     }
   ];
 
-  public toDOM = (node: Node) => ['div', { 'data-card-data': JSON.stringify(node.attrs) }] as DOMOutputSpec;;
+  public toDOM = (node: Node) => ['div', { 'data-card-data': JSON.stringify(node.attrs) }] as DOMOutputSpec;
 
   public attrs = {
     meta: {},

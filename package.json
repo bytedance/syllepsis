@@ -50,6 +50,7 @@
     "cz-conventional-changelog": "^2.1.0",
     "eslint": "^7.29.0",
     "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-no-chinese": "^1.2.258",
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "husky": "^1.0.1",
@@ -77,8 +78,8 @@
     "@syllepsis/editor": "file:packages/editor",
     "@syllepsis/plugin-basic": "file:packages/plugin-basic",
     "@syllepsis/plugin-code-block": "file:packages/plugin-code-block",
-    "@syllepsis/plugin-table": "file:packages/plugin-table",
-    "@syllepsis/plugin-placeholder": "file:packages/plugin-placeholder"
+    "@syllepsis/plugin-placeholder": "file:packages/plugin-placeholder",
+    "@syllepsis/plugin-table": "file:packages/plugin-table"
   },
   "config": {
     "commitizen": {

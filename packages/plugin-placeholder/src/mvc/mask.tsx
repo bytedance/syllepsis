@@ -129,7 +129,6 @@ function PlaceholderMask(props: {
     if (visible === true) {
       nextCycle(loadOrRenderType.VISIBLE);
     } else if (visible === false) {
-      // 不可见时，及时注销
       if (render && realCycle?.unmount === unmountType.INVISIBLE) {
         setRender(false);
       }
