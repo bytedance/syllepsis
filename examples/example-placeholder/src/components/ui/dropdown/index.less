@@ -1,0 +1,26 @@
+.dropdown {
+  position: fixed;
+  left: 0;
+  top: 0;
+  &.visible {
+    .dropdown-content {
+      display: block;
+    }
+  }
+  .dropdown-content {
+    display: none;
+    position: relative;
+    z-index: 1010;
+    background: white;
+    padding: 8px;
+    border-radius: 2px;
+    box-shadow: 0 3px 6px -4px #0000001f, 0 6px 16px #00000014, 0 9px 28px 8px #0000000d;
+    opacity: 0;
+    top: -10px;
+    transition: opacity .3s, top .3s;
+    &.active {
+      opacity: 1;
+      top: 10px;
+    }
+  }
+}
