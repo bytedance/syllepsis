@@ -1,6 +1,6 @@
 import { Card, LocalEvent, SylApi } from '@syllepsis/adapter';
 import { addAttrsByConfig, IUserAttrsConfig } from '@syllepsis/plugin-basic';
-import { Node } from 'prosemirror-model';
+import { DOMOutputSpec, Node } from 'prosemirror-model';
 import React from 'react';
 
 import { getInjectApi, getUnitId, IDynamicApi } from './api';
@@ -59,12 +59,7 @@ export class PlaceholderSchema extends Card<IPlaceholderData> {
     }
   ];
 
-  public toDOM = (node: Node) => ({
-    0: 'div',
-    1: {
-      'data-card-data': JSON.stringify(node.attrs)
-    }
-  });
+  public toDOM = (node: Node) => ['div', { 'data-card-data': JSON.stringify(node.attrs) }] as DOMOutputSpec;;
 
   public attrs = {
     meta: {},

@@ -171,6 +171,7 @@ function PlaceholderMask(props: {
         nextCardData.data = deepCopy(_data);
       } else {
         console.error('params error: data should be string or object', _data);
+        return false;
       }
       // update card attrs
       const index = getPos();

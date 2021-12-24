@@ -10,6 +10,7 @@ import ReactDOM from 'react-dom';
 import { Dropdown } from '../ui/dropdown';
 import { baseMenu } from './base-btn';
 import { AddIcon, ModifyIcon } from './icon';
+import { LocalEvent } from '@syllepsis/adapter';
 
 interface IHoverMenuProps {
   editor: IDynamicSylApi;
@@ -210,9 +211,9 @@ const HoverMenu = (props: IHoverMenuProps) => {
     window.addEventListener('mousemove', throttleMousemove);
     window.addEventListener('mouseup', handleMouseUp, { capture: true });
     return () => {
-      window.addEventListener('mousedown', handleMouseDown);
+      window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mousemove', throttleMousemove);
-      window.addEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('mouseup', handleMouseUp);
     };
   }, []);
 
@@ -237,10 +238,10 @@ const HoverMenu = (props: IHoverMenuProps) => {
     });
 
     window.addEventListener('resize', hideMenu);
-    editor.on('selection-change', debounceSelectionChanged);
+    editor.on(LocalEvent.SELECTION_CHANGED, debounceSelectionChanged);
     return () => {
       window.removeEventListener('resize', hideMenu);
-      editor.off('selection-change', debounceSelectionChanged);
+      editor.off(LocalEvent.SELECTION_CHANGED, debounceSelectionChanged);
     };
   }, []);
 
