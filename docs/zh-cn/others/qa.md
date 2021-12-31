@@ -1,6 +1,6 @@
 ## Q：能否异步加载`Controller`?
 
-**A：** 可以通过`asyncController`加载`Controller`，参考[例子](/zh-cn/chapters/syl-plugin?id=基本结构)
+**A：** 可以通过`asyncController`加载`Controller`，参考[例子](/zh-cn/plugins/syl-plugin?id=基本结构)
 
 ## Q：Chrome89+行首输入中文多出第一个字符？
 
