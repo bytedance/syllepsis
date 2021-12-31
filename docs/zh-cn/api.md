@@ -2,7 +2,7 @@
 
 `SylAPi`指编辑器提供的操作其自身的接口，开发者可通过`getEditor`得到实例。
 
-参考例子：[API](zh-cn/chapters/api.md)
+参考教程：[调用API](zh-cn/chapters/api.md)
 
 ## Property
 

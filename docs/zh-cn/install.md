@@ -26,4 +26,4 @@ export default function App() {
 
 ## 组件属性（Component Props）
 
-更多Component属性，可参考[文档](/zh-cn/props)
+更多组件属性，可参考 SylEditor [Props](/zh-cn/props) 文档。

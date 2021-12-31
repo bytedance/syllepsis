@@ -1,10 +1,16 @@
 # 占位插件（Beta）
 
-虽然Syllepsis抽象了插件，但新增插件仍是一个复杂的过程。
+> 占位插件目前还是实验性功能，旨在采用更激进的方式，探索是否存在一种比[卡片](/zh-cn/chapters/card-plugin)更便捷简单的方式，往编辑器中插入应用。
+> 若发现Bug，或有相关建议，或均可通过[Github Issue](https://github.com/bytedance/syllepsis/issues)进行反馈。
 
-在某些场景中，开发者并不太在意和编辑器的交互，编辑器仅仅是一个存放组件的容器。开发者更希望自己的组件，能像IFrame一样，内嵌入插件中。一个比较典型的场景，就是Notion。 该插件的基本思路，实现一个**具备通用行为**（比如尺寸，选区）的占位插件，之后再加载并替代为对应的React组件。采用此方式，能折中实现插件的"动态加载"。 但值得注意，采用此方式后，所有组件在编辑器中都是一个**黑盒子**。这意味着整个组件在编辑器中只占用一个索引，编辑器和组件属于一种相对隔离的状态（即时为纯文字，编辑器对组件内部状态毫无感知）。如果需要和编辑器保持较强的交互，可考虑常规的插件实现方式。
+虽然Syllepsis抽象了`卡片`，但新增`卡片`插件仍是一个复杂的过程。
+
+本插件旨在**实现一系列卡片通用能力**，保持卡片交互相对统一的同时，将开发者从编辑器中释放出来，将注意力聚焦在组件的交互上。在这过程中，能天然获得按需加载的能力。在插件未加载，或加载不成功时，也能显示占位符，让用户提前获知此处存在应用。
+
 
 ## 使用
+
+插件接受参数`components`，在`init`属性中什么函数，并返回入口文件：
 
 ```typescript
 import "./styles.css";
@@ -14,7 +20,7 @@ import { PlaceholderPlugin } from "@syllepsis/plugin-placeholder";
 
 export default function () {
   return (
-    <SylEditor
+    <SylEditor 
       plugins={[
         new PlaceholderPlugin({
           components: {
@@ -30,22 +36,25 @@ export default function () {
 
 ```
 
-在`todo/index.js`中，有以下约束
+在入口文件中，视情况声明`meta`、`data`、`initTools` 以及 `initComp`：
 
 ```typescript
-// todo/index.js
-// 一些基础能力
+// index.js
+
+// 基础属性
 const meta = {};
+
+// 初始化数据
 const data = {
   content: "Hello Component"
 };
 
-// 加载后执行
+// 加载后执行（通常用于创建一些DOM交互）
 async function initTools(editor, meta, data, key) {
   editor.dynamicPlugins.insertPlaceholder(key, meta, data, 0);
 }
 
-// 执行editor.dynamicPlugins.insertPlaceholder时才执行
+// 在文本中显示的插件组件
 function initComp() {
   return () => import("./comp");
 }
@@ -54,13 +63,16 @@ export { meta, data, initComp, initTools };
 
 ```
 
+而在`initComp`中，返回的便是React组件。
+
 ```typescript
-// todo/comp.tsx
+// comp.jsx
+
 import React from 'react';
 
 const YourComponent = React.forwardRef((props, ref) => {
-  // data，在插入时，为声明的data
-  // update后，data为Update的数据
+  // data，在插入时，为入口文件中声明的初始化数据
+  // 插件调用update后，data为Update传入的数据
   const { data, updata } = props;
   return <div>{ data.content }</div>;
 })
@@ -68,6 +80,7 @@ const YourComponent = React.forwardRef((props, ref) => {
 export default YourComponent;
 ```
 
+## 例子（1）
 
 [placeholder](https://codesandbox.io/embed/placeholder-xsbxv?hidenavigation=1 ':include :type=iframe width=100% height=500px')
 
@@ -101,6 +114,11 @@ export default YourComponent;
 
 ## 定制接口
 
+通过React内置的`Ref`声明，可定义：
+
+- getActiveTools：激活插件后，应显示的按钮。 
+- getCopyData: 复制时，写入剪切板的数据。
+
 ```typescript
 const Comp = React.forwardRef((props, ref) => {
     useImperativeHandler(ref, () => {
@@ -122,6 +140,8 @@ const Comp = React.forwardRef((props, ref) => {
 })
 ```
 
-## 例子
+## 例子（2）
+
+聚焦到编辑器上，通过左侧 + 号按钮，尝试在编辑器中插入插件。
 
 [placeholder](https://codesandbox.io/embed/placeholder-plugins-rk2hn?hidenavigation=1 ':include :type=iframe width=100% height=500px')
