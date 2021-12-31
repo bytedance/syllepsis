@@ -1,7 +1,16 @@
-# 模块
+# 模块（Module）
 
-`Syllepsis`提供了外部模块扩展的接口，使用者可以根据通过配置而不是组件的形式去实现扩展模块，能更好地实现在不同项目的复用以及实现统一。
+`Syllepsis`提供外部模块扩展接口，开发者可通过**配置**<small>（而不是组件）</small>的形式，自定义扩展。
 
-`module`需提供构造函数`Ctor`与配置`option`。
+通过配置的方式，更容易在不同项目中复用，简单且统一。
 
-`Syllepsis`内部提供了基础的扩展模块[静态工具栏](/zh-cn/modules/toolbar.md)以及[跟随式工具栏](/zh-cn/modules/toolbar-inline.md)，使用时只需经过简单的配置即可实现一个完备的可交互编辑器（[_例子_](/zh-cn/playground)）。
+**模块**（`Module`）需提供**构造函数**（`Ctor`）与**自定义选项**（`option`）。
+
+`Syllepsis`内部提供了基础的扩展模块：
+
+1. [静态工具栏](/zh-cn/modules/toolbar.md)
+2. [跟随式工具栏](/zh-cn/modules/toolbar-inline.md)
+
+
+   
+只需简单配置，即可实现一个完备可交互的编辑器（[_例子_](/zh-cn/playground)）。

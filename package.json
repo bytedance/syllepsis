@@ -24,6 +24,7 @@
     "start:placeholder": "yarn watch:code && lerna exec --scope example-placeholder yarn start",
     "start:doc": "anywhere -d docs",
     "test": "jest --config jest.config.js ./test/index.test.ts",
+    "test:doc": "node ./docs/index.js",
     "lint": "eslint --fix 'packages/**/src/**/*.{ts,tsx}'",
     "postversion": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 -n ./changelog/config.js && node ./scripts/commit-change.js"
   },
