@@ -1,4 +1,4 @@
-# 所有配置
+# 插件属性
 
 ## 基本结构
 
@@ -17,7 +17,7 @@ class SylPlugin {
 
 ```typescript
 // Block 即为 Node, Inline 对应 Mark，属性参考：https://prosemirror.net/docs/ref/#model.NodeSpec
-import { Block, Inline } from '@syllepsis/adapter';
+import { Block, Inline } from 'packages/adapter/dist/es/index';
 
 // 比Inline以及Block多一个自定义的ViewMap属性，可用不同渲染库实现，默认不能包含可编辑内容
 import { Card, InlineCard } from '@syllepsis/access-react';

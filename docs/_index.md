@@ -1,6 +1,6 @@
 # Syllepsis
 
-> A magical rich-text editor <small>0.0.1</small>
+> A magical rich-text editor
 
 - Base on Prosemirror
 - Lots of built-in plugins

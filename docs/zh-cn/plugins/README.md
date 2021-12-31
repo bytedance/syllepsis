@@ -2,12 +2,15 @@
 
 插件是`Syllepsis`的一大特色，和绝大多数插件一样，Syllepsis 的插件指一种**可插拔**的能力。
 
-Syllepsis 已内置了一系列的基础插件，可在 ↓↓ 列表 ↓↓ 中查找合适的插件。忘了如何引用？可回顾[引用插件](/zh-cn/chapters/use-plugin)。
+Syllepsis 已内置了一系列的基础插件，可在以下列表中查找合适的插件。
+
+忘了如何引用？可回顾：[引用插件](/zh-cn/chapters/use-plugin)。
 
 哪怕找不到合适的插件，也不要灰心，Syllepsis 提供了一套方式，开发者可以相对简单地自定义自己的插件，请回顾：
 
 - [自定义插件](/zh-cn/chapters/custom-plugin)
-- [自定义卡片插件](/zh-cn/chapters/card-plugin)
+- [卡片插件](/zh-cn/chapters/card-plugin)
+- [插件与组件](/zh-cn/chapters/plugin-component)
 
 ### 文本样式
 
