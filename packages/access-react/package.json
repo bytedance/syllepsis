@@ -1,6 +1,6 @@
 {
   "name": "@syllepsis/access-react",
-  "version": "0.1.7",
+  "version": "0.1.9",
   "description": "react access layer of the syllepsis editor",
   "umd": "dist/umd/index.js",
   "main": "dist/lib/index.js",
