@@ -175,6 +175,8 @@ const renderMoreToolButton = ({
       name={name}
       icon={icon}
       editor={editor}
+      // @ts-ignore
+      key={name}
       display={getToolDisplay(depth)}
       tooltip={tooltip}
       menuDistance={content.menuDistance || menuDistance}
