@@ -1,3 +1,10 @@
+## [0.1.10](https://github.com/bytedance/syllepsis/compare/v0.1.9...v0.1.10) (2022-01-20)
+
+
+### 🐞 Bug Fixers
+
+* **access-react:** toolbar dropdown menu disappears when toolbar is updated #104 (#105), closes [#104](https://github.com/bytedance/syllepsis/issues/104) [#105](https://github.com/bytedance/syllepsis/issues/105)
+
 ## [0.1.8](https://github.com/bytedance/syllepsis/compare/v0.1.7...v0.1.8) (2021-12-24)
 
 
