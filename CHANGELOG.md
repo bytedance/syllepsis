@@ -1,3 +1,11 @@
+## [0.1.11](https://github.com/bytedance/syllepsis/compare/v0.1.10...v0.1.11) (2022-02-10)
+
+
+### 🐞 Bug Fixers
+
+* **access-react:** Missing `key` prop when rendering `more` type button
+* **ImagePlugin:** Required `undo` twice to undo the uploaded images, closes [#106](https://github.com/bytedance/syllepsis/issues/106)
+
 ## [0.1.10](https://github.com/bytedance/syllepsis/compare/v0.1.9...v0.1.10) (2022-01-20)
 
 
