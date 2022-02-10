@@ -6,4 +6,5 @@
 - [插件](/zh-cn/plugins/README.md)
 - [Props](/zh-cn/props.md)
 - [API](/zh-cn/api.md)
+- [Playground](/zh-cn/playground.md)
 - [其它](/zh-cn/others/README.md)
