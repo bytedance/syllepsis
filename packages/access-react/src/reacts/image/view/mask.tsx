@@ -129,11 +129,13 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
         });
       }
       await uploadPromise;
+      if (!this.imageMount) return;
       this.setState({
         isUploading: false,
         isFailed: false,
       });
     } catch (err) {
+      if (!this.imageMount) return;
       this.setState({
         isFailed: true,
         isUploading: false,

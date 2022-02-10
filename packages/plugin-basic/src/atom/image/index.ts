@@ -106,7 +106,7 @@ const insertImageInEditor = (
   const insertNodes = { type: 'doc', content: [] as INodeInfo[] };
   // when depth >= 2 and contained in table, inserting images will not update the selection,causes it to be inserted in reverse order
   const isInTable = $pos.node(1)?.type?.name === 'table' && $pos.depth >= 2;
-  if(isInTable){
+  if (isInTable) {
     images.reverse();
   }
   images.forEach(({ image, attrs }) => {
@@ -118,13 +118,13 @@ const insertImageInEditor = (
       align: 'center',
       ...attrs,
     };
-    if(isInTable) {
-      editor.insert({ type: PLUGIN_NAME, attrs: imageAttrs });
+    if (isInTable) {
+      editor.replace({ type: PLUGIN_NAME, attrs: imageAttrs });
     } else {
       insertNodes.content.push({ type: PLUGIN_NAME, attrs: imageAttrs });
     }
   });
-  if (insertNodes.content.length && !isInTable) editor.insert(insertNodes, pos);
+  if (insertNodes.content.length && !isInTable) editor.replace(insertNodes, pos);
 };
 
 // get the picture file and judge whether to upload it in advance
@@ -179,11 +179,17 @@ const updateImageUrl = async (editor: SylApi, props: IUpdateImageProps, config: 
       if (!attrs) return;
       imageAttrs = await constructAttrs(props.attrs, attrs);
     }
-    const $pos = editor.view.state.doc.resolve(props.getPos());
+    const nodePos = props.getPos();
+    if (typeof nodePos !== 'number') return;
+    const $pos = editor.view.state.doc.resolve(nodePos);
     const curNode = $pos.nodeAfter;
     // confirm the image node exist
     if (!curNode || curNode.type.name !== PLUGIN_NAME || curNode.attrs.src !== src) return;
-    if (!isMatchObject(imageAttrs, props.attrs)) editor.updateCardAttrs($pos.pos, imageAttrs);
+    if (!isMatchObject(imageAttrs, props.attrs)) {
+      // do not put it into user history when updating src
+      const updateConfig = imageAttrs.src !== props.attrs.src ? { addToHistory: false } : undefined;
+      editor.updateCardAttrs($pos.pos, imageAttrs, updateConfig);
+    }
   } finally {
     state.uploading = false;
   }
