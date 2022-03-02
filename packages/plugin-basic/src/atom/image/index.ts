@@ -133,6 +133,8 @@ const insertImageWithFiles = async (editor: SylApi, files: File[], config: Parti
     files.map(
       f =>
         new Promise(resolve => {
+          if (config.checkBeforeInsert && !config.checkBeforeInsert(f)) return resolve({});
+
           const url = window.URL.createObjectURL(f);
           let attrs: undefined | { src: string } = { src: url };
           const image = document.createElement('img');
