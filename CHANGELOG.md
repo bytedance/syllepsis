@@ -1,3 +1,15 @@
+## [0.1.12](https://github.com/bytedance/syllepsis/compare/v0.1.11...v0.1.12) (2022-03-02)
+
+
+### 🎉 Features
+
+* **SylApi:** `addToHistory` config is supported  in `insert` `replace` and `delete` of `SylApi`, closes [#109](https://github.com/bytedance/syllepsis/issues/109)
+
+
+### 🐞 Bug Fixers
+
+* **ImagePlugin:** Drag fails when config `disableCaption`, closes [#108](https://github.com/bytedance/syllepsis/issues/108)
+
 ## [0.1.11](https://github.com/bytedance/syllepsis/compare/v0.1.10...v0.1.11) (2022-02-10)
 
 
