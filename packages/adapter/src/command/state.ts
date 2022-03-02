@@ -6,6 +6,7 @@ import { EditorView } from 'prosemirror-view';
 import { Types } from '../libs';
 
 interface IGeneralOption {
+  addToHistory?: boolean;
   scrollIntoView?: boolean;
   focus?: boolean;
 }
@@ -36,6 +37,7 @@ const defaultInsertOption: Required<InsertOption> = {
   scrollIntoView: true,
   focus: true,
   replaceEmpty: true,
+  addToHistory: true,
   deleteSelection: true,
   inheritMarks: true,
 };
@@ -138,7 +140,7 @@ const insert = (view: EditorView, nodeInfo: INodeInfo | string, index?: InsertOp
   const { state, dispatch } = view;
   const userConfig = getInsertOption<Required<InsertOption>>(index, state.selection.from);
 
-  const { index: pos, scrollIntoView, deleteSelection } = userConfig;
+  const { index: pos, scrollIntoView, deleteSelection, addToHistory } = userConfig;
   const $from = state.doc.resolve(pos);
 
   const newNode = generateNode(view, nodeInfo);
@@ -194,6 +196,7 @@ const insert = (view: EditorView, nodeInfo: INodeInfo | string, index?: InsertOp
     }
   }
 
+  if (!addToHistory) tr.setMeta('addToHistory', false);
   dispatch(scrollIntoView ? tr.scrollIntoView() : tr);
   userConfig.focus && view.focus();
 };
@@ -229,11 +232,12 @@ interface IReplaceOption extends IGeneralOption {
   length?: number;
   inheritMarks?: boolean;
 }
-const defaultReplaceOption: IReplaceOption = {
+const defaultReplaceOption: Required<IReplaceOption> = {
   index: 0,
   length: -1,
   scrollIntoView: true,
   inheritMarks: true,
+  addToHistory: true,
   focus: true,
 };
 const getReplaceOption = getOption(defaultReplaceOption);
@@ -246,13 +250,14 @@ const replace = (view: EditorView, nodeInfo: INodeInfo | string, replaceOption?:
   if (!newNode) return;
   if (config.inheritMarks) newNode.marks = $from.marksAcross($to) || [];
 
-  const { index, scrollIntoView, focus } = config;
+  const { index, scrollIntoView, focus, addToHistory } = config;
   let length = config.length;
   if (length < 0) length = $to.pos - $from.pos;
 
   const { state, dispatch } = view;
   const tr = state.tr.replaceWith(index, index + length, newNode);
 
+  if (!addToHistory) tr.setMeta('addToHistory', false);
   dispatch(scrollIntoView ? tr.scrollIntoView() : tr);
   focus && view.focus();
 };
@@ -262,10 +267,9 @@ const replace = (view: EditorView, nodeInfo: INodeInfo | string, replaceOption?:
  */
 interface IUpdateOption extends IGeneralOption {
   index: number;
-  addToHistory?: boolean;
   merge?: boolean; // whether to merge Object, the default is true
 }
-const defaultUpdateOption = {
+const defaultUpdateOption: Required<IUpdateOption> = {
   index: 0,
   scrollIntoView: false,
   focus: false,
@@ -302,10 +306,11 @@ interface IDeleteOption extends IGeneralOption {
   length?: number;
 }
 
-const defaultDeleteOption = {
+const defaultDeleteOption: Required<IDeleteOption> = {
   index: 0,
   length: 1,
   scrollIntoView: true,
+  addToHistory: true,
   focus: true,
 };
 
@@ -313,7 +318,7 @@ const getDeleteOption = getOption(defaultDeleteOption);
 
 const _delete = (view: EditorView, deleteOption: IDeleteOption) => {
   const selection = view.state.selection;
-  const { index, length, scrollIntoView, focus } = getDeleteOption<Required<IDeleteOption>>(
+  const { index, length, scrollIntoView, focus, addToHistory } = getDeleteOption<Required<IDeleteOption>>(
     deleteOption,
     selection.from,
   );
@@ -321,6 +326,8 @@ const _delete = (view: EditorView, deleteOption: IDeleteOption) => {
   const to = length === 0 || length ? from + length : selection.to;
   const { state, dispatch } = view;
   const tr = state.tr.delete(from, to);
+
+  if (!addToHistory) tr.setMeta('addToHistory', false);
   dispatch(scrollIntoView ? tr.scrollIntoView() : tr);
   focus && view.focus();
 };

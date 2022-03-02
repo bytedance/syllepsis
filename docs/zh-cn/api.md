@@ -2,7 +2,7 @@
 
 `SylAPi`指编辑器提供的操作其自身的接口，开发者可通过`getEditor`得到实例。
 
-参考教程：[调用API](zh-cn/chapters/api.md)
+参考教程：[调用 API](zh-cn/chapters/api.md)
 
 ## Property
 
@@ -368,6 +368,7 @@ interface IGetSelectionInfo extends Types.IRangeStatic {
   replaceEmpty: boolean // 替换空行，默认为true
   focus?: boolean; // 聚焦，默认为true
   inheritMarks?: boolean; // 插入行内节点时是否继承当前样式，默认为true
+  addToHistory?: boolean; // 是否可以被单独撤销，默认为true
 }
 ```
 
@@ -392,15 +393,17 @@ interface IGetSelectionInfo extends Types.IRangeStatic {
   length?: number; // 替换的长度，默认为1
   scrollIntoView?: boolean; // 滚动到选中位置，默认为true
   focus?: boolean; // 聚焦，默认为true
+  addToHistory?: boolean; // 是否可以被单独撤销，默认为true
 }
 ```
 
 ### IDeleteOption
 
-```
+```typescript
 {
-    scrollIntoView?: boolean; // 滚动到选中位置，默认为true
-    focus?: boolean; // 聚焦，默认为true
+  scrollIntoView?: boolean; // 滚动到选中位置，默认为true
+  focus?: boolean; // 聚焦，默认为true
+  addToHistory?: boolean; // 是否可以被单独撤销，默认为true
 }
 ```
 

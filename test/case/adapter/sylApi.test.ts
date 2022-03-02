@@ -591,6 +591,16 @@ describe('insert API test', () => {
     expect(html).toBe(`<blockquote><p>123</p>${CardView()}</blockquote>`);
   });
 
+  test('insert support addToHistory config', async () => {
+    const html = await page.evaluate(() => {
+      editor.setHTML('<p>123</p>');
+      editor.insert({ type: 'text', content: 'abc' }, { index: 4, addToHistory: false });
+      editor.undo();
+      return editor.getHTML();
+    });
+    expect(html).toBe(`<p>123abc</p>`);
+  });
+
   test('it will after nested Node when can not contain', async () => {
     const html = await page.evaluate(() => {
       editor.setHTML('<blockquote><p>123</p></blockquote>');
@@ -821,6 +831,16 @@ describe('replace API test', () => {
     expect(html).toEqual('<h1>replace</h1>');
   });
 
+  test('replace support addToHistory config', async () => {
+    const html = await page.evaluate(() => {
+      editor.setHTML('<p>123</p>');
+      editor.replace({ type: 'text', content: 'abc' }, { index: 1, length: 3, addToHistory: false });
+      editor.undo();
+      return editor.getHTML();
+    });
+    expect(html).toBe(`<p>abc</p>`);
+  });
+
   test('it can replace Card', async () => {
     const html = await page.evaluate(() => {
       editor.setHTML(CARD_HTML);
@@ -885,6 +905,17 @@ describe('update API test', () => {
     });
     expect(html).toBe(CardView({ id: 'test' }));
   });
+
+  test('update support addToHistory config', async () => {
+    const html = await page.evaluate(() => {
+      editor.setHTML(CARD_HTML);
+      const attrs = { id: 'test' };
+      editor.update(attrs, { index: 0, addToHistory: false });
+      editor.undo();
+      return editor.getHTML();
+    });
+    expect(html).toBe(CardView({ id: 'test' }));
+  });
 });
 
 describe('delete API test', () => {
@@ -895,6 +926,17 @@ describe('delete API test', () => {
       return editor.text;
     });
     expect(text).toBe('3');
+  });
+
+  test('delete support addToHistory config', async () => {
+    const html = await page.evaluate(() => {
+      editor.setHTML('');
+      editor.setHTML('<p>123</p>', { silent: false });
+      editor.delete(1, 3, { addToHistory: false });
+      editor.undo();
+      return editor.getHTML();
+    });
+    expect(html).toBe(``);
   });
 
   test('it can delete selected text', async () => {
