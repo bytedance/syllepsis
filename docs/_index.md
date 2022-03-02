@@ -7,6 +7,6 @@
 - Easy to customize
 
 [GitHub](https://github.com/bytedance/syllepsis)
-[Getting Started](/en/about.md)
+[Getting Started](/zh-cn/about.md)
 
 <!--[Quick Start](/en/about.md)-->

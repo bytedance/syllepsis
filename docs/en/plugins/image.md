@@ -27,6 +27,9 @@ plugins: [
       addAttributes: IUserAttrsConfig;
       uploadMaxWidth: number; // Optional，default upload image limit width. When naturalWidth is exceed will use the config value (default is 375). 0 represent no limit.
       renderLoading?: (props: IUpdateImageProps & { editor: SylApi }) => any;  // Optional，default，This method will be invoked during the process of uploading the picture, which is used to override the default loading node  (0.0.15)
+      renderFailed?: false | ((props: IUpdateImageProps & { editor: SylApi; reUpload: () => Promise<void> }) => any);
+      // Optional, This method will be invoked after the process of uploading the picture is failed, which is used to override the default failed node
+      checkBeforeInsert?: (f: File) => boolean; // check if file should insert to editor, false means don't insert
   }),
 ]
 ```
