@@ -353,12 +353,13 @@ Decorate existing nodes.
 
 ### IGetSelectionInfo
 
-````typescript
+```typescript
 interface IGetSelectionInfo extends Types.IRangeStatic {
   anchor: number;
   head: number;
   node?: ProsemirrorNode;
 }
+```
 
 ### InsertOption
 
@@ -369,8 +370,9 @@ interface IGetSelectionInfo extends Types.IRangeStatic {
   replaceEmpty: boolean // replace empty lines, the default is true
   focus?: boolean; // focus, the default is true
   inheritMarks?: boolean; // Whether to inherit the current style when inserting in-line nodes, the default is true
+  addToHistory?: boolean; // Can it be revoked individually, the default is true
 }
-````
+```
 
 ### IUpdateOption
 
@@ -393,6 +395,7 @@ interface IGetSelectionInfo extends Types.IRangeStatic {
   length?: number; // The length of the replacement, the default is 1
   scrollIntoView?: boolean; // Scroll to the selected position, the default is true
   focus?: boolean; // focus, the default is true
+  addToHistory?: boolean; // Can it be revoked individually, the default is true
 }
 ```
 
@@ -400,8 +403,9 @@ interface IGetSelectionInfo extends Types.IRangeStatic {
 
 ```
 {
-    scrollIntoView?: boolean; // Scroll to the selected position, the default is true
-    focus?: boolean; // focus, the default is true
+  scrollIntoView?: boolean; // Scroll to the selected position, the default is true
+  focus?: boolean; // focus, the default is true
+  addToHistory?: boolean; // Can it be revoked individually, the default is true
 }
 ```
 

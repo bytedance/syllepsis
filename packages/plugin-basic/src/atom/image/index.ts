@@ -359,12 +359,9 @@ class Image extends BlockAtom<ImageAttrs> {
     if (this.inline) return renderSpec;
 
     const alignAttrs = this.props.disableAlign ? {} : { align: align || 'center' };
-    return [
-      'div',
-      { class: 'syl-image-wrapper', ...alignAttrs },
-      renderSpec,
-      attrs.alt && ['p', { class: 'syl-image-caption' }, attrs.alt],
-    ] as DOMOutputSpecArray;
+    const outputArray = ['div', { class: 'syl-image-wrapper', ...alignAttrs }, renderSpec];
+    attrs.alt && outputArray.push(['p', { class: 'syl-image-caption' }, attrs.alt]);
+    return (outputArray as unknown) as DOMOutputSpecArray;
   };
 
   public attrs = {
