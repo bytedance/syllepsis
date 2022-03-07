@@ -338,13 +338,12 @@ describe('Test DOM Event', () => {
     expect(html).toEqual('<p><br>123</p>');
   });
 
-  test('Double Click insert Paragraph in sibling blocks', async () => {
+  test('Click insert Paragraph in sibling blocks', async () => {
     const { x, y } = await page.evaluate(() => {
       editor.setHTML(`${CARD_HTML}${CARD_HTML}`);
       const _rect = document.querySelector('div[__syl_tag]').getBoundingClientRect();
       return { x: _rect.x + 20, y: _rect.bottom + 0.5 };
     });
-    await page.mouse.click(x, y);
     await page.mouse.click(x, y);
     const html = await page.evaluate(() => {
       return editor.getHTML();
