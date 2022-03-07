@@ -229,7 +229,7 @@ const insertText = (
  */
 interface IReplaceOption extends IGeneralOption {
   index: number;
-  length?: number;
+  length: number;
   inheritMarks?: boolean;
 }
 const defaultReplaceOption: Required<IReplaceOption> = {

@@ -249,7 +249,8 @@ class SylApi {
   }
 
   public replaceCard(type: string, attrs: Types.StringMap<any>, index: number | IReplaceOption) {
-    return this.replace({ type, attrs }, index);
+    const config = typeof index === 'number' ? { index, length: 1 } : index;
+    return this.replace({ type, attrs }, config);
   }
 
   public delete(index?: number, length?: number, option: IGeneralOption = {}) {
