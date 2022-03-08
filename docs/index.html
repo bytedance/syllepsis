@@ -70,5 +70,18 @@
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.24.0/components/prism-scss.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.24.0/components/prism-json.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+  <script>
+    const xhr = new XMLHttpRequest();
+    xhr.timeout = 500;
+    xhr.open('get', 'https://goofy.bytedance.net/syllepsis-plugins/quick-start.html');
+    xhr.ontimeout = function(e) {
+      // 请求超时表示不在内网，隐藏内部插件选项
+      const dom = document.querySelector('#inner-plugins');
+      if (dom) {
+        dom.style.display = 'none';
+      }
+    };
+    xhr.send();
+  </script>
 </body>
 </html>

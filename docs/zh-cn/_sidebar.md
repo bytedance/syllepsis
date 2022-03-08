@@ -7,4 +7,5 @@
 - [Props](/zh-cn/props.md)
 - [API](/zh-cn/api.md)
 - [Playground](/zh-cn/playground.md)
+- <a href="https://goofy.bytedance.net/syllepsis-plugins/" id="inner-plugins">内部插件</a>
 - [其它](/zh-cn/others/README.md)
