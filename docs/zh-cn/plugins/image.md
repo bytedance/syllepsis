@@ -28,7 +28,7 @@ plugins: [
       uploadMaxWidth: number; // 可选，上传图片的限制宽度，naturalWidth大于这个宽度的图片会使用配置的值作为宽度（默认宽度375）；0代表不做限制
       renderLoading?: (props: IUpdateImageProps & { editor: SylApi }) => any;  // 可选，上传图片过程中会调用这个方法，用于覆盖默认loading节点  (0.0.15)
       renderFailed?: false | ((props: IUpdateImageProps & { editor: SylApi; reUpload: () => Promise<void> }) => any); // 可选，上传图片失败后会调用这个方法，用于覆盖默认failed节点
-      checkBeforeInsert?: (f: File) => Promise<boolean>; // 可选，选择文件后，判断是否要将文件插入到编辑器，false代表不插入 （0.1.13）
+      checkBeforeInsert?: (f: File) => Promise<boolean>; // 可选，选择文件后，判断是否要将文件插入到编辑器，false代表不插入 （0.1.14）
   }),
 ]
 ```

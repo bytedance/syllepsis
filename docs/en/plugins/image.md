@@ -29,7 +29,7 @@ plugins: [
       renderLoading?: (props: IUpdateImageProps & { editor: SylApi }) => any;  // Optional，default，This method will be invoked during the process of uploading the picture, which is used to override the default loading node  (0.0.15)
       renderFailed?: false | ((props: IUpdateImageProps & { editor: SylApi; reUpload: () => Promise<void> }) => any);
       // Optional, This method will be invoked after the process of uploading the picture is failed, which is used to override the default failed node
-      checkBeforeInsert?: (f: File) => Promise<boolean>; // check if file should insert to editor, false means don't insert
+      checkBeforeInsert?: (f: File) => Promise<boolean>; // check if file should insert to editor, false means don't insert (0.1.14)
   }),
 ]
 ```
