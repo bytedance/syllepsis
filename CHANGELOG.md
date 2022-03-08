@@ -1,3 +1,26 @@
+## [0.1.14](https://github.com/bytedance/syllepsis/compare/v0.1.13...v0.1.14) (2022-03-08)
+
+
+### 🎉 Features
+
+* **BasicCtrl:** Insert default `doc` content type when click empty area between block atom nodes, closes [#113](https://github.com/bytedance/syllepsis/issues/113)
+* **SylApi:** `replaceEmpty` is supported in `replace` api
+
+
+### 🐞 Bug Fixers
+
+* **SylApi:** `replaceCard` do not replace node with default length
+
+
+### 🔨 Refactor
+
+* **ImagePlugin:** Expect config checkBeforeInsert to return `promise`
+
+
+### BREAKING CHANGE
+
+* **ImagePlugin:** `checkBeforeInsert` return `boolean` in previous version
+
 ## [0.1.13](https://github.com/bytedance/syllepsis/compare/v0.1.12...v0.1.13) (2022-03-02)
 
 
