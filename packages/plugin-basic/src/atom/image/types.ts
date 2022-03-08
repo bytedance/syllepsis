@@ -63,7 +63,7 @@ interface ImageProps {
   /** This method will be invoked after the process of uploading the picture is failed, which is used to override the default failed node */
   renderFailed?: false | ((props: IUpdateImageProps & { editor: SylApi; reUpload: () => Promise<void> }) => any);
   /** check if file should insert to editor, false means don't insert */
-  checkBeforeInsert?: (f: File) => boolean;
+  checkBeforeInsert?: (f: File) => Promise<boolean>;
 }
 
 interface ImageAttrs {

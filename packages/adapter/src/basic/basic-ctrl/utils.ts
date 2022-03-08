@@ -25,14 +25,15 @@ const chainKeyDownEvent = (view: EditorView, event: KeyboardEvent, ...args: Arra
 
 const checkIsRawBlock = (node: ProsemirrorNode | null | undefined) => node && node.isBlock && !node.isTextblock;
 
-// insert `paragraph` in the middle when text cannot be inserted to the before and after node
-const insertPWhenBlock = (view: EditorView, pos: number) => {
+// insert default node in the middle when text cannot be inserted to the before and after node
+const insertDefaultNodeWhenBlock = (view: EditorView, pos: number) => {
   const $pos = view.state.doc.resolve(pos);
-  if ($pos.node().type === view.state.doc.type) {
+  const defaultType = view.state.doc.type.contentMatch.defaultType;
+  if (defaultType && $pos.node().type === view.state.doc.type) {
     const { nodeBefore, nodeAfter } = $pos;
-    if (checkIsRawBlock(nodeBefore) && checkIsRawBlock(nodeAfter)) {
+    if ((!$pos.pos || checkIsRawBlock(nodeBefore)) && checkIsRawBlock(nodeAfter)) {
       const { dispatch, state } = view;
-      let tr = state.tr.insert(pos, state.schema.nodes.paragraph.create());
+      let tr = state.tr.insert(pos, defaultType.create());
       tr = tr.setSelection(TextSelection.create(tr.doc, pos + 1));
       dispatch(tr);
       view.focus();
@@ -105,7 +106,7 @@ export {
   ClickHandler,
   createPlaceHolder,
   IClickOn,
-  insertPWhenBlock,
+  insertDefaultNodeWhenBlock,
   KeyboardHandle,
   passZeroWidthChar,
 };

@@ -1,9 +1,9 @@
 import lodashMerge from 'lodash.merge';
 import { Mark, MarkType, Node as ProsemirrorNode, NodeType } from 'prosemirror-model';
-import { NodeSelection, TextSelection } from 'prosemirror-state';
+import { NodeSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 
-import { Types } from '../libs';
+import { tryReplaceEmpty, Types } from '../libs';
 
 interface IGeneralOption {
   addToHistory?: boolean;
@@ -182,14 +182,7 @@ const insert = (view: EditorView, nodeInfo: INodeInfo | string, index?: InsertOp
         depth--;
       }
     }
-  } else if (!isInlineNode && $from.depth && userConfig.replaceEmpty && !$from.parent.childCount) {
-    const startPos = $from.before();
-    tr.replaceWith(startPos, $from.after(), newNode);
-    const $pos = tr.doc.resolve(tr.selection.$to.depth ? tr.selection.$to.after() : tr.selection.to);
-    if (tr.selection.from === startPos && (!$pos.nodeAfter || $pos.nodeAfter.isTextblock)) {
-      tr.setSelection(TextSelection.create(tr.doc, $pos.pos));
-    }
-  } else {
+  } else if (!userConfig.replaceEmpty || !tryReplaceEmpty(tr, $from, newNode)) {
     tr.insert(pos, newNode);
     if (state.selection instanceof NodeSelection && pos === state.selection.from && newNode.isLeaf && !newNode.isText) {
       tr.setSelection(NodeSelection.create(tr.doc, pos));
@@ -229,8 +222,9 @@ const insertText = (
  */
 interface IReplaceOption extends IGeneralOption {
   index: number;
-  length?: number;
+  length: number;
   inheritMarks?: boolean;
+  replaceEmpty?: boolean;
 }
 const defaultReplaceOption: Required<IReplaceOption> = {
   index: 0,
@@ -238,6 +232,7 @@ const defaultReplaceOption: Required<IReplaceOption> = {
   scrollIntoView: true,
   inheritMarks: true,
   addToHistory: true,
+  replaceEmpty: true,
   focus: true,
 };
 const getReplaceOption = getOption(defaultReplaceOption);
@@ -255,7 +250,9 @@ const replace = (view: EditorView, nodeInfo: INodeInfo | string, replaceOption?:
   if (length < 0) length = $to.pos - $from.pos;
 
   const { state, dispatch } = view;
-  const tr = state.tr.replaceWith(index, index + length, newNode);
+  const { tr } = state;
+
+  if (!config.replaceEmpty || !tryReplaceEmpty(tr, $from, newNode)) tr.replaceWith(index, index + length, newNode);
 
   if (!addToHistory) tr.setMeta('addToHistory', false);
   dispatch(scrollIntoView ? tr.scrollIntoView() : tr);

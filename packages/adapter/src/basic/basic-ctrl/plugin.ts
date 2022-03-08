@@ -7,7 +7,13 @@ import { BasicView } from './basic-view';
 import { cardInput, cardSingleClick } from './card';
 import { BSControlKey } from './const';
 import { TDropCursorConfig } from './drop-cursor-view';
-import { chainClickEvent, chainKeyDownEvent, createPlaceHolder, insertPWhenBlock, passZeroWidthChar } from './utils';
+import {
+  chainClickEvent,
+  chainKeyDownEvent,
+  createPlaceHolder,
+  insertDefaultNodeWhenBlock,
+  passZeroWidthChar,
+} from './utils';
 
 interface IBasicCtrlConfig {
   placeholder?: string;
@@ -68,8 +74,8 @@ const BasicCtrlPlugin = (config: IBasicCtrlConfig, _editable = true) => {
         if (!editable) return false;
         return chainClickEvent({ node, view, pos, nodePos, event }, cardSingleClick);
       },
-      handleDoubleClick(view, pos) {
-        insertPWhenBlock(view, pos);
+      handleClick(view, pos) {
+        insertDefaultNodeWhenBlock(view, pos);
         return false;
       },
       handleKeyDown(view, event) {
