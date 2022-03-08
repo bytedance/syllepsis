@@ -2,7 +2,7 @@
   "name": "@syllepsis/plugin-code-block",
   "author": "wangmou <wangmou@bytedance.com>",
   "description": "code block plugin of syllepsis editor",
-  "version": "0.1.12",
+  "version": "0.1.14",
   "main": "dist/lib/index.js",
   "module": "dist/es/index.js",
   "umd": "dist/umd/index.js",
@@ -35,7 +35,7 @@
     "prepublish": "yarn build"
   },
   "dependencies": {
-    "@syllepsis/adapter": "^0.1.12",
+    "@syllepsis/adapter": "^0.1.14",
     "@types/codemirror": "^5.60.2",
     "@types/lodash.debounce": "^4.0.0",
     "codemirror": "^5.54.0",
