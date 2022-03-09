@@ -159,6 +159,22 @@ describe('Test DOM Event', () => {
 
   test('Backspace - reset paragraph at head', async () => {
     await page.evaluate(() => {
+      editor.setHTML(`<p style="margin-top: 4px;"></p>`);
+      editor.setSelection({ index: 1, length: 0 });
+    });
+    await page.keyboard.press('Backspace');
+    const { html, selection } = await page.evaluate(() => {
+      return {
+        selection: editor.getSelection(),
+        html: editor.getHTML(),
+      };
+    });
+    expect(selection).toMatchObject({ index: 1, length: 0 });
+    expect(html).toEqual('');
+  });
+
+  test('Backspace - delete empty paragraph at head', async () => {
+    await page.evaluate(() => {
       editor.setHTML(`<p style="margin-top: 4px;"></p><p>123</p>`);
       editor.setSelection({ index: 1, length: 0 });
     });
@@ -170,7 +186,7 @@ describe('Test DOM Event', () => {
       };
     });
     expect(selection).toMatchObject({ index: 1, length: 0 });
-    expect(html).toEqual('<p><br></p><p>123</p>');
+    expect(html).toEqual('<p>123</p>');
   });
 
   test('Backspace - do nothing at the first of doc', async () => {

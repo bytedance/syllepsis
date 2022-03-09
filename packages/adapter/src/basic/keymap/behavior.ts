@@ -167,7 +167,7 @@ const deleteZeroChar = (state: EditorState, dispatch?: EditorView['dispatch']) =
   return false;
 };
 
-const clearFormatAtHead = (state: EditorState, dispatch?: EditorView['dispatch']) => {
+const clearAtHead = (state: EditorState, dispatch?: EditorView['dispatch']) => {
   const { $from, empty } = state.selection;
   if (!empty) return false;
   if ($from.pos !== 1 || $from.depth !== 1) return false;
@@ -176,17 +176,30 @@ const clearFormatAtHead = (state: EditorState, dispatch?: EditorView['dispatch']
   const parentNode = $from.node();
   if (!parentNode.isTextblock || parentNode.childCount) return false;
 
-  const defaultNodeType = doc.type.contentMatch.defaultType!;
+  const afterPos = $from.after();
 
-  dispatch && dispatch(tr.setBlockType($from.before(), $from.after(), defaultNodeType));
-  return true;
+  const nodeAfter = state.doc.resolve(afterPos).nodeAfter;
+  if (nodeAfter) {
+    tr.delete($from.before(), afterPos);
+    dispatch?.(tr);
+    return true;
+  }
+
+  const defaultNodeType = doc.type.contentMatch.defaultType!;
+  const defaultNode = defaultNodeType.create();
+  if (!parentNode.eq(defaultNode)) {
+    dispatch?.(tr.setBlockType($from.before(), afterPos, defaultNodeType));
+    return true;
+  }
+
+  return false;
 };
 
 const undo = (state: EditorState, dispatch?: EditorView['dispatch']): boolean =>
   [undoTextShortcut, OriginUndo].some(fn => fn(state, dispatch));
 
 export {
-  clearFormatAtHead,
+  clearAtHead,
   deleteSelection,
   deleteZeroChar,
   doLiftNode,

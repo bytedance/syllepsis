@@ -21,7 +21,7 @@ import { SylApi } from '../../api';
 import { filterData, groupData, toArray, Types } from '../../libs';
 import { CtrlPlugin } from '../ctrl-plugin';
 import {
-  clearFormatAtHead,
+  clearAtHead,
   deleteSelection,
   deleteZeroChar,
   insertBreak,
@@ -44,7 +44,7 @@ const backspace = chainCommands(
   selectBefore,
   joinBackward,
   selectNodeBackward,
-  clearFormatAtHead,
+  clearAtHead,
   deleteZeroChar,
 );
 

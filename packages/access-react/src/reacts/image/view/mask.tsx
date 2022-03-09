@@ -68,6 +68,10 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
       this.props.state.uploading = false;
       this.updateImageUrl();
     }
+
+    if (this.props.isSelected !== prevProps.isSelected) {
+      this.setState({ active: this.props.isSelected });
+    }
   }
 
   componentDidMount() {
@@ -95,13 +99,12 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
       !this.state.active
     ) {
       this.setState({ active: true });
-    } else if (this.state.active) {
-      this.setState({ active: false });
     }
   };
 
   public focusCaption = () => {
     this.props.editor.disable();
+    this.setState({ active: false });
     this.inputting = true;
   };
 
@@ -207,7 +210,7 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
     return (
       <div ref={ref => (this.imageWrapDom = ref)} className={cls('syl-image-wrapper')} style={{ textAlign: align }}>
         <div className="syl-image-fixer">
-          {active && editor.isFocused && !config.disableAlign && (
+          {active && editor.editable && !config.disableAlign && (
             <span className="align-menu">
               <span
                 className={cls('align-icon', { active: align === 'left' })}
