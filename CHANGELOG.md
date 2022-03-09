@@ -1,3 +1,11 @@
+## [0.1.16](https://github.com/bytedance/syllepsis/compare/v0.1.15...v0.1.16) (2022-03-09)
+
+
+### 🐞 Bug Fixers
+
+* `Backspace` can't delete empty line at head, closes [#119](https://github.com/bytedance/syllepsis/issues/119)
+* **BasicCtrl:** It sometimes can't insert default node
+
 ## [0.1.15](https://github.com/bytedance/syllepsis/compare/v0.1.14...v0.1.15) (2022-03-09)
 
 
