@@ -1,3 +1,10 @@
+## [0.1.15](https://github.com/bytedance/syllepsis/compare/v0.1.14...v0.1.15) (2022-03-09)
+
+
+### 🐞 Bug Fixers
+
+* **ImagePlugin:** `align` overridden by `addAttributes` does not work, closes [#116](https://github.com/bytedance/syllepsis/issues/116)
+
 ## [0.1.14](https://github.com/bytedance/syllepsis/compare/v0.1.13...v0.1.14) (2022-03-08)
 
 
