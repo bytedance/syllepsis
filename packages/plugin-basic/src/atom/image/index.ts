@@ -100,8 +100,10 @@ const insertImageInEditor = (
   dataInfos: { image?: HTMLImageElement; attrs?: { src: string; [key: string]: any } }[],
   config: Partial<ImageProps>,
 ) => {
-  const pos = editor.view.state.selection.from;
-  const $pos = editor.view.state.doc.resolve(pos);
+  const { state } = editor.view;
+  const pos = state.selection.from;
+  const $pos = state.doc.resolve(pos);
+  const imageType = state.schema.nodes?.image;
   const images = [...dataInfos];
   const insertNodes = { type: 'doc', content: [] as INodeInfo[] };
   // when depth >= 2 and contained in table, inserting images will not update the selection,causes it to be inserted in reverse order
@@ -115,7 +117,7 @@ const insertImageInEditor = (
       width: config.uploadMaxWidth ? Math.min(image.naturalWidth, config.uploadMaxWidth) : image.naturalWidth,
       name: image.getAttribute('name') || '',
       alt: '',
-      align: 'center',
+      align: imageType?.attrs?.align?.default || 'center',
       ...attrs,
     };
     if (isInTable) {
@@ -339,7 +341,7 @@ class Image extends BlockAtom<ImageAttrs> {
           src: dom.getAttribute('src') || '',
           alt: dom.getAttribute('alt') || '',
           name: dom.getAttribute('name') || '',
-          align: (dom.getAttribute('align') || 'center') as any,
+          align: (dom.getAttribute('align') || this.attrs.align.default) as any,
           width,
           height,
         };
