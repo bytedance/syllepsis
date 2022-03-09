@@ -74,8 +74,9 @@ const BasicCtrlPlugin = (config: IBasicCtrlConfig, _editable = true) => {
         if (!editable) return false;
         return chainClickEvent({ node, view, pos, nodePos, event }, cardSingleClick);
       },
-      handleClick(view, pos) {
-        insertDefaultNodeWhenBlock(view, pos);
+      handleClick(view, pos, event: MouseEvent) {
+        const posInfo = view.posAtCoords({ left: event.screenX, top: event.screenY });
+        posInfo && insertDefaultNodeWhenBlock(view, posInfo.pos);
         return false;
       },
       handleKeyDown(view, event) {
