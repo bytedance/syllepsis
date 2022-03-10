@@ -1,3 +1,10 @@
+## [0.1.17](https://github.com/bytedance/syllepsis/compare/v0.1.16...v0.1.17) (2022-03-10)
+
+
+### 🐞 Bug Fixers
+
+* **ImagePlugin:** Error when parsing `<img>` without `align` attribute, closes [#120](https://github.com/bytedance/syllepsis/issues/120)
+
 ## [0.1.16](https://github.com/bytedance/syllepsis/compare/v0.1.15...v0.1.16) (2022-03-09)
 
 
