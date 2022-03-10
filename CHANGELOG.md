@@ -1,3 +1,15 @@
+## [0.1.19](https://github.com/bytedance/syllepsis/compare/v0.1.18...v0.1.19) (2022-03-10)
+
+
+### 🎉 Features
+
+* **SylApi:** `replaceEmpty` is supported in `replace` api
+
+
+### 🔨 Refactor
+
+* **ImagePlugin:** Use another way to prevent require `undo` twice of a uploaded image
+
 ## [0.1.18](https://github.com/bytedance/syllepsis/compare/v0.1.17...v0.1.18) (2022-03-10)
 
 
