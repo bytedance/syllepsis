@@ -341,7 +341,7 @@ class Image extends BlockAtom<ImageAttrs> {
           src: dom.getAttribute('src') || '',
           alt: dom.getAttribute('alt') || '',
           name: dom.getAttribute('name') || '',
-          align: (dom.getAttribute('align') || this.attrs.align.default) as any,
+          align: (dom.getAttribute('align') || undefined) as any,
           width,
           height,
         };
