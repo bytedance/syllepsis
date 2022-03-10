@@ -841,6 +841,21 @@ describe('replace API test', () => {
     expect(html).toBe(`<p>abc</p>`);
   });
 
+  test('replace node when empty', async () => {
+    const res1 = await page.evaluate(() => {
+      editor.setHTML('');
+      editor.replaceCard('card', {}, { replaceEmpty: true });
+
+      return {
+        html: editor.getHTML(),
+        selection: editor.getSelection(),
+      };
+    });
+
+    expect(res1.html).toBe(CardView());
+    expect(res1.selection).toMatchObject({ index: 2, length: 0 });
+  });
+
   test('it can replace Card', async () => {
     const html = await page.evaluate(() => {
       editor.setHTML(CARD_HTML);
