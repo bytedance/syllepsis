@@ -1,3 +1,10 @@
+## [0.1.18](https://github.com/bytedance/syllepsis/compare/v0.1.17...v0.1.18) (2022-03-10)
+
+
+### 🐞 Bug Fixers
+
+* **BasicCtrl:** Insert default node to wrong posiont when windows browser, closes [#122](https://github.com/bytedance/syllepsis/issues/122)
+
 ## [0.1.17](https://github.com/bytedance/syllepsis/compare/v0.1.16...v0.1.17) (2022-03-10)
 
 
