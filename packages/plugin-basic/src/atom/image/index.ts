@@ -85,7 +85,7 @@ const uploadImg = async (editor: SylApi, src: string, fileName: string, config: 
       const nodeInfos = editor.getExistNodes(PLUGIN_NAME);
       nodeInfos.some(({ node, pos }) => {
         if (node.attrs.src === src) {
-          editor.deleteCard(pos);
+          editor.delete(pos, 1, { addToHistory: false });
           return true;
         }
       });
@@ -121,12 +121,12 @@ const insertImageInEditor = (
       ...attrs,
     };
     if (isInTable) {
-      editor.replace({ type: PLUGIN_NAME, attrs: imageAttrs });
+      editor.insert({ type: PLUGIN_NAME, attrs: imageAttrs });
     } else {
       insertNodes.content.push({ type: PLUGIN_NAME, attrs: imageAttrs });
     }
   });
-  if (insertNodes.content.length && !isInTable) editor.replace(insertNodes, pos);
+  if (insertNodes.content.length && !isInTable) editor.insert(insertNodes, pos);
 };
 
 // get the picture file and judge whether to upload it in advance
@@ -190,9 +190,8 @@ const updateImageUrl = async (editor: SylApi, props: IUpdateImageProps, config: 
     // confirm the image node exist
     if (!curNode || curNode.type.name !== PLUGIN_NAME || curNode.attrs.src !== src) return;
     if (!isMatchObject(imageAttrs, props.attrs)) {
-      // do not put it into user history when updating src
-      const updateConfig = imageAttrs.src !== props.attrs.src ? { addToHistory: false } : undefined;
-      editor.updateCardAttrs($pos.pos, imageAttrs, updateConfig);
+      editor.delete($pos.pos, 1, { addToHistory: false });
+      editor.insertCard(PLUGIN_NAME, imageAttrs, { index: $pos.pos, deleteSelection: false });
     }
   } finally {
     state.uploading = false;
