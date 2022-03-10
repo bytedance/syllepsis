@@ -14,15 +14,9 @@ describe('keymap & EventHandler', () => {
   test('support eventHandler set in controller', async () => {
     await page.evaluate(() => {
       editor.setHTML('');
-      editor.disable();
     });
     const $p = await page.$('.ProseMirror p:first-child');
     const { x, y } = await $p.boundingBox();
-    await page.mouse.click(x + 10, y + 10);
-
-    await page.evaluate(() => {
-      editor.enable();
-    });
 
     await page.mouse.click(x + 10, y + 10);
     await page.mouse.click(x + 10, y + 10);
@@ -31,6 +25,7 @@ describe('keymap & EventHandler', () => {
     const html = await page.evaluate(() => {
       return editor.getHTML();
     });
+
     expect(html).toEqual('<p>handleTripleClickOn</p>');
   });
 });
