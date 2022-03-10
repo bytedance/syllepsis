@@ -26,15 +26,23 @@ const chainKeyDownEvent = (view: EditorView, event: KeyboardEvent, ...args: Arra
 const checkIsRawBlock = (node: ProsemirrorNode | null | undefined) => node && node.isBlock && !node.isTextblock;
 
 // insert default node in the middle when text cannot be inserted to the before and after node
-const insertDefaultNodeWhenBlock = (view: EditorView, pos: number) => {
-  const $pos = view.state.doc.resolve(pos);
+const insertDefaultNodeWhenBlock = (view: EditorView, pos: number, event: MouseEvent) => {
+  // get the previous dom, check if it is the right dom;
+  const $dom = view.nodeDOM(pos - 1);
+  if (!$dom) return false;
+  const rect = ($dom as HTMLElement)?.getBoundingClientRect();
+  if (!rect) return;
+  let fixPos = 0;
+  if (rect.bottom > event.clientY) fixPos = -1;
+
+  const $pos = view.state.doc.resolve(pos + fixPos);
   const defaultType = view.state.doc.type.contentMatch.defaultType;
   if (defaultType && $pos.node().type === view.state.doc.type) {
     const { nodeBefore, nodeAfter } = $pos;
     if ((!$pos.pos || checkIsRawBlock(nodeBefore)) && checkIsRawBlock(nodeAfter)) {
       const { dispatch, state } = view;
-      let tr = state.tr.insert(pos, defaultType.create());
-      tr = tr.setSelection(TextSelection.create(tr.doc, pos + 1));
+      let tr = state.tr.insert($pos.pos, defaultType.create());
+      tr = tr.setSelection(TextSelection.create(tr.doc, $pos.pos + 1));
       dispatch(tr);
       view.focus();
     }

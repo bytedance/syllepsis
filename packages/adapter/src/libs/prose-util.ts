@@ -1,5 +1,5 @@
 import { Mark, Node as ProseMirrorNode, NodeType, ResolvedPos } from 'prosemirror-model';
-import { EditorState, Selection, TextSelection, Transaction } from 'prosemirror-state';
+import { EditorState, Selection, Transaction } from 'prosemirror-state';
 import { RemoveMarkStep } from 'prosemirror-transform';
 
 const isEmptyDoc = (doc: ProseMirrorNode) =>
@@ -196,20 +196,6 @@ const removeMark = (doc: ProseMirrorNode, tr: Transaction, from: number, to: num
   return tr;
 };
 
-const tryReplaceEmpty = (tr: Transaction, $from: ResolvedPos, node: ProseMirrorNode) => {
-  const isInlineNode = node.type.isInline;
-  if (!isInlineNode && $from.depth && !$from.parent.childCount) {
-    const startPos = $from.before();
-    tr.replaceWith(startPos, $from.after(), node);
-    const $pos = tr.doc.resolve(tr.selection.$to.depth ? tr.selection.$to.after() : tr.selection.to);
-    if (tr.selection.from === startPos && (!$pos.nodeAfter || $pos.nodeAfter.isTextblock)) {
-      tr.setSelection(TextSelection.create(tr.doc, $pos.pos));
-    }
-    return true;
-  }
-  return false;
-};
-
 const getStoreMarks = (state: EditorState) =>
   state.tr.storedMarks || (state.selection.$to.parentOffset && state.selection.$from.marks()) || [];
 
@@ -224,5 +210,4 @@ export {
   removeExcludesMarks,
   removeMark,
   resetUnInheritAttr,
-  tryReplaceEmpty,
 };
