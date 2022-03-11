@@ -73,12 +73,13 @@
   <script>
     const xhr = new XMLHttpRequest();
     xhr.timeout = 500;
-    xhr.open('get', 'https://goofy.bytedance.net/syllepsis-plugins/quick-start.html');
-    xhr.ontimeout = function(e) {
+    // seal提供的内网判断接口
+    xhr.open('get', 'https://cloudapi.bytedance.net/faas/services/ttrniynso13vagmg86/invoke/checkEnv');
+    xhr.onload = function(e) {
       // 请求超时表示不在内网，隐藏内部插件选项
       const dom = document.querySelector('#inner-plugins');
       if (dom) {
-        dom.style.display = 'none';
+        dom.style.display = 'inline';
       }
     };
     xhr.send();
