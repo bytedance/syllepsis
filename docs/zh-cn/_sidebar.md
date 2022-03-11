@@ -4,6 +4,7 @@
 - [教程](/zh-cn/chapters/README.md)
 - [模块](/zh-cn/modules/README.md)
 - [插件](/zh-cn/plugins/README.md)
+- <a href="https://goofy.bytedance.net/syllepsis-plugins/" target="_blank" id="inner-plugins" style="display:none">内部插件</a>
 - [Props](/zh-cn/props.md)
 - [API](/zh-cn/api.md)
 - [Playground](/zh-cn/playground.md)

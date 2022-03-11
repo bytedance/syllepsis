@@ -70,5 +70,19 @@
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.24.0/components/prism-scss.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.24.0/components/prism-json.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+  <script>
+    const xhr = new XMLHttpRequest();
+    xhr.timeout = 500;
+    // seal提供的内网判断接口
+    xhr.open('get', 'https://cloudapi.bytedance.net/faas/services/ttrniynso13vagmg86/invoke/checkEnv');
+    xhr.onload = function(e) {
+      // 请求超时表示不在内网，隐藏内部插件选项
+      const dom = document.querySelector('#inner-plugins');
+      if (dom) {
+        dom.style.display = 'inline';
+      }
+    };
+    xhr.send();
+  </script>
 </body>
 </html>
