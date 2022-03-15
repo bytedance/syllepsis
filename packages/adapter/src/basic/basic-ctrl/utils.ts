@@ -30,7 +30,7 @@ const insertDefaultNodeWhenBlock = (view: EditorView, pos: number, event: MouseE
   // get the previous dom, check if it is the right dom;
   const $dom = view.nodeDOM(pos - 1);
   if (!$dom) return false;
-  const rect = ($dom as HTMLElement)?.getBoundingClientRect();
+  const rect = ($dom as HTMLElement)?.getBoundingClientRect?.();
   if (!rect) return;
   let fixPos = 0;
   if (rect.bottom > event.clientY) fixPos = -1;
