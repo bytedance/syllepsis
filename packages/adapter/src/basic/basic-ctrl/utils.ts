@@ -28,18 +28,25 @@ const checkIsRawBlock = (node: ProsemirrorNode | null | undefined) => node && no
 // insert default node in the middle when text cannot be inserted to the before and after node
 const insertDefaultNodeWhenBlock = (view: EditorView, pos: number, event: MouseEvent) => {
   // get the previous dom, check if it is the right dom;
-  const $dom = view.nodeDOM(pos - 1);
-  if (!$dom) return false;
-  const rect = ($dom as HTMLElement)?.getBoundingClientRect?.();
-  if (!rect) return;
   let fixPos = 0;
-  if (rect.bottom > event.clientY) fixPos = -1;
+  if (pos > 0) {
+    const $dom = view.nodeDOM(pos - 1);
+    if (!$dom) return false;
+    const rect = ($dom as HTMLElement)?.getBoundingClientRect?.();
+    if (!rect) return;
+    if (rect.bottom > event.clientY) fixPos = -1;
+  }
 
   const $pos = view.state.doc.resolve(pos + fixPos);
   const defaultType = view.state.doc.type.contentMatch.defaultType;
   if (defaultType && $pos.node().type === view.state.doc.type) {
     const { nodeBefore, nodeAfter } = $pos;
     if ((!$pos.pos || checkIsRawBlock(nodeBefore)) && checkIsRawBlock(nodeAfter)) {
+      const $dom = view.nodeDOM($pos.pos);
+      if (!$dom) return;
+      const rect = ($dom as HTMLElement)?.getBoundingClientRect?.();
+      if (!rect || rect.top < event.clientY) return;
+
       const { dispatch, state } = view;
       let tr = state.tr.insert($pos.pos, defaultType.create());
       tr = tr.setSelection(TextSelection.create(tr.doc, $pos.pos + 1));
