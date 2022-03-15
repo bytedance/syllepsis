@@ -1,3 +1,10 @@
+## [0.1.21](https://github.com/bytedance/syllepsis/compare/v0.1.20...v0.1.21) (2022-03-15)
+
+
+### 🐞 Bug Fixers
+
+* **BasicCtrl:** Sometimes get error "`getBoundingClientRect` is not a function" when clicked
+
 ## [0.1.20](https://github.com/bytedance/syllepsis/compare/v0.1.19...v0.1.20) (2022-03-15)
 
 
