@@ -1,3 +1,10 @@
+## [0.1.23](https://github.com/bytedance/syllepsis/compare/v0.1.22...v0.1.23) (2022-03-15)
+
+
+### 🐞 Bug Fixers
+
+* **ImagePlugin:** Get an extra line when insert image at the first line, closes [#128](https://github.com/bytedance/syllepsis/issues/128)
+
 ## [0.1.22](https://github.com/bytedance/syllepsis/compare/v0.1.21...v0.1.22) (2022-03-15)
 
 
