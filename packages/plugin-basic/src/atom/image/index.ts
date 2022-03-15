@@ -192,8 +192,8 @@ const updateImageUrl = async (editor: SylApi, props: IUpdateImageProps, config: 
     // confirm the image node exist
     if (!curNode || curNode.type.name !== PLUGIN_NAME || curNode.attrs.src !== src) return;
     if (!isMatchObject(imageAttrs, props.attrs)) {
-      editor.delete($pos.pos, 1, { addToHistory: false });
       editor.insertCard(PLUGIN_NAME, imageAttrs, { index: $pos.pos, deleteSelection: false });
+      editor.delete($pos.pos + 1, 1, { addToHistory: false });
     }
   } finally {
     state.uploading = false;
