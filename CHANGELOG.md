@@ -1,3 +1,10 @@
+## [0.1.20](https://github.com/bytedance/syllepsis/compare/v0.1.19...v0.1.20) (2022-03-15)
+
+
+### 🐞 Bug Fixers
+
+* **ImagePlugin:** Error while parsing `.syl-image-wrapper` without `<img>` element inside, closes [#126](https://github.com/bytedance/syllepsis/issues/126)
+
 ## [0.1.19](https://github.com/bytedance/syllepsis/compare/v0.1.18...v0.1.19) (2022-03-10)
 
 
