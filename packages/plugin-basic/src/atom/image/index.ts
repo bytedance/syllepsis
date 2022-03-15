@@ -42,7 +42,9 @@ const parseSylDOM = (
   captionClass: string,
   addAttributes?: ImageProps['addAttributes'],
 ) => {
-  const image = (dom.querySelector('img') as HTMLImageElement) || null;
+  const image = dom.querySelector('img');
+  if (!image) return false;
+
   const caption = dom.querySelector(captionClass) as HTMLInputElement | HTMLParagraphElement | null;
   const fixer = dom.querySelector(fixClass);
 
