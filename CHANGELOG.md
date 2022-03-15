@@ -1,3 +1,10 @@
+## [0.1.22](https://github.com/bytedance/syllepsis/compare/v0.1.21...v0.1.22) (2022-03-15)
+
+
+### 🐞 Bug Fixers
+
+* **BasicCtrl:** It don't insert default node when click the head of doc
+
 ## [0.1.21](https://github.com/bytedance/syllepsis/compare/v0.1.20...v0.1.21) (2022-03-15)
 
 
