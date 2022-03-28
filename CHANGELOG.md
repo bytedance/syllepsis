@@ -1,3 +1,10 @@
+## [0.1.24](https://github.com/bytedance/syllepsis/compare/v0.1.23...v0.1.24) (2022-03-28)
+
+
+### 🐞 Bug Fixers
+
+* **CodeBlockPlugin:** Erroneously deleted empty `code_block` when pressing `Backspace` after, closes [#130](https://github.com/bytedance/syllepsis/issues/130)
+
 ## [0.1.23](https://github.com/bytedance/syllepsis/compare/v0.1.22...v0.1.23) (2022-03-15)
 
 
