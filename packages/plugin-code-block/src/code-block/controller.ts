@@ -122,6 +122,18 @@ class CodeBlockController extends SylController<ICodeBlockProps> {
     },
   };
 
+  public keymap = {
+    Backspace: (editor: SylApi, state: SylApi['view']['state'], dispatch: SylApi['view']['dispatch']) => {
+      const { $from, empty } = state.selection;
+      if (!empty || $from.nodeBefore) return false;
+      const beforePos = $from.before();
+      const prevNode = state.doc.resolve(beforePos).nodeBefore;
+      if (!prevNode || prevNode.type.name !== PLUGIN_NAME || prevNode.childCount) return false;
+      dispatch(state.tr.join(beforePos));
+      return true;
+    },
+  };
+
   constructor(editor: SylApi, props: ICodeBlockProps) {
     super(editor, props);
     setConfig(props);
