@@ -1,3 +1,10 @@
+## [0.1.25](https://github.com/bytedance/syllepsis/compare/v0.1.24...v0.1.25) (2022-04-20)
+
+
+### 🎉 Features
+
+* **SylPlugin:** Provide default `toDOM` configuration for `Card` (#134), closes [#134](https://github.com/bytedance/syllepsis/issues/134)
+
 ## [0.1.24](https://github.com/bytedance/syllepsis/compare/v0.1.23...v0.1.24) (2022-03-28)
 
 
