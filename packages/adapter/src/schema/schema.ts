@@ -1,18 +1,11 @@
-import { DOMOutputSpec, DOMOutputSpecArray, Node as ProseMirrorNode } from 'prosemirror-model';
+import { DOMOutputSpec, Node as ProseMirrorNode } from 'prosemirror-model';
 import { EditorView, NodeView as BaseNodeView } from 'prosemirror-view';
 
 import { SylApi } from '../api';
-import { defineMetadata, formatToDOMAttrs, Types } from '../libs';
+import { defineMetadata } from '../libs';
 import { FLAG, FORMAT_TYPE } from './const';
 import { IMatcherConfig, ParseDOMMatcher, TextMatcherHandler } from './matchers';
-
-// provide default `toDOM` according to `tagName`, `attrs` and `content`
-const createWrapperDOM = (tagName: string, attrs: Types.StringMap<any> = {}, hasContent = false): DOMOutputSpec => {
-  const pDOM: DOMOutputSpecArray = [tagName, formatToDOMAttrs(attrs)];
-  if (hasContent) pDOM[2] = 0;
-
-  return pDOM;
-};
+import { createWrapperDOM } from './utils';
 
 @defineMetadata(FLAG, FORMAT_TYPE.BLOCK)
 class SylSchema<Structure> {

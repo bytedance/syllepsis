@@ -1,4 +1,4 @@
-import { Node as ProseMirrorNode } from 'prosemirror-model';
+import { DOMOutputSpec, Node as ProseMirrorNode } from 'prosemirror-model';
 import { NodeSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 
@@ -13,6 +13,7 @@ import {
   createInlineCardDOM,
   createMaskDOM,
   createTemplDOM,
+  createWrapperDOM,
   isCardSchema,
   isInlineSchema,
 } from './utils';
@@ -188,6 +189,10 @@ class BaseCard<Structure = any> extends Atom<Structure> {
 class Card<Structure> extends BaseCard<Structure> {
   public group = 'block';
   public isolating = true;
+  public tagName(node: ProseMirrorNode) {
+    return 'div';
+  }
+  public toDOM = (node: ProseMirrorNode) => createWrapperDOM(this.tagName(node), node.attrs) as DOMOutputSpec;
 }
 Card.prototype.NodeView = BlockCardView;
 
@@ -195,6 +200,10 @@ Card.prototype.NodeView = BlockCardView;
 class InlineCard<Structure> extends BaseCard<Structure> {
   public group = 'inline';
   public inline = true;
+  public tagName(node: ProseMirrorNode) {
+    return 'span';
+  }
+  public toDOM = (node: ProseMirrorNode) => createWrapperDOM(this.tagName(node), node.attrs) as DOMOutputSpec;
 }
 InlineCard.prototype.NodeView = InlineCardView;
 
