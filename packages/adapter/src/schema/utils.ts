@@ -1,4 +1,6 @@
-import { getMetadata, Types } from '../libs';
+import { DOMOutputSpec, DOMOutputSpecArray } from 'prosemirror-model';
+
+import { formatToDOMAttrs, getMetadata, Types } from '../libs';
 import { FLAG, FORMAT_TYPE, SYL_TAG } from './const';
 
 const createElement = (tagName: string) => {
@@ -9,6 +11,14 @@ const createElement = (tagName: string) => {
 
 const createCardDOM = () => createElement('div');
 const createInlineCardDOM = () => createElement('syl-inline');
+
+// provide default `toDOM` according to `tagName`, `attrs` and `content`
+const createWrapperDOM = (tagName: string, attrs: Types.StringMap<any> = {}, hasContent = false): DOMOutputSpec => {
+  const pDOM: DOMOutputSpecArray = [tagName, formatToDOMAttrs(attrs)];
+  if (hasContent) pDOM[2] = 0;
+
+  return pDOM;
+};
 
 const createMaskDOM = () => document.createElement('mask');
 const createTemplDOM = () => {
@@ -32,6 +42,7 @@ export {
   createInlineCardDOM,
   createMaskDOM,
   createTemplDOM,
+  createWrapperDOM,
   getSchemaType,
   isBlockSchema,
   isCardSchema,
