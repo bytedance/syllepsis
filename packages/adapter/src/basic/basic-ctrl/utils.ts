@@ -97,7 +97,8 @@ const createPlaceHolder = (placeholder: string) => (view: EditorView) => {
   const span = document.createElement('span');
   span.classList.add('syl-placeholder');
   const { parent } = view.state.selection.$from;
-  let styleText = 'cursor: text; user-select: none;text-indent: initial;';
+  let styleText =
+    'cursor: text; text-indent: initial; pointer-events: none; -webkit-user-select: none; user-select: none;';
   if ((!browser.android && !browser.ios && !browser.mac) || (browser.mac && browser.chrome)) {
     styleText += ' position: absolute;';
   }

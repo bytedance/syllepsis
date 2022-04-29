@@ -9,6 +9,9 @@
 .ProseMirror:focus {
   outline: none;
 }
+.syl-placeholder {
+  color: #999999;
+}
 .ProseMirror h1,
 .ProseMirror h2,
 .ProseMirror h3 {
