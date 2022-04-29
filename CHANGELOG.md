@@ -1,3 +1,10 @@
+## [0.1.27](https://github.com/bytedance/syllepsis/compare/v0.1.26...v0.1.27) (2022-04-29)
+
+
+### 🐞 Bug Fixers
+
+* **BasicCtrl:** Don't show system popup when long pressing `placeholder` in mobile (#137), closes [#137](https://github.com/bytedance/syllepsis/issues/137) [#136](https://github.com/bytedance/syllepsis/issues/136)
+
 ## [0.1.25](https://github.com/bytedance/syllepsis/compare/v0.1.24...v0.1.25) (2022-04-20)
 
 
