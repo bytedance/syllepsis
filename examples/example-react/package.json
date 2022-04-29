@@ -5,7 +5,7 @@
   "description": "start syl with react",
   "main": "index.html",
   "scripts": {
-    "start": "vite --force --open"
+    "start": "vite --force --open --host"
   },
   "license": "MIT",
   "dependencies": {
