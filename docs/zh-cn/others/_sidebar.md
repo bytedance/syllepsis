@@ -8,6 +8,7 @@
 - [API](/zh-cn/api.md)
 - [其它](/zh-cn/others/README.md)
   - [ShadowAPI](/zh-cn/others/shadow-api.md)
+  - [多人协作编辑](/zh-cn/others/collab.md)
   - [国际化](/zh-cn/others/i18n.md)
   - [常见问题汇总](/zh-cn/others/qa.md)
   - [更新日志](https://github.com/bytedance/syllepsis/blob/master/CHANGELOG.md)
