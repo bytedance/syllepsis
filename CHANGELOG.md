@@ -1,3 +1,10 @@
+## [0.1.29](https://github.com/bytedance/syllepsis/compare/v0.1.28...v0.1.29) (2022-05-25)
+
+
+### 🐞 Bug Fixers
+
+* **ImagePlugin:** Error checking if `attrs` is equal in `updateImageUrl` (#142), closes [#142](https://github.com/bytedance/syllepsis/issues/142) [#141](https://github.com/bytedance/syllepsis/issues/141)
+
 ## [0.1.27](https://github.com/bytedance/syllepsis/compare/v0.1.26...v0.1.27) (2022-04-29)
 
 
