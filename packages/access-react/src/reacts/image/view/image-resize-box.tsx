@@ -13,6 +13,7 @@ const clamp = (min: number, val: number, max: number): number => {
 interface IProps {
   height: number;
   config?: string;
+  onResizeStart: (w: number, height: number) => void;
   onResizeEnd: (w: number, height: number) => void;
   width: number;
   src: string;
@@ -22,10 +23,6 @@ interface IProps {
 
 interface IResizeProps extends IProps {
   direction: string;
-  height: number;
-  onResizeEnd: (w: number, height: number) => void;
-  src: string;
-  width: number;
 }
 
 const MIN_SIZE = 20;
@@ -115,6 +112,7 @@ class ImageResizeBoxControl extends React.PureComponent<IResizeProps, any> {
     this.resultHeight = this.height;
 
     this.bindEvent();
+    this.props.onResizeStart(this.resultWidth, this.resultHeight);
   }
 
   end(): void {
@@ -157,7 +155,7 @@ class ImageResizeBoxControl extends React.PureComponent<IResizeProps, any> {
 
 class ImageResizeBox extends React.PureComponent<IProps, any> {
   render() {
-    const { onResizeEnd, targetDOM } = this.props;
+    const { onResizeEnd, targetDOM, onResizeStart } = this.props;
     let { width, height } = this.props;
 
     let imgDOM: HTMLElement | null = null;
@@ -174,6 +172,7 @@ class ImageResizeBox extends React.PureComponent<IProps, any> {
         direction={key}
         height={height}
         key={key}
+        onResizeStart={onResizeStart}
         onResizeEnd={onResizeEnd}
         width={width}
       />

@@ -40,6 +40,7 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
   private isInline = false;
   private imageMount = false;
   private inputting = false;
+  private isResizing = false;
 
   constructor(props: any) {
     super(props);
@@ -69,7 +70,7 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
       this.updateImageUrl();
     }
 
-    if (this.props.isSelected !== prevProps.isSelected) {
+    if (!this.isResizing && this.props.isSelected !== prevProps.isSelected) {
       this.setState({ active: this.props.isSelected });
     }
   }
@@ -147,11 +148,16 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
     }
   };
 
-  _onResizeEnd = (width: number, height: number): void =>
+  _onResizeStart = () => {
+    this.isResizing = true;
+  };
+  _onResizeEnd = (width: number, height: number): void => {
     this.dispatchUpdate({
       width,
       height,
     });
+    this.isResizing = false;
+  };
 
   _changeAlt: ChangeEventHandler<HTMLInputElement> = e => {
     this.setState({
@@ -181,6 +187,7 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
         {editor.editable && !config.disableResize && active ? (
           <ImageResizeBox
             height={height}
+            onResizeStart={this._onResizeStart}
             onResizeEnd={this._onResizeEnd}
             editorDOM={editor.view.dom as HTMLElement}
             src={src}
