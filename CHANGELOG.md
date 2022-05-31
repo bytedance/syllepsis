@@ -1,3 +1,10 @@
+## [0.1.30](https://github.com/bytedance/syllepsis/compare/v0.1.29...v0.1.30) (2022-05-31)
+
+
+### 🐞 Bug Fixers
+
+* **InlineImagePlugin:** `Resize handler` not working after `mousedown` (#144), closes [#144](https://github.com/bytedance/syllepsis/issues/144) [#143](https://github.com/bytedance/syllepsis/issues/143)
+
 ## [0.1.29](https://github.com/bytedance/syllepsis/compare/v0.1.28...v0.1.29) (2022-05-25)
 
 
