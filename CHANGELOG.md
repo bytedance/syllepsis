@@ -1,3 +1,10 @@
+## [0.1.32](https://github.com/bytedance/syllepsis/compare/v0.1.31...v0.1.32) (2022-06-01)
+
+
+### 🐞 Bug Fixers
+
+* Failed to start when the version of prosemirror-view upper 1.24.0
+
 ## [0.1.30](https://github.com/bytedance/syllepsis/compare/v0.1.29...v0.1.30) (2022-05-31)
 
 
