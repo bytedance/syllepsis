@@ -109,11 +109,13 @@ class CustomCtrlCenter {
     const { view } = this.adapter;
     view.someProp('handleDOMEvents', (currentHandlers: EditorView['eventHandlers']) => {
       for (const type in currentHandlers) {
-        if (!view.eventHandlers[type])
+        // eventHandlers was moving to input after prosemirror-view 1.24.0
+        if ((view.eventHandlers ?? (view as any).input?.eventHandlers)?.[type]) {
           view.dom.addEventListener(
             type,
             (view.eventHandlers[type] = (event: Event) => this.defaultDomEventHandler(event)),
           );
+        }
       }
     });
   };
