@@ -30,7 +30,7 @@
     "build:cjs": "cross-env NODE_ENV=production && tsc --target es5 --module commonjs --outDir 'dist/lib' && copyfiles \"./src/**/*.css\" ./dist/lib -u 1",
     "build:umd": "cross-env NODE_ENV=production && vite build",
     "build": "yarn build:es && yarn build:cjs && yarn build:umd",
-    "watch": "cross-env NODE_ENV=development && copyfiles \"./src/**/*.css\" ./dist/es -u 1 && tsc -w",
+    "watch": "cross-env NODE_ENV=development && copyfiles \"./src/**/*.css\" ./dist/es -u 1 && tsc --target es5 -w",
     "prepublish": "yarn build"
   },
   "peerDependencies": {

@@ -23,7 +23,7 @@
   },
   "scripts": {
     "prebuild": "rimraf ./dist",
-    "watch": "cross-env NODE_ENV=dev && tsc -w",
+    "watch": "cross-env NODE_ENV=dev && tsc --target es5 -w",
     "build:es": "cross-env NODE_ENV=production && tsc --target es5",
     "build:cjs": "cross-env NODE_ENV=production && tsc --target es5 --module commonjs --outDir 'dist/lib'",
     "build:umd": "cross-env NODE_ENV=production && vite build",
