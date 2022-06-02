@@ -150,7 +150,7 @@ class SylApi {
 
   public get shortcutable() {
     // @ts-ignore
-    return this.view.state.config.pluginsByKey[SHORTCUT_KEY.key].enable;
+    return this.view.state.config.pluginsByKey[SHORTCUT_KEY.key].getStatus();
   }
 
   public get isDestroy() {

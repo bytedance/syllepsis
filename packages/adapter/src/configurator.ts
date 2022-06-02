@@ -6,7 +6,7 @@ import { EditorView, NodeView } from 'prosemirror-view';
 
 import { ISylApiAdapterOptions, SylApi } from './api';
 import { BasicCtrlPlugin, BSControlKey, IBasicCtrlConfig } from './basic/basic-ctrl';
-import { CtrlPlugin } from './basic/ctrl-plugin';
+import { ICtrlPlugin } from './basic/ctrl-plugin';
 import { createCustomCtrlPlugin, CUSTOM_CTRL_ACCEPT, ICustomCtrlConfig } from './basic/custom-ctrl';
 import { DecorationPlugin } from './basic/decoration';
 import { basicKeymapPlugin, createCustomKeymapPlugins, defaultKeymapPlugin, TSylKeymap } from './basic/keymap';
@@ -125,10 +125,10 @@ class SylConfigurator {
   private sylPluginInstances: Array<SylPlugin> = [];
 
   // relate to custom ctrl
-  private customCtrlPlugin?: CtrlPlugin<ICustomCtrlConfig | ICustomCtrlConfig[]>;
+  private customCtrlPlugin?: ICtrlPlugin<ICustomCtrlConfig | ICustomCtrlConfig[]>;
 
   // relate to keymap
-  private customKeyMapPlugin?: CtrlPlugin<TSylKeymap | TSylKeymap[]>;
+  private customKeyMapPlugin?: ICtrlPlugin<TSylKeymap | TSylKeymap[]>;
 
   // configuration that pass to BasicCtrlPlugin
   public basicConfiguration: Required<IBasicCtrlConfig> = {

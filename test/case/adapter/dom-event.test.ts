@@ -353,7 +353,7 @@ describe('Test DOM Event', () => {
     const { x, y } = await page.evaluate(() => {
       editor.setHTML(`${CARD_HTML}${CARD_HTML}`);
       const _rect = document.querySelector('div[__syl_tag]').getBoundingClientRect();
-      return { x: _rect.x + 20, y: _rect.bottom + 0.5 };
+      return { x: _rect.x + 20, y: _rect.bottom + 1 };
     });
     await page.mouse.click(x, y);
     const html = await page.evaluate(() => {
