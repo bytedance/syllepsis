@@ -1,3 +1,10 @@
+## [0.1.33](https://github.com/bytedance/syllepsis/compare/v0.1.32...v0.1.33) (2022-06-02)
+
+
+### 🔨 Refactor
+
+* **Plugin:** Using another way  to extends prosemirror's Plugin (#146), closes [#146](https://github.com/bytedance/syllepsis/issues/146)
+
 ## [0.1.32](https://github.com/bytedance/syllepsis/compare/v0.1.31...v0.1.32) (2022-06-01)
 
 
