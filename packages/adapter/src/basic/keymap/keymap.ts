@@ -19,7 +19,7 @@ import { EditorProps, EditorView } from 'prosemirror-view';
 import { TKeymapHandler } from '../..';
 import { SylApi } from '../../api';
 import { filterData, groupData, toArray, Types } from '../../libs';
-import { CtrlPlugin } from '../ctrl-plugin';
+import { createCtrlPlugin } from '../ctrl-plugin';
 import {
   clearAtHead,
   deleteSelection,
@@ -121,7 +121,7 @@ class KeymapCtrl {
 
 const createCustomKeymapPlugins = (adapter: SylApi, customKeyMaps?: Array<TSylKeymap>) => {
   const ctrl = new KeymapCtrl(adapter, customKeyMaps);
-  return new CtrlPlugin(ctrl.spec, ctrl);
+  return createCtrlPlugin(ctrl.spec, ctrl);
 };
 
 export {

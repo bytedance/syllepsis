@@ -4,7 +4,7 @@ import { EditorProps, EditorView } from 'prosemirror-view';
 import { SylApi } from '../../api';
 import { filterData, groupData, toArray, Types } from '../../libs';
 import { IEventHandler, SylController } from '../../schema';
-import { CtrlPlugin } from '../ctrl-plugin';
+import { createCtrlPlugin } from '../ctrl-plugin';
 
 type ValueOf<T> = T[keyof T];
 type TEventHandler = (adapter: SylApi, ...args: any[]) => any;
@@ -226,7 +226,7 @@ class CustomCtrlCenter {
 
 const createCustomCtrlPlugin = (adapter: SylApi, customProps?: Array<ICustomCtrlConfig>) => {
   const ctrlCenter = new CustomCtrlCenter(adapter, customProps);
-  return new CtrlPlugin<ICustomCtrlConfig | Array<ICustomCtrlConfig>>(ctrlCenter.spec, ctrlCenter);
+  return createCtrlPlugin<ICustomCtrlConfig | Array<ICustomCtrlConfig>>(ctrlCenter.spec, ctrlCenter);
 };
 
 export { createCustomCtrlPlugin, CUSTOM_CTRL_ACCEPT, ICustomCtrlConfig };

@@ -72,58 +72,23 @@ class TextShortcut implements IMatcherConfig<RegExp | RegExp[], any> {
   }
 }
 
-class TextShortcutPlugin extends Plugin {
-  private readonly textShortcuts: TextShortcut[];
+const createTextShortcutPlugin = (_textShortcuts: TextShortcut[], _enable = true) => {
+  const textShortcuts = _textShortcuts;
+  let enable = _enable;
 
-  private enable = true;
-
-  constructor(textShortcuts: TextShortcut[], _enable = true) {
-    super({
-      key: SHORTCUT_KEY,
-
-      state: {
-        init(): ShortCutState {
-          return null;
-        },
-        apply: (tr, state): ShortCutState => {
-          const stored = tr.getMeta(SHORTCUT_KEY);
-          if (typeof stored === 'boolean') this.enable = stored;
-          if (stored) return stored;
-          return tr.selectionSet || tr.docChanged ? null : state;
-        },
-      },
-
-      props: {
-        handleTextInput: (view, from, to, text) => {
-          if (!this.enable) return false;
-          return this.applyTextShortcuts(view, from, to, text);
-        },
-        handleKeyDown: (view, event: KeyboardEvent) => {
-          if (!this.enable) return false;
-          if ((event.key === 'Enter' && event.keyCode === 13) || event.which === 13) {
-            return this.applyEnterShortcuts(view);
-          }
-          return false;
-        },
-      },
-    });
-    this.enable = _enable;
-    this.textShortcuts = textShortcuts;
-  }
-
-  private readonly applyEnterShortcuts = (view: EditorView): boolean => {
+  const applyEnterShortcuts = (view: EditorView): boolean => {
     const {
       to,
       from,
       $from: { nodeBefore },
     } = view.state.selection;
     if (nodeBefore && nodeBefore.isText) {
-      return this.applyTextShortcuts(view, from, to, '', 'enter');
+      return applyTextShortcuts(view, from, to, '', 'enter');
     }
     return false;
   };
 
-  private readonly applyTextShortcuts = (
+  const applyTextShortcuts = (
     view: EditorView,
     from: number,
     to: number,
@@ -142,7 +107,7 @@ class TextShortcutPlugin extends Plugin {
       $from.parent.textBetween(Math.max(0, $from.parentOffset - MAX_MATCH), $from.parentOffset, undefined, '\uFFFC') +
       insertText;
 
-    for (const textShortcut of this.textShortcuts) {
+    for (const textShortcut of textShortcuts) {
       if (textShortcut.config.timing !== timing) continue;
 
       const match = textShortcut.matcher.exec(textBefore);
@@ -167,7 +132,37 @@ class TextShortcutPlugin extends Plugin {
     }
     return false;
   };
-}
+
+  return new Plugin({
+    key: SHORTCUT_KEY,
+
+    state: {
+      init(): ShortCutState {
+        return null;
+      },
+      apply: (tr, state): ShortCutState => {
+        const stored = tr.getMeta(SHORTCUT_KEY);
+        if (typeof stored === 'boolean') enable = stored;
+        if (stored) return stored;
+        return tr.selectionSet || tr.docChanged ? null : state;
+      },
+    },
+
+    props: {
+      handleTextInput: (view, from, to, text) => {
+        if (!enable) return false;
+        return applyTextShortcuts(view, from, to, text);
+      },
+      handleKeyDown: (view, event: KeyboardEvent) => {
+        if (!enable) return false;
+        if ((event.key === 'Enter' && event.keyCode === 13) || event.which === 13) {
+          return applyEnterShortcuts(view);
+        }
+        return false;
+      },
+    },
+  });
+};
 
 // This is a command that will undo a text shortcut, if applying such a rule was
 // the last thing that the user did.
@@ -208,4 +203,11 @@ const getShortcutAttrs = (
   return getAttrs;
 };
 
-export { getShortcutAttrs, SHORTCUT_KEY, TextShortcut, TextShortCutHandler, TextShortcutPlugin, undoTextShortcut };
+export {
+  createTextShortcutPlugin,
+  getShortcutAttrs,
+  SHORTCUT_KEY,
+  TextShortcut,
+  TextShortCutHandler,
+  undoTextShortcut,
+};

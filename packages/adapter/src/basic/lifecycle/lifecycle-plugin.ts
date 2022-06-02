@@ -21,22 +21,13 @@ const emitLifeCycleEvent = (view: EditorView, prevState: EditorState, emitter: E
     emitter.emit(EventChannel.LocalEvent.SELECTION_CHANGED);
   }
 };
-class LifeCyclePlugin extends Plugin {
-  private readonly emitter: EventChannel;
-
-  constructor(adapter: SylApi) {
-    super({
-      key: pluginKey,
-
-      view: () => ({
-        update: (view: EditorView, prevState: EditorState) => emitLifeCycleEvent(view, prevState, this.emitter),
-      }),
-    });
-
-    this.emitter = adapter.configurator.emitter;
-  }
-}
-
-const createLifeCyclePlugin = (adapter: SylApi) => new LifeCyclePlugin(adapter);
+const createLifeCyclePlugin = (adapter: SylApi) =>
+  new Plugin({
+    key: pluginKey,
+    view: () => ({
+      update: (view: EditorView, prevState: EditorState) =>
+        emitLifeCycleEvent(view, prevState, adapter.configurator.emitter),
+    }),
+  });
 
 export { createLifeCyclePlugin, emitLifeCycleEvent };

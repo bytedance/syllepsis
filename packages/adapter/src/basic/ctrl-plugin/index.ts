@@ -5,22 +5,18 @@ interface ICtrlPluginCtrl<T> {
   unregister: (props: T) => void;
 }
 
-class CtrlPlugin<T> extends Plugin {
-  public ctrlCenter: ICtrlPluginCtrl<T>;
-
-  constructor(spec: Plugin['spec'], ctrlCenter: ICtrlPluginCtrl<T>) {
-    super(spec);
-    this.props = spec.props!;
-    this.ctrlCenter = ctrlCenter;
-  }
-
-  public registerProps = (props: T, prioritized?: boolean) => {
-    this.ctrlCenter.register(props, prioritized);
-  };
-
-  public unregisterProps = (props: T) => {
-    this.ctrlCenter.unregister(props);
-  };
+interface ICtrlPlugin<T> extends Plugin {
+  registerProps: (props: T, prioritized?: boolean) => void;
+  unregisterProps: (props: T) => void;
 }
 
-export { CtrlPlugin };
+const createCtrlPlugin = <T>(spec: Plugin['spec'], ctrlCenter: ICtrlPluginCtrl<T>) => {
+  const ctrlPlugin = new Plugin(spec) as ICtrlPlugin<T>;
+  ctrlPlugin.props = spec.props!;
+  ctrlPlugin.registerProps = (props: T, prioritized?: boolean) => ctrlCenter.register(props, prioritized);
+  ctrlPlugin.unregisterProps = (props: T) => ctrlCenter.unregister(props);
+
+  return ctrlPlugin;
+};
+
+export { createCtrlPlugin, ICtrlPlugin };
