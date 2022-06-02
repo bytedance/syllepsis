@@ -1,14 +1,14 @@
 import { FORMAT_TYPE, SchemaMeta, SylController } from '../../schema';
 import { blockLeafShortcut } from './block-leaf-shortcut';
 import { inlineLeafShortcut } from './inline-leaf-shortcut';
-import { TextShortcut, TextShortcutPlugin } from './shortcut-plugin';
+import { createTextShortcutPlugin, TextShortcut } from './shortcut-plugin';
 import { textblockTypeTextShortcut } from './text-block-shortcut';
 import { textMarkShortcut } from './text-mark-shortcut';
 /**
  * it build textmatcher as textblockshortcut and return a
  * TextShortcutPlugin instance
  */
-const ruleBuilder = ($schemaMetas: SchemaMeta[], enable = true): TextShortcutPlugin => {
+const ruleBuilder = ($schemaMetas: SchemaMeta[], enable = true) => {
   const rules: TextShortcut[] = [];
 
   for (const $meta of $schemaMetas) {
@@ -42,7 +42,7 @@ const ruleBuilder = ($schemaMetas: SchemaMeta[], enable = true): TextShortcutPlu
     }
   }
 
-  return new TextShortcutPlugin(rules, enable);
+  return createTextShortcutPlugin(rules, enable);
 };
 
 export { ruleBuilder };

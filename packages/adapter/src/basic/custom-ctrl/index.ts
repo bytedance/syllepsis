@@ -4,7 +4,7 @@ import { EditorProps, EditorView } from 'prosemirror-view';
 import { SylApi } from '../../api';
 import { filterData, groupData, toArray, Types } from '../../libs';
 import { IEventHandler, SylController } from '../../schema';
-import { CtrlPlugin } from '../ctrl-plugin';
+import { createCtrlPlugin } from '../ctrl-plugin';
 
 type ValueOf<T> = T[keyof T];
 type TEventHandler = (adapter: SylApi, ...args: any[]) => any;
@@ -108,12 +108,14 @@ class CustomCtrlCenter {
   private ensureDOMEvents = () => {
     const { view } = this.adapter;
     view.someProp('handleDOMEvents', (currentHandlers: EditorView['eventHandlers']) => {
+      const nativeHandlers = view.eventHandlers ?? (view as any).input?.eventHandlers;
+      if (!nativeHandlers) return;
       for (const type in currentHandlers) {
         // eventHandlers was moving to input after prosemirror-view 1.24.0
-        if ((view.eventHandlers ?? (view as any).input?.eventHandlers)?.[type]) {
+        if (!nativeHandlers[type]) {
           view.dom.addEventListener(
             type,
-            (view.eventHandlers[type] = (event: Event) => this.defaultDomEventHandler(event)),
+            (nativeHandlers[type] = (event: Event) => this.defaultDomEventHandler(event)),
           );
         }
       }
@@ -155,6 +157,7 @@ class CustomCtrlCenter {
           this.filterTransactions[prioritized ? 'unshift' : 'push'](config.filterTransaction);
         } else if (configName === 'eventHandler') {
           const eventHandler = config.eventHandler;
+          if (!eventHandler) return;
           (Object.keys(eventHandler!) as Array<keyof IEventHandler>).forEach((event: keyof IEventHandler) => {
             const handler = eventHandler![event];
             if (!handler) return;
@@ -226,7 +229,7 @@ class CustomCtrlCenter {
 
 const createCustomCtrlPlugin = (adapter: SylApi, customProps?: Array<ICustomCtrlConfig>) => {
   const ctrlCenter = new CustomCtrlCenter(adapter, customProps);
-  return new CtrlPlugin<ICustomCtrlConfig | Array<ICustomCtrlConfig>>(ctrlCenter.spec, ctrlCenter);
+  return createCtrlPlugin<ICustomCtrlConfig | Array<ICustomCtrlConfig>>(ctrlCenter.spec, ctrlCenter);
 };
 
 export { createCustomCtrlPlugin, CUSTOM_CTRL_ACCEPT, ICustomCtrlConfig };
