@@ -347,7 +347,7 @@ class SylConfigurator {
       if (key === 'locale') {
         this.localStore = new LocaleStore(val);
       } else if (key === 'disable' && this.view) {
-        this.setEditable(val);
+        this.setEditable(!val);
       }
     });
 
@@ -421,6 +421,7 @@ class SylConfigurator {
 
   public setEditable(editable: boolean) {
     const { state, dispatch } = this.view;
+    console.log('fuck', editable);
     dispatch(state.tr.setMeta(BSControlKey, { editable }));
   }
 

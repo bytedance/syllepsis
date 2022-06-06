@@ -101,6 +101,15 @@ describe('Controller config test', () => {
     expect(text1).toEqual('test');
   });
 
+  test('can update edit status', async () => {
+    const editable = await page.evaluate(() => {
+      editor.configurator.update({ disable: true });
+      return editor.editable;
+    });
+    expect(editable).toBe(false);
+    await page.evaluate(() => editor.configurator.update({ disable: false }));
+  });
+
   test('can update event listener', async () => {
     const isPass = await page.evaluate(() => {
       let focusCount = 0;
