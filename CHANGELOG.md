@@ -1,3 +1,10 @@
+## [0.1.34](https://github.com/bytedance/syllepsis/compare/v0.1.33...v0.1.34) (2022-06-06)
+
+
+### 🐞 Bug Fixers
+
+* **SylEditor:** Edit state doesn't update correctly with props `disable` (#148), closes [#148](https://github.com/bytedance/syllepsis/issues/148) [#147](https://github.com/bytedance/syllepsis/issues/147)
+
 ## [0.1.33](https://github.com/bytedance/syllepsis/compare/v0.1.32...v0.1.33) (2022-06-02)
 
 
