@@ -1,3 +1,10 @@
+## [0.1.35](https://github.com/bytedance/syllepsis/compare/v0.1.34...v0.1.35) (2022-06-09)
+
+
+### 🎉 Features
+
+* **VideoPlugin/AudioPlugin:** Support `uploadBeforeInsert` config in `VideoPlugin` and `AudioPlugin (#149), closes [#149](https://github.com/bytedance/syllepsis/issues/149)
+
 ## [0.1.34](https://github.com/bytedance/syllepsis/compare/v0.1.33...v0.1.34) (2022-06-06)
 
 
