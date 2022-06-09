@@ -13,6 +13,7 @@ plugins: [
      // otherwise it will not be rendered in `dom`
      addAttributes: IUserAttrsConfig; // Optional, Extend default attrs
      accept: string, // Optional, accepted file type
+     uploadBeforeInsert: boolean, // Optional, insert after uploaded, default true
    })
 ]
 ```

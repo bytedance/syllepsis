@@ -140,6 +140,41 @@ const keymapToggleMark = (name: string) => (editor: SylApi) => {
   return true;
 };
 
+const simpleUploadHandler = async (config: {
+  name: string;
+  target: HTMLInputElement;
+  uploader: (file: File, editor: SylApi) => Promise<any>;
+  uploadBeforeInsert: boolean;
+  editor: SylApi;
+  getAttrs: (url: string, file: File) => Record<string, any>;
+}) => {
+  const { name, target, uploader, getAttrs, uploadBeforeInsert, editor } = config;
+  if (!target.files || !target.files.length) return;
+  const file = target.files[0];
+  let index = editor.getSelection().index;
+  let url = '';
+  if (!uploadBeforeInsert) {
+    url = URL.createObjectURL(file);
+    editor.insertCard(name, getAttrs(url, file), index);
+  }
+  const attrs = await uploader(file, editor);
+  if (!uploadBeforeInsert) {
+    index = -1;
+    editor.getExistNodes(name).some(val => {
+      if (val.node.attrs.src === url) {
+        index = val.pos;
+        editor.delete(val.pos, 1, { addToHistory: false });
+        return true;
+      }
+    });
+  }
+  if (attrs && index > -1) {
+    index > -1 && editor.insertCard(name, attrs as any, index);
+  }
+  url && URL.revokeObjectURL(url);
+};
+
+
 export {
   addAttrsByConfig,
   checkMarkDisable,
@@ -154,4 +189,5 @@ export {
   keymapToggleMark,
   setAlign,
   setDOMAttrByConfig,
+  simpleUploadHandler
 };

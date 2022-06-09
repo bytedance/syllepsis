@@ -12,6 +12,7 @@ plugins: [
     // 注意配置这个之后需要配置`layers`接管渲染，否则不会在`dom`里面渲染出来
     addAttributes: IUserAttrsConfig; // 可选，扩展默认attrs
     accept: string, // 可选，接受的文件类型
+    uploadBeforeInsert: boolean, // 可选，上传完成后插入，默认true
   })
 ]
 ```

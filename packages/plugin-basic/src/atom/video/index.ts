@@ -7,12 +7,14 @@ import {
   getFromDOMByConfig,
   IUserAttrsConfig,
   setDOMAttrByConfig,
+  simpleUploadHandler,
 } from '../../utils';
 
 interface IVideoProps {
   uploader: (file: File, editor: SylApi) => Promise<{ src: string; width?: number; height?: number }>;
   accept?: string;
   addAttributes?: IUserAttrsConfig;
+  uploadBeforeInsert?: boolean;
   isInline?: boolean;
 }
 
@@ -45,14 +47,15 @@ class VideoController extends SylController<IVideoProps> {
     });
   }
 
-  public onChange = async (e: Event) => {
-    const target = e.target as HTMLInputElement;
-    if (!target.files) return;
-    const index = this.editor.getSelection().index;
-    const attrs = await this.uploadVideo(target.files[0], this.editor);
-    if (!attrs) return;
-    this.editor.insertCard(NAME, attrs as any, index);
-  };
+  public onChange = async (e: Event) =>
+    simpleUploadHandler({
+      name: NAME,
+      target: e.target as HTMLInputElement,
+      editor: this.editor,
+      uploadBeforeInsert: this.props.uploadBeforeInsert !== false,
+      uploader: this.uploadVideo,
+      getAttrs: src => ({ src }),
+    });
 
   public editorWillUnmount = () => {
     this.editor.root.removeChild(this.fileInput);

@@ -127,7 +127,6 @@ const RichEditor = () => {
             resolve({
               width,
             });
-            console.log('resolve', f);
           }, 1000);
         });
       },
@@ -135,12 +134,15 @@ const RichEditor = () => {
     }),
     new VideoPlugin({
       uploader: async file =>
-        Promise.resolve({
-          src: URL.createObjectURL(file),
-          size: file.size,
-          type: file.type,
-          title: file.name,
+        new Promise(resolve => {
+          setTimeout(() => {
+            console.log('down');
+            resolve({
+              src: URL.createObjectURL(file),
+            });
+          }, 5000);
         }),
+      uploadBeforeInsert: false,
       addAttributes: {
         test: {
           default: 'test',
@@ -166,10 +168,15 @@ const RichEditor = () => {
       },
     }),
     new AudioPlugin({
-      uploader: (file: File) =>
-        Promise.resolve({
-          src: URL.createObjectURL(file),
+      uploader: async file =>
+        new Promise(resolve => {
+          setTimeout(() => {
+            resolve({
+              src: URL.createObjectURL(file),
+            });
+          }, 5000);
         }),
+      uploadBeforeInsert: false,
     }),
     new ColorPlugin(),
     new BackgroundPlugin(),
