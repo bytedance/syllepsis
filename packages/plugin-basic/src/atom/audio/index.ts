@@ -7,6 +7,7 @@ import {
   getFromDOMByConfig,
   IUserAttrsConfig,
   setDOMAttrByConfig,
+  simpleUploadHandler,
 } from '../../utils';
 
 interface IAudioAttrs {
@@ -18,6 +19,7 @@ interface IAudioAttrs {
 
 interface IAudioProps {
   uploader: (file: File, editor: SylApi) => Promise<{ src: string; width?: number; height?: number }>;
+  uploadBeforeInsert?: boolean;
   addAttributes?: IUserAttrsConfig;
   accept?: string;
   isInline?: boolean;
@@ -43,14 +45,15 @@ class AudioController extends SylController<IAudioProps> {
     });
   }
 
-  private onChange = async (e: Event) => {
-    const { index } = this.editor.getSelection();
-    const target = e.target as HTMLInputElement;
-    const files = target.files;
-    if (!files || !files.length) return;
-    const uploadRes = await this.uploader(files[0], this.editor);
-    this.editor.insertCard(NAME, uploadRes, index);
-  };
+  private onChange = async (e: Event) =>
+    simpleUploadHandler({
+      name: NAME,
+      target: e.target as HTMLInputElement,
+      editor: this.editor,
+      uploadBeforeInsert: this.props.uploadBeforeInsert !== false,
+      uploader: this.uploader,
+      getAttrs: (src, file) => ({ src, type: file.type, size: file.size, name: file.name }),
+    });
 
   public toolbar = {
     icon: '',
