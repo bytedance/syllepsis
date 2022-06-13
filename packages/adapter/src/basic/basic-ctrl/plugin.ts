@@ -18,6 +18,7 @@ import {
 interface IBasicCtrlConfig {
   placeholder?: string;
   keepLastLine?: boolean;
+  keepMarks?: boolean;
   dropCursor?: TDropCursorConfig;
   keepWhiteSpace?: boolean | 'full';
 }

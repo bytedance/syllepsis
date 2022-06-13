@@ -227,6 +227,26 @@ describe('Controller config test', () => {
     expect(isPass).toBe(true);
   });
 
+  test('support update keepMarks config', async () => {
+    await page.evaluate(() => {
+      editor.setHTML('<p><strong>a</strong></p>');
+      editor.setSelection({ index: 2 });
+    });
+
+    await page.keyboard.press('Enter');
+    let isMarkActive = await page.evaluate(() => editor.isActive('bold'));
+    expect(isMarkActive).toBe(true);
+
+    await page.evaluate(() => {
+      editor.configurator.update({ keepMarks: false });
+      editor.setHTML('<p><strong>a</strong></p>');
+      editor.setSelection({ index: 2 });
+    });
+    await page.keyboard.press('Enter');
+    isMarkActive = await page.evaluate(() => editor.isActive('bold'));
+    expect(isMarkActive).toBe(false);
+  });
+
   test('support update other plugin props', async () => {
     const isPass = await page.evaluate(() => {
       editor.configurator.setCustomConfiguration({

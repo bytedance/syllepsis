@@ -9,7 +9,13 @@ import { BasicCtrlPlugin, BSControlKey, IBasicCtrlConfig } from './basic/basic-c
 import { ICtrlPlugin } from './basic/ctrl-plugin';
 import { createCustomCtrlPlugin, CUSTOM_CTRL_ACCEPT, ICustomCtrlConfig } from './basic/custom-ctrl';
 import { DecorationPlugin } from './basic/decoration';
-import { basicKeymapPlugin, createCustomKeymapPlugins, defaultKeymapPlugin, TSylKeymap } from './basic/keymap';
+import {
+  BASIC_KEYMAP_KEY,
+  createBasicKeymapPlugin,
+  createCustomKeymapPlugins,
+  defaultKeymapPlugin,
+  TSylKeymap,
+} from './basic/keymap';
 import { createLifeCyclePlugin } from './basic/lifecycle/lifecycle-plugin';
 import { ruleBuilder } from './basic/text-shortcut/rule-builder';
 import { SHORTCUT_KEY } from './basic/text-shortcut/shortcut-plugin';
@@ -133,6 +139,7 @@ class SylConfigurator {
   // configuration that pass to BasicCtrlPlugin
   public basicConfiguration: Required<IBasicCtrlConfig> = {
     keepLastLine: true,
+    keepMarks: true,
     dropCursor: {},
     placeholder: '',
     keepWhiteSpace: false,
@@ -269,7 +276,7 @@ class SylConfigurator {
       this.customCtrlPlugin!,
       // decrease the priority of the `keymap`, because `handleKeyDown` can handle more things
       this.customKeyMapPlugin!,
-      basicKeymapPlugin,
+      createBasicKeymapPlugin(this.basicConfiguration),
       defaultKeymapPlugin,
       DecorationPlugin(),
       BasicCtrlPlugin(this.basicConfiguration, !this.baseConfiguration.disable),
@@ -352,9 +359,12 @@ class SylConfigurator {
     });
 
   private setBasicCtrlConfiguration = (config: IConfiguration) =>
-    setConfiguration(this.basicConfiguration, config, key => {
+    setConfiguration(this.basicConfiguration, config, (key, val) => {
       if (key === 'placeholder' && this.view) {
         this.view.updateState(this.view.state);
+      } else if (key === 'keepMarks' && this.view) {
+        const { state, dispatch } = this.view;
+        dispatch(state.tr.setMeta(BASIC_KEYMAP_KEY, { keepMarks: val }));
       }
     });
 
