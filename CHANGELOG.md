@@ -1,3 +1,10 @@
+## [0.1.36](https://github.com/bytedance/syllepsis/compare/v0.1.35...v0.1.36) (2022-06-13)
+
+
+### 🎉 Features
+
+* **Configurator:** Support set `keepMarks` in props to decide whether to keep marks after split in, closes [#145](https://github.com/bytedance/syllepsis/issues/145)
+
 ## [0.1.35](https://github.com/bytedance/syllepsis/compare/v0.1.34...v0.1.35) (2022-06-09)
 
 
