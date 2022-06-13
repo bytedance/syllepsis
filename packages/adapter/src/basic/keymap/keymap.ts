@@ -20,6 +20,7 @@ import { TKeymapHandler } from '../..';
 import { SylApi } from '../../api';
 import { filterData, groupData, toArray, Types } from '../../libs';
 import { createCtrlPlugin } from '../ctrl-plugin';
+import { splitBlock } from '.';
 import {
   clearAtHead,
   deleteSelection,
@@ -48,25 +49,41 @@ const backspace = chainCommands(
   deleteZeroChar,
 );
 
-const enter = chainCommands(newlineInCode, createParagraphNear, liftEmptyBlock, splitBlockKeepMarks);
-
-const basicKeymapPlugin = new Plugin({
-  key: BASIC_KEYMAP_KEY,
-  props: {
-    handleKeyDown: keydownHandler({
-      Enter: enter,
-      'Mod-z': undo,
-      'Mod-y': redo,
-      'Shift-Mod-z': redo,
-      Backspace: backspace,
-      'Alt-ArrowUp': joinUp,
-      'Alt-ArrowDown': joinDown,
-      'Mod-Bracketleft': lift,
-      Escape: selectParentNode,
-      'Shift-Enter': insertBreak,
-    }),
-  },
-});
+const createBasicKeymapPlugin = (config: { keepMarks: boolean }) => {
+  let keepMarks = config.keepMarks;
+  return new Plugin({
+    key: BASIC_KEYMAP_KEY,
+    state: {
+      init() {
+        return null;
+      },
+      apply(tr, val) {
+        const data = tr.getMeta(BASIC_KEYMAP_KEY);
+        if (data?.keepMarks !== undefined) {
+          keepMarks = Boolean(data.keepMarks);
+        }
+        if (data) return data;
+        return val;
+      },
+    },
+    props: {
+      handleKeyDown: keydownHandler({
+        Enter: chainCommands(newlineInCode, createParagraphNear, liftEmptyBlock, (state, dispatch) =>
+          keepMarks ? splitBlockKeepMarks(state, dispatch) : splitBlock(state, dispatch),
+        ),
+        'Mod-z': undo,
+        'Mod-y': redo,
+        'Shift-Mod-z': redo,
+        Backspace: backspace,
+        'Alt-ArrowUp': joinUp,
+        'Alt-ArrowDown': joinDown,
+        'Mod-Bracketleft': lift,
+        Escape: selectParentNode,
+        'Shift-Enter': insertBreak,
+      }),
+    },
+  });
+};
 
 const defaultKeymapPlugin = new Plugin({
   key: DEFAULT_KEYMAP_KEY,
@@ -126,8 +143,8 @@ const createCustomKeymapPlugins = (adapter: SylApi, customKeyMaps?: Array<TSylKe
 
 export {
   BASIC_KEYMAP_KEY,
-  basicKeymapPlugin,
   composeKeymap,
+  createBasicKeymapPlugin,
   createCustomKeymapPlugins,
   CUSTOM_KEYMAP_KEY,
   DEFAULT_KEYMAP_KEY,
