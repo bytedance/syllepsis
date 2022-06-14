@@ -1,3 +1,10 @@
+## [0.1.37](https://github.com/bytedance/syllepsis/compare/v0.1.36...v0.1.37) (2022-06-14)
+
+
+### 🎉 Features
+
+* **ImagePlugin:** Support `resizeMargin` config in `ImagePlugin`
+
 ## [0.1.36](https://github.com/bytedance/syllepsis/compare/v0.1.35...v0.1.36) (2022-06-13)
 
 
