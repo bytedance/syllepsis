@@ -15,6 +15,7 @@ interface IProps {
   config?: string;
   onResizeStart: (w: number, height: number) => void;
   onResizeEnd: (w: number, height: number) => void;
+  maxWidth: number;
   width: number;
   src: string;
   targetDOM: HTMLElement;
@@ -97,7 +98,7 @@ class ImageResizeBoxControl extends React.PureComponent<IResizeProps, any> {
 
     this.active = true;
 
-    this.maxWidth = this.props.editorDOM.scrollWidth - 40;
+    this.maxWidth = this.props.maxWidth;
 
     this.x1 = e.clientX;
     this.y1 = e.clientY;
