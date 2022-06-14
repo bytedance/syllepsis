@@ -25,7 +25,7 @@ import { SylEditor } from '@syllepsis/access-react';
 | dropCursor        | `{ color: string, width: number } \| false`                                                                         | 可选，拖拽指示条样式默认`color`为`#000000`，`width`为`1`，值为`false`时关闭指示        |
 | spellCheck        | `boolean`                                                                                                           | 可选，是否开启拼写检查，默认为`false`                                                  |
 | autoFocus         | `boolean`                                                                                                           | 可选，是否在初始化完成后自动聚焦，默认为`false`                                        |
-| keepMarks         | `boolean`                                                                                                           | 可选，是否是换行（Enter）时保留文字样式，默认为`true`                                  |
+| keepMarks         | `boolean`                                                                                                           | 可选，是否是换行（Enter）时保留文字样式，默认为`true` (0.1.36)                         |
 | onError           | `() => any`                                                                                                         | 可选，调用`SylApi`时的错误事件捕获，默认抛出                                           |
 | keepWhiteSpace    | `full \| undefined`                                                                                                 | 可选，是否折叠空白字符，默认折叠。`full`需要配合`white-space: pre-wrap;`生效           |
 | eventHandler      | [`IEventHandler`](https://bytedance.github.io/syllepsis/#/zh-cn/chapters/syl-plugin?id=controller)                  | 可选，用于配置事件处理函数。                                                           |

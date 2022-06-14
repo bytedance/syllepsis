@@ -1,5 +1,5 @@
 import { DamageMap, LoadingOne } from '@icon-park/react';
-import { EventChannel } from '@syllepsis/adapter';
+import { EventChannel, ISylApiCommand } from '@syllepsis/adapter';
 import { IViewMapProps } from '@syllepsis/editor';
 import { ImageAttrs, ImageProps } from '@syllepsis/plugin-basic';
 import cls from 'classnames';
@@ -36,13 +36,12 @@ const SylMaskImageFailed = ({ attrs, maxWidth, ...rest }: ISylMaskImageFailedPro
 
 class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
   public imageWrapDom: any;
-  public MAX_WIDTH: number;
   private isInline = false;
   private imageMount = false;
   private inputting = false;
   private isResizing = false;
 
-  constructor(props: any) {
+  constructor(props: IViewMapProps<ImageAttrs>) {
     super(props);
     const { editor, attrs, state } = props;
     this.updateImageUrl();
@@ -56,7 +55,12 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
 
     const { schema } = editor.view.state;
     this.isInline = schema.nodes.image.isInline;
-    this.MAX_WIDTH = editor.view.dom.scrollWidth - 40;
+  }
+
+  get MAX_WIDTH() {
+    const { editor } = this.props;
+    const config = (editor.command as ISylApiCommand).image!.getConfiguration();
+    return editor.view.dom.scrollWidth - config.resizeMargin! * 2;
   }
 
   componentDidUpdate(prevProps: IViewMapProps<ImageAttrs>) {
@@ -186,6 +190,7 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
         />
         {editor.editable && !config.disableResize && active ? (
           <ImageResizeBox
+            maxWidth={this.MAX_WIDTH}
             height={height}
             onResizeStart={this._onResizeStart}
             onResizeEnd={this._onResizeEnd}
