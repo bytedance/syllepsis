@@ -204,9 +204,9 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
           (config.renderLoading ? (
             config.renderLoading(this.props)
           ) : (
-            <div className="syl-image-loading">
+            <span className="syl-image-loading">
               <LoadingOne theme="outline" size="20" fill="#fff" />
-            </div>
+            </span>
           ))}
       </span>
     );
