@@ -41,7 +41,7 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
   private inputting = false;
   private isResizing = false;
 
-  constructor(props: IViewMapProps<ImageAttrs>) {
+  constructor(props: any) {
     super(props);
     const { editor, attrs, state } = props;
     this.updateImageUrl();
@@ -60,7 +60,7 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
   get MAX_WIDTH() {
     const { editor } = this.props;
     const config = (editor.command as ISylApiCommand).image!.getConfiguration();
-    return editor.view.dom.scrollWidth - config.resizeMargin! * 2;
+    if (config.maxWidth !== undefined) return config.maxWidth;
   }
 
   componentDidUpdate(prevProps: IViewMapProps<ImageAttrs>) {
@@ -190,12 +190,12 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
         />
         {editor.editable && !config.disableResize && active ? (
           <ImageResizeBox
-            maxWidth={this.MAX_WIDTH}
             height={height}
             onResizeStart={this._onResizeStart}
             onResizeEnd={this._onResizeEnd}
             editorDOM={editor.view.dom as HTMLElement}
             src={src}
+            maxWidth={this.MAX_WIDTH}
             width={width}
             targetDOM={this.imageWrapDom}
           />

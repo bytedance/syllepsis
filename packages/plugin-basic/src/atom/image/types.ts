@@ -64,8 +64,8 @@ interface ImageProps {
   renderFailed?: false | ((props: IUpdateImageProps & { editor: SylApi; reUpload: () => Promise<void> }) => any);
   /** check if file should insert to editor, false means don't insert */
   checkBeforeInsert?: (f: File) => Promise<boolean>;
-  /** the margin of resize, default is 20 */
-  resizeMargin?: number;
+  /** the max width of img, 0 means not limit, the default value is `editor.view.dom.scrollWidth - 40` */
+  maxWidth?: number;
 }
 
 interface ImageAttrs {
