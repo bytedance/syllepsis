@@ -1,6 +1,6 @@
 {
   "name": "@syllepsis/plugin-basic",
-  "version": "0.1.37",
+  "version": "0.1.38",
   "description": "basic plugins of syllepsis editor",
   "author": "wangmou <wangmou@bytedance.com>",
   "license": "MIT",
