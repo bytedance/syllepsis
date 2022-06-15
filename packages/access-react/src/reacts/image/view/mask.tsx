@@ -1,5 +1,5 @@
 import { DamageMap, LoadingOne } from '@icon-park/react';
-import { EventChannel } from '@syllepsis/adapter';
+import { EventChannel, ISylApiCommand } from '@syllepsis/adapter';
 import { IViewMapProps } from '@syllepsis/editor';
 import { ImageAttrs, ImageProps } from '@syllepsis/plugin-basic';
 import cls from 'classnames';
@@ -36,7 +36,6 @@ const SylMaskImageFailed = ({ attrs, maxWidth, ...rest }: ISylMaskImageFailedPro
 
 class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
   public imageWrapDom: any;
-  public MAX_WIDTH: number;
   private isInline = false;
   private imageMount = false;
   private inputting = false;
@@ -56,7 +55,12 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
 
     const { schema } = editor.view.state;
     this.isInline = schema.nodes.image.isInline;
-    this.MAX_WIDTH = editor.view.dom.scrollWidth - 40;
+  }
+
+  get MAX_WIDTH() {
+    const { editor } = this.props;
+    const config = (editor.command as ISylApiCommand).image!.getConfiguration();
+    if (config.maxWidth !== undefined) return config.maxWidth;
   }
 
   componentDidUpdate(prevProps: IViewMapProps<ImageAttrs>) {
@@ -191,6 +195,7 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
             onResizeEnd={this._onResizeEnd}
             editorDOM={editor.view.dom as HTMLElement}
             src={src}
+            maxWidth={this.MAX_WIDTH}
             width={width}
             targetDOM={this.imageWrapDom}
           />

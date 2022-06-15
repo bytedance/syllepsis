@@ -15,6 +15,7 @@ interface IProps {
   config?: string;
   onResizeStart: (w: number, height: number) => void;
   onResizeEnd: (w: number, height: number) => void;
+  maxWidth?: number;
   width: number;
   src: string;
   targetDOM: HTMLElement;
@@ -39,7 +40,6 @@ class ImageResizeBoxControl extends React.PureComponent<IResizeProps, any> {
   height = 0;
   width = 0;
   frameID: number | null = 0;
-  maxWidth = 350;
   x1 = 0;
   x2 = 0;
   y1 = 0;
@@ -81,7 +81,10 @@ class ImageResizeBoxControl extends React.PureComponent<IResizeProps, any> {
     const dx = (this.x2 - this.x1) * (/left/.test(direction) ? -1 : 1);
 
     const aspect = this.width / this.height;
-    let ww = clamp(MIN_SIZE, this.width + Math.round(dx), this.maxWidth);
+    let ww = this.width + Math.round(dx);
+    if (this.props.maxWidth) {
+      ww = clamp(MIN_SIZE, this.width + Math.round(dx), this.props.maxWidth);
+    }
 
     const hh = Math.max(ww / aspect, MIN_SIZE);
     ww = hh * aspect;
@@ -96,8 +99,6 @@ class ImageResizeBoxControl extends React.PureComponent<IResizeProps, any> {
     }
 
     this.active = true;
-
-    this.maxWidth = this.props.editorDOM.scrollWidth - 40;
 
     this.x1 = e.clientX;
     this.y1 = e.clientY;

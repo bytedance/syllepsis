@@ -30,7 +30,7 @@ plugins: [
       renderFailed?: false | ((props: IUpdateImageProps & { editor: SylApi; reUpload: () => Promise<void> }) => any);
       // Optional, This method will be invoked after the process of uploading the picture is failed, which is used to override the default failed node
       checkBeforeInsert?: (f: File) => Promise<boolean>; // check if file should insert to editor, false means don't insert (0.1.14)
-  }),
+      maxWidth?: number // Optional, the maximum width of the image, 0 means no limit, the default is the editor width minus 40（0.1.38）
 ]
 ```
 
