@@ -1,3 +1,10 @@
+## [0.1.38](https://github.com/bytedance/syllepsis/compare/v0.1.37...v0.1.38) (2022-06-15)
+
+
+### 🎉 Features
+
+* **ImagePlugin:** Support `maxWidth` config
+
 ## [0.1.37](https://github.com/bytedance/syllepsis/compare/v0.1.36...v0.1.37) (2022-06-14)
 
 
