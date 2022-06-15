@@ -14,7 +14,13 @@ const showType = {
 module.exports = {
   writerOpts: {
     transform: commit => {
-      const commitType = commit.type.toLowerCase();
+      let commitType = commit.type;
+      if (!commitType && commit.header) {
+        const res = commit.header.match(/\w+/);
+        res && (commitType = res[0]);
+      }
+      if (!commitType) return;
+      commitType = commitType.toLowerCase();
       if (!logType.includes(commitType)) {
         return false;
       }
