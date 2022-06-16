@@ -182,9 +182,7 @@ const undoTextShortcut = (state: EditorState, dispatch?: (transaction: Transacti
       tr.step(toUndo.steps[j].invert(toUndo.docs[j]));
     }
     const marks = tr.doc.resolve(undoAble.from).marks();
-    dispatch(
-      tr.replaceWith(undoAble.from, undoAble.to, undoAble.text ? state.schema.text(undoAble.text, marks) : undefined),
-    );
+    dispatch(tr.replaceWith(undoAble.from, undoAble.to, undoAble.text ? state.schema.text(undoAble.text, marks) : []));
     return true;
   }
   return false;

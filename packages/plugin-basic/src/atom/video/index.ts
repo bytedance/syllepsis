@@ -1,5 +1,5 @@
 import { BlockAtom, SylApi, SylController, SylPlugin } from '@syllepsis/adapter';
-import { DOMOutputSpecArray, Node } from 'prosemirror-model';
+import { DOMOutputSpec, Node } from 'prosemirror-model';
 
 import {
   addAttrsByConfig,
@@ -127,9 +127,9 @@ class Video extends BlockAtom<IVideoAttrs> {
   public toDOM = (node: Node) => {
     const attrs = { ...node.attrs };
     setDOMAttrByConfig(this.props.addAttributes, node, attrs);
-    const renderSpec = ['video', { controls: 'true', ...attrs }] as DOMOutputSpecArray;
+    const renderSpec = ['video', { controls: 'true', ...attrs }] as DOMOutputSpec;
     if (this.inline) return renderSpec;
-    return ['div', { class: 'syl-video-wrapper', align: 'center' }, renderSpec] as DOMOutputSpecArray;
+    return ['div', { class: 'syl-video-wrapper', align: 'center' }, renderSpec] as DOMOutputSpec;
   };
 }
 

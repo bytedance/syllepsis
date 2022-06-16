@@ -42,11 +42,12 @@ class BasicView {
     // it would insert paragraph even if `keepLastLine` is `false`, when the lastChild is `atom`.
     if (this.config.keepLastLine === false && lastChild && !lastChild.type.isAtom) return;
 
-    if (!shouldInsertParagraph(lastChild)) return;
+    const defaultNodeType = state?.schema?.topNodeType?.contentMatch?.defaultType;
+    if (!shouldInsertParagraph(lastChild) || !defaultNodeType) return;
     const marks = getStoreMarks(state);
     dispatch(
       tr
-        .insert(doc.nodeSize - 2, state.schema.topNodeType.contentMatch.defaultType.create())
+        .insert(doc.nodeSize - 2, defaultNodeType.create())
         .ensureMarks(marks)
         .setMeta('addToHistory', false),
     );

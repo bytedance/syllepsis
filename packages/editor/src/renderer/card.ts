@@ -19,7 +19,7 @@ interface IViewMapProps<T = Types.StringMap<any>> {
 const AccessLayer = <ComponentCtor>(Card: typeof BaseCard, Renderer: Types.Ctor<IRenderer<any>>) => {
   if (!Card.prototype.NodeView) return Card;
   const BaseNodeView = Card.prototype.NodeView as typeof BaseCardView;
-  class AccessNodeView extends BaseNodeView<any> {
+  class AccessNodeView extends BaseNodeView {
     public props: IViewMapProps;
     public renderer: LayerRenderer<ComponentCtor, any> | null = null;
 

@@ -10,7 +10,7 @@ declare module 'prosemirror-view' {
 }
 
 declare module 'prosemirror-state' {
-  interface PluginSpec {
+  interface PluginSpec<PluginState> {
     prioritize?: boolean;
   }
 

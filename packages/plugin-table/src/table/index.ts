@@ -2,8 +2,9 @@ import './style.css';
 
 import { SylApi, SylUnionPlugin } from '@syllepsis/adapter';
 import merge from 'lodash.merge';
+import { Node as ProsemirrorNode } from 'prosemirror-model';
 import { columnResizing, isInTable, tableEditing } from 'prosemirror-tables';
-import { NodeView } from 'prosemirror-view';
+import { EditorView, NodeView } from 'prosemirror-view';
 
 import { tableCellSelfResizing } from './cell-self-resizing';
 import { BUTTON_DEFAULT_CONFIG, IMenuConfig } from './component/menu-button';
@@ -16,7 +17,12 @@ import { TableItemPlugin } from './table-item';
 import { createTableRowPlugin } from './table-row';
 
 interface ITablePluginProps {
-  columnResize?: { handleWidth?: number; cellMinWidth?: number; View?: NodeView<any>; lastColumnResizable?: boolean };
+  columnResize?: {
+    handleWidth?: number;
+    cellMinWidth?: number;
+    lastColumnResizable?: boolean;
+    View?: new (node: ProsemirrorNode, cellMinWidth: number, view: EditorView) => NodeView;
+  };
   table?: Partial<ITableProps>;
   button?: IMenuConfig;
   menus?: TContextMenu[];
@@ -44,7 +50,12 @@ class TablePlugin extends SylUnionPlugin<ITablePluginProps> {
     if (config.table.useTableHeader) sylPlugins.push({ plugin: createTableHeaderPlugin(config.table) });
 
     return {
-      nativePlugins: [columnResizing(config.columnResize), tableEditing(config.table), TableHelperPlugin(editor, menus), tableCellSelfResizing()],
+      nativePlugins: [
+        columnResizing(config.columnResize),
+        tableEditing(config.table),
+        TableHelperPlugin(editor, menus),
+        tableCellSelfResizing(),
+      ],
       sylPlugins,
     };
   }

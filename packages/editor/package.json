@@ -38,7 +38,10 @@
     "@types/lodash.debounce": "^4.0.0",
     "@types/lodash.throttle": "^4.0.0",
     "lodash.debounce": "^4.0.0",
-    "lodash.throttle": "^4.0.0"
+    "lodash.throttle": "^4.0.0",
+    "prosemirror-model": "^1.17.0",
+    "prosemirror-state": "^1.4.0",
+    "prosemirror-view": "^1.24.0"
   },
   "gitHead": "5e25b2a305717359add415b62ef696ad8beda121"
 }

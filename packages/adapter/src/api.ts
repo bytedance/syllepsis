@@ -150,7 +150,7 @@ class SylApi {
 
   public get shortcutable() {
     // @ts-ignore
-    return this.view.state.config.pluginsByKey[SHORTCUT_KEY.key].getStatus();
+    return this.view.state.config?.pluginsByKey?.[SHORTCUT_KEY.key]?.getStatus();
   }
 
   public get isDestroy() {
@@ -498,7 +498,7 @@ class SylApi {
   }
 
   public nodesBetween(
-    walker: (node: ProsemirrorNode, pos: number, parent: ProsemirrorNode) => boolean | undefined | void,
+    walker: (node: ProsemirrorNode, pos: number, parent: ProsemirrorNode | null) => boolean | undefined | void,
     range?: Types.IRangeStatic,
   ) {
     const { doc, selection } = this.view.state;
@@ -507,7 +507,7 @@ class SylApi {
       from = range.index;
       to = range.index + range.length;
     } else if (selection.ranges.length > 1) {
-      const ranges = selection.ranges.sort((a, b) => a.$from.pos - b.$from.pos);
+      const ranges = selection.ranges.slice().sort((a, b) => a.$from.pos - b.$from.pos);
       from = ranges[0].$from.pos;
       to = ranges[ranges.length - 1].$from.pos;
     }

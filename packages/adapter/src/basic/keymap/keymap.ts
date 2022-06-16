@@ -31,7 +31,11 @@ import {
   undo,
 } from './behavior';
 
-type TNativeKeymapHandler = (state: EditorState, dispatch: EditorView['dispatch'], view: EditorView) => boolean;
+type TNativeKeymapHandler = (
+  state: EditorState,
+  dispatch: EditorView['dispatch'] | undefined,
+  view: EditorView | undefined,
+) => boolean;
 type TNativeKeymap = Types.StringMap<TNativeKeymapHandler>;
 type TSylKeymap = Types.StringMap<TKeymapHandler>;
 

@@ -1,5 +1,5 @@
 import { getTypesetDOMStyle, Paragraph as BaseParagraph, SylApi, SylPlugin } from '@syllepsis/adapter';
-import { DOMOutputSpecArray, Node as ProseMirrorNode } from 'prosemirror-model';
+import { DOMOutputSpec, Node as ProseMirrorNode } from 'prosemirror-model';
 
 import {
   addAttrsByConfig,
@@ -66,7 +66,7 @@ class Paragraph extends BaseParagraph {
 
     setDOMAttrByConfig(addAttributes, node, Object.assign(attrs, extraAttrs));
 
-    return ['p', attrs, 0] as DOMOutputSpecArray;
+    return ['p', attrs, 0] as DOMOutputSpec;
   };
 }
 

@@ -51,7 +51,7 @@ const removeEmptyCodeBlock = (view: EditorView, code: CodeMirror.Editor) => {
   }
 
   const type: NodeType =
-    !$pos.node(-1) && $pos.node(-1) !== state.schema.nodes.doc ? $pos.node(-1).type : state.schema.nodes.paragraph;
+    !$pos.node(-1) && $pos.node(-1).type !== state.schema.nodes.doc ? $pos.node(-1).type : state.schema.nodes.paragraph;
 
   const tr = state.tr.setNodeMarkup($pos.before(), type);
   dispatch(tr);
