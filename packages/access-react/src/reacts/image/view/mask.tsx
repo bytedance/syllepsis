@@ -61,6 +61,7 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
     const { editor } = this.props;
     const config = (editor.command as ISylApiCommand).image!.getConfiguration();
     if (config.maxWidth !== undefined) return config.maxWidth;
+    return editor.view.dom.scrollWidth - 40;
   }
 
   componentDidUpdate(prevProps: IViewMapProps<ImageAttrs>) {
