@@ -1,3 +1,10 @@
+## [0.1.40](https://github.com/bytedance/syllepsis/compare/v0.1.39...v0.1.40) (2022-06-16)
+
+
+### 🐞 Bug Fixers
+
+* **ImagePlugin:** Resize the width can overflow the default `maxWidth`
+
 ## [0.1.39](https://github.com/bytedance/syllepsis/compare/v0.1.38...v0.1.39) (2022-06-15)
 
 
