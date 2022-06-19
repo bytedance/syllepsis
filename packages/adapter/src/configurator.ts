@@ -431,7 +431,6 @@ class SylConfigurator {
 
   public setEditable(editable: boolean) {
     const { state, dispatch } = this.view;
-    console.log('fuck', editable);
     dispatch(state.tr.setMeta(BSControlKey, { editable }));
   }
 
