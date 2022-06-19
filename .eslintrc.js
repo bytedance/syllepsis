@@ -75,6 +75,7 @@ module.exports = {
     'object-curly-spacing': ['error', 'always'],
     'prefer-arrow-callback': 'error',
     'prefer-const': 'error',
+    'no-console': ['error', { allow: ['warn', 'error'] }],
     'prefer-rest-params': 'off',
     'prefer-spread': 'off',
     quotes: [1, 'single'],
