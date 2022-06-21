@@ -25,6 +25,31 @@ import { Card, InlineCard } from '@syllepsis/access-react';
 
 在`prosemirror`的基础上，我们提供了一些自定义的`Spec`，用于定义节点表现
 
+### textMatcher
+
+用于定义文本匹配规则，可以方便地实现一些快捷输入，如`markdown`语法等
+
+```typescript
+type TextMatcherHandler = (match: RegExpExecArray, offset?: number) => Record<string, any> | undefined | null | boolean;
+
+interface IMatcherConfig<MatcherType = RegExp | RegExp[], HandlerType = TextMatcherHandler> {
+  name?: string;
+  matcher: MatcherType;
+  handler?: HandlerType;
+  timing?: 'enter' | 'input';
+}
+
+// 例子
+class Bold extends Inline<any> {
+  public textMatcher = [
+    {
+      // 把匹配到的内容**($1)**替换成`bold`样式
+      matcher: /\*\*([^*]+)\*\*\s$/,
+    },
+  ];
+}
+```
+
 ### 行内元素特殊属性
 
 | 配置名       | 释义                                                                                                                               | 示例                  |
@@ -78,12 +103,6 @@ interface IToolbar {
   handler?(editor: SylApi): void; // 点击按钮的回调
   showName?: string | boolean; // 在下拉列表内时显示的名称
   getRef?(ref: HTMLElement | null): void; // 获取按钮挂载的DOM
-}
-
-interface IMatcherConfig<MatcherType = RegExp | RegExp[], HandlerType = TextMatcherHandler> {
-  name?: string;
-  matcher: RegExp | RegExp[];
-  handler?: (match: RegExpMatchArray, offset: number) => boolean | Record<string, any>;
 }
 
 // 挂载在editor实例，通过editor.command[name]调用
@@ -148,7 +167,6 @@ class SylController<T extends Types.StringMap<any> = any> {
   public name: string; // 插件标识
   public editor: SylApi;
   public toolbar: IToolbar;
-  public textMatcher?: Array<IMatcherConfig<RegExp | RegExp[], TextMatcherHandler>>;
   public props: Partial<T> = {};
   public command?: IControllerCommand;
   public disable?(editor: SylApi): boolean; // 判断禁用

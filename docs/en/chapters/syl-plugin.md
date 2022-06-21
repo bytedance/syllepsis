@@ -28,6 +28,31 @@ import { Card, InlineCard } from '@syllepsis/access-react';
 
 On the basis of `prosemirror`, we provide some custom `Spec` to define node performance
 
+### textMatcher
+
+Used to define text matching rules, which can easily implement some shortcut input, such as `markdown` syntax, etc.
+
+```typescript
+type TextMatcherHandler = (match: RegExpExecArray, offset?: number) => Record<string, any> | undefined | null | boolean;
+
+interface IMatcherConfig<MatcherType = RegExp | RegExp[], HandlerType = TextMatcherHandler> {
+  name?: string;
+  matcher: MatcherType;
+  handler?: HandlerType;
+  timing?: 'enter' | 'input';
+}
+
+// example
+class Bold extends Inline<any> {
+  public textMatcher = [
+    {
+      // Replace the matched content **($1)** with `bold` style
+      matcher: /\*\*([^*]+)\*\*\s$/,
+    },
+  ];
+}
+```
+
 ### Special attributes of inline elements
 
 | Configuration name | Interpretation                                                                                                                                                                                                           | Example              |
@@ -83,12 +108,6 @@ interface IToolbar {
   handler?(editor: SylApi): void; // Click the button callback
   showName?: string | boolean; // The name displayed when in the drop-down list
   getRef?(ref: HTMLElement | null): void; // Get the DOM mounted by the button
-}
-
-interface IMatcherConfig<MatcherType = RegExp | RegExp[], HandlerType = TextMatcherHandler> {
-  name?: string;
-  matcher: RegExp | RegExp[];
-  handler?: (match: RegExpMatchArray, offset: number) => boolean | Record<string, any>;
 }
 
 // Mounted in the editor instance, called by editor.command[name]
@@ -153,7 +172,6 @@ class SylController<T extends Types.StringMap<any> = any> {
   public name: string; // Plug-in ID
   public editor: SylApi;
   public toolbar: IToolbar;
-  public textMatcher?: Array<IMatcherConfig<RegExp | RegExp[], TextMatcherHandler>>;
   public props: Partial<T> = {};
   public command?: IControllerCommand;
   public disable?(editor: SylApi): boolean; // judge to disable
