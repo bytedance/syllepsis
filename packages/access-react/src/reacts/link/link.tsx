@@ -296,7 +296,7 @@ class LinkController extends BaseLinkController {
         this.modal.setState({
           text,
           href,
-          pos,
+          pos: nodePos,
           insertType: InsertType.Replace,
           open: true,
           errorText: '',
