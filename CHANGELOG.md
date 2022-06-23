@@ -1,3 +1,10 @@
+## [0.1.42](https://github.com/bytedance/syllepsis/compare/v0.1.41...v0.1.42) (2022-06-23)
+
+
+### 🐞 Bug Fixers
+
+* **LinkPlugin:** Can't update the content of link in some cases
+
 ## [0.1.40](https://github.com/bytedance/syllepsis/compare/v0.1.39...v0.1.40) (2022-06-16)
 
 
