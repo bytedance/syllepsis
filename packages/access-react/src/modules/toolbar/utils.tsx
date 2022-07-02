@@ -170,13 +170,11 @@ const renderMoreToolButton = ({
   return (
     <MoreForToolbar
       trigger={cTrigger || trigger}
-      key={uuid()}
       toolbarType={toolbarType}
       name={name}
       icon={icon}
       editor={editor}
-      // @ts-ignore
-      key={name || groupKey}
+      key={name || groupKey || uuid()}
       display={getToolDisplay(depth)}
       tooltip={tooltip}
       menuDistance={content.menuDistance || menuDistance}

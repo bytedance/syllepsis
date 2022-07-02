@@ -22,7 +22,7 @@ const insertEmptyPTagAtTheEndOfHtml = (div: HTMLElement): void => {
 // remove the last `break`, and operate Node directly will cause the size to be incorrect and need to be corrected manually
 const removeBrInEnd = (doc: ProsemirrorNode | Slice) => {
   const matchNodes: Array<{
-    parent: ProsemirrorNode;
+    parent: ProsemirrorNode | Slice | null;
     topPos: number;
     topNode: ProsemirrorNode;
     pos: number;
@@ -35,7 +35,7 @@ const removeBrInEnd = (doc: ProsemirrorNode | Slice) => {
   doc.content.nodesBetween(
     0,
     doc.content.size,
-    (node: ProsemirrorNode, pos: number, _parent: ProsemirrorNode, index: number) => {
+    (node: ProsemirrorNode, pos: number, _parent: ProsemirrorNode | null, index: number) => {
       // set the new top Node
       if (!_parent) {
         topNode = node;
@@ -54,12 +54,15 @@ const removeBrInEnd = (doc: ProsemirrorNode | Slice) => {
 
   matchNodes.forEach(({ parent, topNode: _topNode, topPos: _topPos, newNode, pos, index }) => {
     const $pos = _topNode.resolve(pos - _topPos); // border
-    parent.content = parent.content.replaceChild(index, newNode);
+    Object.assign(parent, { content: parent?.content.replaceChild(index, newNode) });
 
-    parent !== doc && doc.content.size--;
+    if (parent !== doc) {
+      Object.assign(doc.content, { size: doc.content.size - 1 });
+    }
     let depth = $pos.depth - 2;
     while (depth >= 0) {
-      $pos.node(depth).content.size--;
+      const node = $pos.node(depth);
+      Object.assign(node.content, { size: node.content.size - 1 });
       depth--;
     }
   });
@@ -316,7 +319,7 @@ const getMatchRules = (sylPlugins: SylPlugin<any>[]) => {
 };
 
 // special HTML is transformed into `Node` through `textMatcher` config of `Schema`
-const transformCard = (docNode: ProsemirrorNode<any>, view: EditorView, sylPlugins: SylPlugin<any>[]) => {
+const transformCard = (docNode: ProsemirrorNode, view: EditorView, sylPlugins: SylPlugin<any>[]) => {
   let doc = docNode.toJSON();
 
   const { matchNode, blockMatchers, inlineMatchers } = getMatchRules(sylPlugins);

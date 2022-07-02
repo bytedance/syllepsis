@@ -97,14 +97,16 @@ const removeExcludesMarks = (tr: Transaction) => {
       if (node.isLeaf && node.marks.length) {
         const fitRule = getFitMarksHandler(tr.doc.resolve(pos));
         if (fitRule) {
-          const newMarks = fitRule(node.marks);
-          if (newMarks.length === node.marks.length) return;
-          parent.content = parent.content.replaceChild(
-            index,
-            node.isText
-              ? node.type.schema.text(node.textContent, newMarks)
-              : node.type.create(node.attrs, node.content, newMarks),
-          );
+          const newMarks = fitRule(node.marks.slice());
+          if (newMarks.length === node.marks.length || !parent) return;
+          Object.assign(parent, {
+            content: parent.content.replaceChild(
+              index,
+              node.isText
+                ? node.type.schema.text(node.textContent, newMarks)
+                : node.type.create(node.attrs, node.content, newMarks),
+            ),
+          });
           isRemoved = true;
         }
       }
@@ -137,12 +139,14 @@ const resetUnInheritAttr = (oldState: EditorState, newState: EditorState) => {
   getUnInheritAttr(oldNode).forEach(key => {
     if (oldNode.attrs[key] === newNode.attrs[key]) {
       if (oldNode.attrs === newNode.attrs) {
-        newNode.attrs = {
-          ...newNode.attrs,
-          [key]: (newNode.type as any).attrs[key].default,
-        };
+        Object.assign(newNode, {
+          attrs: {
+            ...newNode.attrs,
+            [key]: (newNode.type as any).attrs[key].default,
+          },
+        });
       } else {
-        newNode.attrs[key] = (newNode.type as any).attrs[key].default;
+        Object.assign(newNode.attrs, { [key]: (newNode.type as any).attrs[key].default });
       }
     }
   });

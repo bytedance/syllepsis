@@ -15,7 +15,7 @@ import { TableItemPlugin } from './table-item';
 import { createTableRowPlugin } from './table-row';
 
 interface ITablePluginProps {
-  columnResize?: { handleWidth?: number; cellMinWidth?: number; View?: NodeView<any>; lastColumnResizable?: boolean };
+  columnResize?: { handleWidth?: number; cellMinWidth?: number; View?: NodeView; lastColumnResizable?: boolean };
   table?: Partial<ITableProps>;
   button?: IMenuConfig;
 }
@@ -41,7 +41,12 @@ class TablePlugin extends SylUnionPlugin<ITablePluginProps> {
     if (config.table.useTableHeader) sylPlugins.push({ plugin: createTableHeaderPlugin(config.table) });
 
     return {
-      nativePlugins: [columnResizing(config.columnResize), tableEditing(config.table), TableHelperPlugin(editor), tableCellSelfResizing()],
+      nativePlugins: [
+        columnResizing(config.columnResize),
+        tableEditing(config.table),
+        TableHelperPlugin(editor),
+        tableCellSelfResizing(),
+      ],
       sylPlugins,
     };
   }

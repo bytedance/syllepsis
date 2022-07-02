@@ -1,4 +1,4 @@
-import { DOMOutputSpecArray, Node as ProseMirrorNode } from 'prosemirror-model';
+import { DOMOutputSpec, Node as ProseMirrorNode } from 'prosemirror-model';
 
 import { getTypesetDOMStyle, parseTypesetStyle, Types } from '../libs';
 import { FORMAT_TYPE } from './const';
@@ -76,7 +76,7 @@ class Paragraph extends Block<IParagraphAttrs> {
     const style = getTypesetDOMStyle(node.attrs, this.attrs);
     if (style) attrs.style = style;
     if (node.attrs.class) attrs.class = node.attrs.class;
-    return ['p', attrs, 0] as DOMOutputSpecArray;
+    return ['p', attrs, 0] as DOMOutputSpec;
   };
 }
 
@@ -92,7 +92,7 @@ class Break extends Formattable<never> {
   public selectable = false;
   public content = undefined;
   public parseDOM = [{ tag: 'br' }];
-  public toDOM = () => ['br'] as DOMOutputSpecArray;
+  public toDOM = () => ['br'] as DOMOutputSpec;
 }
 
 const basicSchema = updateSchema(

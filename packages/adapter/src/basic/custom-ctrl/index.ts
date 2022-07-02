@@ -33,6 +33,7 @@ const CUSTOM_CTRL_ACCEPT: Record<keyof ICustomCtrlConfig, boolean> = {
   clipboardParser: true,
   clipboardTextParser: true,
   nodeViews: true,
+  markViews: true,
   clipboardSerializer: true,
   decorations: true,
   editable: true,
@@ -74,7 +75,7 @@ class CustomCtrlCenter {
   private filterTransactions: Array<NonNullable<SylController['filterTransaction']>> = [];
 
   // group `appendTransaction` handler
-  private handleAppendTransaction = (trs: Transaction[], oldState: EditorState, _newState: EditorState) => {
+  private handleAppendTransaction = (trs: readonly Transaction[], oldState: EditorState, _newState: EditorState) => {
     let newState = _newState;
     const tr = newState.tr;
     let appended = false;
@@ -151,14 +152,16 @@ class CustomCtrlCenter {
   public register = (registerConfigs: ICustomCtrlConfig | Array<ICustomCtrlConfig>, prioritized = false) => {
     toArray(registerConfigs).forEach(config => {
       (Object.keys(config) as Array<keyof ICustomCtrlConfig>).forEach((configName: keyof ICustomCtrlConfig) => {
-        if (configName === 'appendTransaction' && config.appendTransaction) {
+        if (configName === 'appendTransaction') {
+          if (!config.appendTransaction) return;
           this.appendTransactions[prioritized ? 'unshift' : 'push'](config.appendTransaction);
-        } else if (configName === 'filterTransaction' && config.filterTransaction) {
+        } else if (configName === 'filterTransaction') {
+          if (!config.filterTransaction) return;
           this.filterTransactions[prioritized ? 'unshift' : 'push'](config.filterTransaction);
         } else if (configName === 'eventHandler') {
           const eventHandler = config.eventHandler;
           if (!eventHandler) return;
-          (Object.keys(eventHandler!) as Array<keyof IEventHandler>).forEach((event: keyof IEventHandler) => {
+          (Object.keys(eventHandler) as Array<keyof IEventHandler>).forEach((event: keyof IEventHandler) => {
             const handler = eventHandler![event];
             if (!handler) return;
             if (event === 'handleDOMEvents') {

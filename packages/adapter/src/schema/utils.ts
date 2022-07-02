@@ -1,4 +1,4 @@
-import { DOMOutputSpec, DOMOutputSpecArray } from 'prosemirror-model';
+import { DOMOutputSpec } from 'prosemirror-model';
 
 import { formatToDOMAttrs, getMetadata, Types } from '../libs';
 import { FLAG, FORMAT_TYPE, SYL_TAG } from './const';
@@ -14,7 +14,7 @@ const createInlineCardDOM = () => createElement('syl-inline');
 
 // provide default `toDOM` according to `tagName`, `attrs` and `content`
 const createWrapperDOM = (tagName: string, attrs: Types.StringMap<any> = {}, hasContent = false): DOMOutputSpec => {
-  const pDOM: DOMOutputSpecArray = [tagName, formatToDOMAttrs(attrs)];
+  const pDOM: DOMOutputSpec = [tagName, formatToDOMAttrs(attrs)];
   if (hasContent) pDOM[2] = 0;
 
   return pDOM;

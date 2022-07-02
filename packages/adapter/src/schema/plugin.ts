@@ -118,7 +118,7 @@ class SylUnionPlugin<T = any> {
     editor: SylApi,
     props: ISylPluginProps['controllerProps'],
   ): {
-    nativePlugins?: Plugin<any, any>[];
+    nativePlugins?: Plugin[];
     sylPlugins?: ISylPluginConfig[];
   } {
     return {};

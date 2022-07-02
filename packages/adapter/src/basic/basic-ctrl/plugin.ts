@@ -85,7 +85,7 @@ const BasicCtrlPlugin = (config: IBasicCtrlConfig, _editable = true) => {
       },
     },
     view: view => new BasicView(view, config),
-    appendTransaction: (trs: Transaction[], oldState: EditorState, newState: EditorState) => {
+    appendTransaction: (trs: readonly Transaction[], oldState: EditorState, newState: EditorState) => {
       const tr = newState.tr;
       let isModify = false;
       if (!oldState.storedMarks && newState.storedMarks && oldState.doc.nodeSize !== newState.doc.nodeSize) {

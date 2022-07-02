@@ -34,11 +34,11 @@ const doLiftNode = (tr: Transaction, pos: number) => {
   return tr;
 };
 
-const insertBreak = (state: EditorState, dispatch: EditorView['dispatch']) => {
+const insertBreak = (state: EditorState, dispatch?: EditorView['dispatch']) => {
   const { selection } = state;
   if ((selection as TextSelection).$cursor && selection.empty) {
     const marks = getStoreMarks(state);
-    dispatch(state.tr.insert(selection.from, state.schema.nodes.break.create()).ensureMarks(marks));
+    dispatch?.(state.tr.insert(selection.from, state.schema.nodes.break.create()).ensureMarks(marks));
     return true;
   }
   return false;
@@ -116,7 +116,7 @@ const splitBlock = (state: EditorState, dispatch?: EditorView['dispatch']) => {
 
   let types = needCreate && defaultType ? [{ type: defaultType }] : undefined;
   let can = canSplit(tr.doc, tr.mapping.map($from.pos), 1, types);
-  if (!types && !can && canSplit(tr.doc, tr.mapping.map($from.pos), 1, defaultType && [{ type: defaultType }])) {
+  if (!types && !can && defaultType && canSplit(tr.doc, tr.mapping.map($from.pos), 1, [{ type: defaultType }])) {
     types = [{ type: defaultType! }];
     can = true;
   }

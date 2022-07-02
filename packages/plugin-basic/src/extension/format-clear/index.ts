@@ -30,8 +30,8 @@ class FormatClearController extends SylController {
     const { $from } = selection;
 
     // storedMarks are prefer than $from.marks
-    if (storedMarks && filterMark(storedMarks).length) return false;
-    if (!storedMarks && filterMark($from.marks()).length) return false;
+    if (storedMarks && filterMark(storedMarks.slice()).length) return false;
+    if (!storedMarks && filterMark($from.marks().slice()).length) return false;
 
     const marks = [];
     editor.nodesBetween(node => {
@@ -40,7 +40,7 @@ class FormatClearController extends SylController {
         marks.push(true);
       }
       if (node.isInline && node.marks.length) {
-        marks.push(...filterMark(node.marks));
+        marks.push(...filterMark(node.marks.slice()));
       }
       return undefined;
     });

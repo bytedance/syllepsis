@@ -18,7 +18,7 @@ interface IDecoState {
     from?: number;
     to?: number;
     attrs?: DecorationAttrs;
-    shadow?: (dom: HTMLElement, view: EditorView, getPos: () => number) => HTMLElement;
+    shadow?: (dom: HTMLElement, view: EditorView, getPos: () => number | undefined) => HTMLElement;
     spec: {
       key: string;
       onRemove?: () => void;
@@ -67,8 +67,10 @@ const DecorationPlugin = () =>
                 newSet = newSet.remove(targetItems);
               };
               while (targetItems.length && times < 3) {
-                targetItems[0].from = targetItems[0].from - times;
-                targetItems[0].to = targetItems[0].to - times;
+                Object.assign(targetItems[0], {
+                  from: targetItems[0].from - times,
+                  to: targetItems[0].to - times,
+                });
                 removeItem();
                 targetItems = findItem();
                 times++;
@@ -95,7 +97,7 @@ const DecorationPlugin = () =>
         }
       },
     },
-    appendTransaction(trs: Transaction[], oldState: EditorState, newState: EditorState) {
+    appendTransaction(trs: readonly Transaction[], oldState: EditorState, newState: EditorState) {
       let tr = newState.tr;
       const newDecorations = DecoKey.getState(newState).find() as Decoration[];
       const oldDecorations = DecoKey.getState(oldState).find() as Decoration[];

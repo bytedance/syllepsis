@@ -68,7 +68,7 @@ const getNodeType = (view: EditorView, nodeName: string) => {
   if (nodeName === 'text') {
     return {
       name: 'text',
-      create: (attrs, content, marks) => view.state.schema.text(content, marks),
+      create: (attrs, content, marks) => view.state.schema.text((content as unknown) as string, marks),
     } as NodeType;
   }
   return node;
@@ -154,11 +154,11 @@ const insert = (view: EditorView, nodeInfo: INodeInfo | string, index?: InsertOp
 
   const isInlineNode = newNode.type.isInline;
   if (isInlineNode && userConfig.inheritMarks) {
-    let curMarks: Mark[] = view.state.storedMarks || [];
-    if (!curMarks.length) curMarks = $from.marks();
+    let curMarks: Mark[] = view.state.storedMarks?.slice() || [];
+    if (!curMarks.length) curMarks = $from.marks().slice();
     if (curMarks.length) {
       curMarks.push(...newNode.marks);
-      newNode.marks = curMarks;
+      Object.assign(newNode, { marks: curMarks });
     }
   }
 
@@ -252,7 +252,7 @@ const replace = (view: EditorView, nodeInfo: INodeInfo | string, replaceOption?:
   if (length >= 0) {
     $to = state.doc.resolve(config.index + length);
   }
-  if (config.inheritMarks) newNode.marks = $from.marksAcross($to) || [];
+  if (config.inheritMarks) Object.assign(newNode, { marks: $from.marksAcross($to) || [] });
 
   const { index, scrollIntoView, focus, addToHistory } = config;
   if (length < 0) length = $to.pos - $from.pos;

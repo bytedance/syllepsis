@@ -49,6 +49,8 @@
     "classnames": "^2.2.6",
     "emoji-mart": "<2.11.2",
     "lodash.debounce": "^4.0.0",
+    "prosemirror-model": "^1.17.0",
+    "prosemirror-view": "^1.24.0",
     "react-modal": "^3.11.2",
     "react-tooltip-lite": "^1.12.0"
   },

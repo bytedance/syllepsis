@@ -6,9 +6,9 @@ import { browser } from '../../libs';
 import { DecoKey } from '../decoration';
 
 interface IClickOn {
-  node: ProsemirrorNode<any>;
+  node: ProsemirrorNode;
   nodePos: number;
-  view: EditorView<any>;
+  view: EditorView;
   pos: number;
   event: MouseEvent;
 }
