@@ -1,7 +1,3 @@
-*[role='tooltip'] {
-  z-index: 6;
-}
-
 .syl-tooltip-container {
   position: relative;
 }
