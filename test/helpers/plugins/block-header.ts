@@ -8,17 +8,17 @@ class Header extends BaseHeader {
 
   public attrs = {
     level: {
-      default: 1
+      default: 1,
     },
     class: {
-      default: ''
-    }
+      default: '',
+    },
   };
 
   public toDOM = (node: any) => {
     const attrs: any = {};
     if (node.attrs.class) attrs.class = node.attrs.class;
-    return [this.tagName(node), attrs, 0] as DOMOutputSpec;
+    return [this.tagName(node), attrs, 0] as any;
   };
 }
 
@@ -27,8 +27,8 @@ class HeaderController extends SylController<any> {
 
   public eventHandler = {
     handleDOMEvents: {
-      mouseup: () => false
-    }
+      mouseup: () => false,
+    },
   };
 }
 

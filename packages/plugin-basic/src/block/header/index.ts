@@ -1,5 +1,11 @@
-import { Block, SylController, SylPlugin } from '@syllepsis/adapter';
+import { Block, SylApi, SylController, SylPlugin } from '@syllepsis/adapter';
+import { Node as ProseMirrorNode } from 'prosemirror-model';
 
+import { addAttrsByConfig, getFromDOMByConfig, IUserAttrsConfig, setDOMAttrByConfig } from '../../utils';
+
+interface IHeaderProps {
+  addAttributes?: IUserAttrsConfig;
+}
 interface IHeaderStructure {
   level: number;
 }
@@ -11,31 +17,52 @@ class Header extends Block<IHeaderStructure> {
 
   public tagName = (node: any) => `h${(node && node.attrs.level) || 1}`;
 
+  public parseFromDOM = (dom: HTMLElement) => {
+    const level = dom.tagName.match(/\d/);
+    if (!level) return false;
+    const attrs = { level: +level[0] };
+    getFromDOMByConfig(this.props.addAttributes, dom, attrs);
+    return attrs;
+  };
+
+  constructor(editor: SylApi, props: IHeaderProps) {
+    super(editor, props);
+    if (props.addAttributes) {
+      addAttrsByConfig(props.addAttributes, this);
+    }
+  }
+
   public textMatcher = [
     {
       matcher: /^(#{1,6})\s$/,
       handler(match: RegExpExecArray) {
         return {
-          level: match[1].length
+          level: match[1].length,
         };
-      }
-    }
+      },
+    },
   ];
 
   public attrs = {
     level: {
-      default: 1
-    }
+      default: 1,
+    },
   };
 
   public parseDOM = [
-    { tag: 'h1', attrs: { level: 1 } },
-    { tag: 'h2', attrs: { level: 2 } },
-    { tag: 'h3', attrs: { level: 3 } },
-    { tag: 'h4', attrs: { level: 4 } },
-    { tag: 'h5', attrs: { level: 5 } },
-    { tag: 'h6', attrs: { level: 6 } }
+    { tag: 'h1', getAttrs: this.parseFromDOM },
+    { tag: 'h2', getAttrs: this.parseFromDOM },
+    { tag: 'h3', getAttrs: this.parseFromDOM },
+    { tag: 'h4', getAttrs: this.parseFromDOM },
+    { tag: 'h5', getAttrs: this.parseFromDOM },
+    { tag: 'h6', getAttrs: this.parseFromDOM },
   ];
+
+  public toDOM = (node: ProseMirrorNode) => {
+    const attrs = { ...node.attrs };
+    setDOMAttrByConfig(this.props.addAttributes, node, attrs);
+    return [`h${attrs.level}`, attrs, 0] as const;
+  };
 }
 
 class HeaderController extends SylController {
@@ -46,22 +73,22 @@ class HeaderController extends SylController {
     type: 'select',
     value: [
       {
-        attrs: false
+        attrs: false,
       },
       {
-        attrs: { level: 1 }
+        attrs: { level: 1 },
       },
       {
-        attrs: { level: 2 }
+        attrs: { level: 2 },
       },
       {
-        attrs: { level: 3 }
-      }
-    ]
+        attrs: { level: 3 },
+      },
+    ],
   };
 }
 
-class HeaderPlugin extends SylPlugin {
+class HeaderPlugin extends SylPlugin<IHeaderProps> {
   public name = NAME;
   public Controller = HeaderController;
   public Schema = Header;
