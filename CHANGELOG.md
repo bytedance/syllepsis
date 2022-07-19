@@ -1,3 +1,10 @@
+## [0.1.44](https://github.com/bytedance/syllepsis/compare/v0.1.43...v0.1.44) (2022-07-19)
+
+
+### 🎉 Features
+
+* **HeaderPlugin:** Support `addAttributes` configuration in `HeaderPlugin`
+
 ## [0.1.42](https://github.com/bytedance/syllepsis/compare/v0.1.41...v0.1.42) (2022-06-23)
 
 
