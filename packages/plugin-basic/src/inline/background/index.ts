@@ -10,7 +10,7 @@ interface IBackgroundAttrs {
   color: string | null;
 }
 
-const colorReg = /^\s*(rgba\([^)]+\)|rgb\([^)]+\)|#[\d|a-f]{3,6})|\w*/i;
+const colorReg = /^\s*(rgba\([^)]+\)|rgb\([^)]+\)|#[\d|a-f]{3,8})|\w*/i;
 const NAME = 'background';
 
 const getBgAttrs = (style: string) => {
