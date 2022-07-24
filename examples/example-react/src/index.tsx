@@ -136,7 +136,6 @@ const RichEditor = () => {
       uploader: async file =>
         new Promise(resolve => {
           setTimeout(() => {
-            console.log('down');
             resolve({
               src: URL.createObjectURL(file),
             });
@@ -257,7 +256,7 @@ const RichEditor = () => {
     <>
       <SylEditor
         placeholder="please input..."
-        content="<p><span style='color: #db4127;'>default content</span></p>"
+        content="<p><span style='color: #FF7866DD;background: #BDC1C656;'>default content</span></p>"
         getEditor={editor => {
           window.editor = editor;
         }}

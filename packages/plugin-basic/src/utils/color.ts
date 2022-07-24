@@ -28,11 +28,11 @@ const toHexAlpha = (val: number) => {
 };
 
 // covert color-string to #xxxxxx
-const toHex = (_color: string) => {
+const toHex = (_color: string, alpha = true) => {
   try {
     if (STATIC_COLOR[_color]) return STATIC_COLOR[_color];
     const color = Color(_color);
-    return color.hex() + toHexAlpha(color.alpha());
+    return color.hex() + (alpha ? toHexAlpha(color.alpha()) : '');
   } catch (e) {
     return '';
   }

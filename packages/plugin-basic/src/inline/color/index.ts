@@ -10,10 +10,11 @@ interface IColorAttrs {
 
 interface IColorProps {
   default?: string;
+  transparent?: boolean;
 }
 
-const getColorAttrs = (style: string) => {
-  const color = toHex(style);
+const getColorAttrs = (style: string, transparent: boolean) => {
+  const color = toHex(style, transparent);
   if (color) {
     return {
       color,
@@ -25,12 +26,13 @@ class Color extends Inline<IColorAttrs> {
   public name = NAME;
   public tagName = () => 'span';
 
-  public props: IColorProps = {};
-
   constructor(editor: SylApi, props: IColorProps) {
     super(editor, props);
+    if (props.transparent !== false) {
+      this.props.transparent = true;
+    }
     if (props.default) {
-      this.attrs.color.default = toHex(props.default);
+      this.attrs.color.default = toHex(props.default, this.props.transparent);
     }
   }
 
@@ -43,11 +45,11 @@ class Color extends Inline<IColorAttrs> {
   public parseDOM = [
     {
       style: 'color',
-      getAttrs: getColorAttrs,
+      getAttrs: (val: string) => getColorAttrs(val, this.props.transparent!),
     },
     {
       tag: '*[color]',
-      getAttrs: (dom: HTMLElement) => getColorAttrs(dom.getAttribute('color')!),
+      getAttrs: (dom: HTMLElement) => getColorAttrs(dom.getAttribute('color')!, this.props.transparent!),
     },
   ];
 

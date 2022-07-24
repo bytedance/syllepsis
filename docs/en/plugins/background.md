@@ -6,6 +6,7 @@ import { BackgroundPlugin } from '@syllepsis/access-react';
 plugins: [
   new BackgroundPlugin({
     default: string, //  default background color，it will be reset when the attribute equal，default is '#FFFFFF'
+    transparent: boolean, // Whether to support transparency, default true (0.1.46)
   }),
 ];
 ```

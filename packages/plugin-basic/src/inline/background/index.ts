@@ -5,18 +5,19 @@ import { checkMarkDisable, toHex } from '../../utils';
 
 interface IBackgroundProps {
   default?: string;
+  transparent?: boolean;
 }
 interface IBackgroundAttrs {
   color: string | null;
 }
 
-const colorReg = /^\s*(rgba\([^)]+\)|rgb\([^)]+\)|#[\d|a-f]{3,6})|\w*/i;
+const colorReg = /^\s*(rgba\([^)]+\)|rgb\([^)]+\)|#[\d|a-f]{3,8})|\w*/i;
 const NAME = 'background';
 
-const getBgAttrs = (style: string) => {
+const getBgAttrs = (style: string, transparent: boolean) => {
   const colorMatch = style.match(colorReg);
   if (!colorMatch) return false;
-  const background = toHex(colorMatch[0]);
+  const background = toHex(colorMatch[0], transparent);
   if (background) {
     return {
       color: background,
@@ -31,8 +32,11 @@ class Background extends Inline<IBackgroundAttrs> {
 
   constructor(editor: SylApi, props: IBackgroundProps) {
     super(editor, props);
+    if (props.transparent !== false) {
+      this.props.transparent = true;
+    }
     if (props.default) {
-      this.attrs.color.default = toHex(props.default);
+      this.attrs.color.default = toHex(props.default, this.props.transparent);
     }
   }
 
@@ -42,14 +46,16 @@ class Background extends Inline<IBackgroundAttrs> {
     },
   };
 
+  public getAttrs = (style: string) => getBgAttrs(style, this.props.transparent!);
+
   public parseDOM = [
     {
       style: 'background',
-      getAttrs: getBgAttrs,
+      getAttrs: this.getAttrs,
     },
     {
       style: 'background-color',
-      getAttrs: getBgAttrs,
+      getAttrs: this.getAttrs,
     },
   ];
 
