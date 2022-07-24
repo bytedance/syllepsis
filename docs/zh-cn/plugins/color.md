@@ -6,7 +6,7 @@ import { ColorPlugin } from '@syllepsis/access-react';
 plugins: [
   new ColorPlugin({
     default: string, //  默认字色，值为这个值时会取消样式，默认是#000000
-    transparent: boolean, // 是否支持透明度，默认 true (0.1.46)
+    transparent: boolean, // 是否支持透明度，默认 true (0.1.45)
   }),
 ];
 ```

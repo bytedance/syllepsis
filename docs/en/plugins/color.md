@@ -6,7 +6,7 @@ import { ColorPlugin } from '@syllepsis/access-react';
 plugins: [
   new ColorPlugin({
     default: string, //  default font color，it will be reset when the attribute equal，default is '#000000'
-    transparent: boolean, // Whether to support transparency, default true (0.1.46)
+    transparent: boolean, // Whether to support transparency, default true (0.1.45)
   }),
 ];
 ```
