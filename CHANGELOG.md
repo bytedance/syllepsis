@@ -1,3 +1,15 @@
+## [0.1.45](https://github.com/bytedance/syllepsis/compare/v0.1.44...v0.1.45) (2022-07-24)
+
+
+### 🎉 Features
+
+* **plugin-basic:** Support `transparent` configuration in `ColorPlugin` and `BackgroundPlugin`
+
+
+### 🐞 Bug Fixers
+
+* **BackgroundPlugin:** Lost hex style alpha value, closes [#161](https://github.com/bytedance/syllepsis/issues/161)
+
 ## [0.1.44](https://github.com/bytedance/syllepsis/compare/v0.1.43...v0.1.44) (2022-07-19)
 
 
