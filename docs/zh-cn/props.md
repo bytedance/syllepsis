@@ -30,6 +30,7 @@ import { SylEditor } from '@syllepsis/access-react';
 | keepWhiteSpace    | `full \| undefined`                                                                                                 | 可选，是否折叠空白字符，默认折叠。`full`需要配合`white-space: pre-wrap;`生效           |
 | eventHandler      | [`IEventHandler`](https://bytedance.github.io/syllepsis/#/zh-cn/chapters/syl-plugin?id=controller)                  | 可选，用于配置事件处理函数。                                                           |
 | keymap            | [`Record<string, TKeymapHandler>`](https://bytedance.github.io/syllepsis/#/zh-cn/chapters/syl-plugin?id=controller) | 可选，用于设置`keymap`（快捷键）处理函数                                               |
+| disableShortcut   | `boolean`                                                                                                           | 可选，禁用快捷（类 markdown)输入                                                       |
 | scrollThreshold   | `number \| { top: number, left: number, right: number, bottom: number}`                                             | 可选，当光标距离可视区域为小于设置的值时，会触发`scrollMargin`，修正视窗位置，默认是 0 |
 | scrollMargin      | `number \| { top: number, left: number, right: number, bottom: number}`                                             | 可选，触发修正后，焦点距离边界的值，默认是 5                                           |
 | appendTransaction | `(tr: Transaction, oldState: EditorState, newState: EditorState): void \| Transaction`                              | 可选，可用于在编辑器状态变化时追加`transaction`                                        |
