@@ -831,6 +831,33 @@ describe('replace API test', () => {
     expect(html).toEqual('<h1>replace</h1>');
   });
 
+  test('can replace text', async () => {
+    const { html, isBold } = await page.evaluate(() => {
+      editor.setHTML('<p>123</p>');
+      editor.replace(
+        {
+          type: 'text',
+          content: 'replace',
+          marks: [
+            {
+              type: 'bold',
+            },
+          ],
+        },
+        {
+          index: 1,
+          length: 3,
+          scrollIntoView: false,
+          focus: false,
+        },
+      );
+      editor.setSelection({ index: 2, length: 0 });
+      return { html: editor.getHTML(), isBold: editor.isActive('bold') };
+    });
+    expect(html).toEqual('<p><strong>replace</strong></p>');
+    expect(isBold).toBe(true);
+  });
+
   test('replace support addToHistory config', async () => {
     const html = await page.evaluate(() => {
       editor.setHTML('<p>123</p>');

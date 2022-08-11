@@ -252,7 +252,13 @@ const replace = (view: EditorView, nodeInfo: INodeInfo | string, replaceOption?:
   if (length >= 0) {
     $to = state.doc.resolve(config.index + length);
   }
-  if (config.inheritMarks) newNode.marks = $from.marksAcross($to) || [];
+  if (config.inheritMarks) {
+    ($from.marksAcross($to) || []).forEach(mark => {
+      if (!newNode.marks.some(({ type }) => type === mark.type)) {
+        newNode.marks = mark.addToSet(newNode.marks);
+      }
+    });
+  }
 
   const { index, scrollIntoView, focus, addToHistory } = config;
   if (length < 0) length = $to.pos - $from.pos;
