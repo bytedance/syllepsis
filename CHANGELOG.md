@@ -1,3 +1,10 @@
+## [0.1.46](https://github.com/bytedance/syllepsis/compare/v0.1.45...v0.1.46) (2022-08-11)
+
+
+### 🎉 Features
+
+* **ImagePlugin:** Upload file from clipboard when there is only a single image and the src of image, closes [#174](https://github.com/bytedance/syllepsis/issues/174)
+
 ## [0.1.45](https://github.com/bytedance/syllepsis/compare/v0.1.44...v0.1.45) (2022-07-24)
 
 
