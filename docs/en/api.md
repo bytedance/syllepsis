@@ -226,7 +226,7 @@ Used to insert cards in a row, which means inserting a card in the next row.
 
 `insertText: (text: string, format?: {[key: string]: boolean | object }, index?: number | InsertOption) => void`
 
-Insert text, you can set the format, such as title, bold, etc. `format` can refer to [setFormat](#setformat-format-key-string-boolean-object-void)`API`.
+Insert text, you can set the format, such as title, bold, etc. `format` can refer to [setFormat](/en/api?id=setFormat)`API`.
 
 ### update
 
@@ -278,7 +278,7 @@ Supports the selection of the selected area specified by `index` and `length`.
 
 `getFormat: () => {[key: string]: boolean | object }`
 
-Get the text format and format information of the current position. Return input parameters similar to [setFormat](#setformat-format-key-string-boolean-object-void).
+Get the text format and format information of the current position. Return input parameters similar to [setFormat](/en/api?id=setFormat).
 
 ### clearFormat
 

@@ -224,7 +224,7 @@ nodesBetween: (
 
 `insertText: (text: string, format?: { [key: string]: boolean | object }, index?: number | InsertOption) => void`
 
-插入文本，可设置格式，如标题，加粗等。`format`可参考[setFormat](#setformat-format-key-string-boolean-object-void)`API`。
+插入文本，可设置格式，如标题，加粗等。`format`可参考[setFormat](/zh-cn/api?id=setFormat)`API`。
 
 ### update
 
@@ -276,7 +276,7 @@ nodesBetween: (
 
 `getFormat: () => { [key: string]: boolean | object }`
 
-获取当前位置的文本格式以及格式的信息。返回类似[setFormat](#setformat-format-key-string-boolean-object-void)入参。
+获取当前位置的文本格式以及格式的信息。返回类似[setFormat](/zh-cn/api?id=setFormat)入参。
 
 ### clearFormat
 
