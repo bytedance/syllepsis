@@ -283,7 +283,7 @@ class ImageController extends SylController<ImageProps> {
       const html = event.clipboardData.getData('text/html');
       const text = event.clipboardData.getData('text/plain');
       // if clipBoard get files and without any text and the src of img is a blob, then treat it as file
-      if (!files.length || text || html.match(/<img/g)?.length !== 1 || !/<img[^>]*src=['"]blob:[^>]*>/.test(html)) {
+      if (!files.length || text || html.match(/<img/g)?.length !== 1 || !/<img[^>]*\s+src=['"]blob:[^>]*>/.test(html)) {
         return false;
       }
       editor.command.image!.insertImages(files);
