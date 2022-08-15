@@ -1,3 +1,10 @@
+## [0.1.47](https://github.com/bytedance/syllepsis/compare/v0.1.46...v0.1.47) (2022-08-15)
+
+
+### 🐞 Bug Fixers
+
+* **SylApi:** `replace` ignores marks configuration when `inheritMarks` is true, closes [#176](https://github.com/bytedance/syllepsis/issues/176)
+
 ## [0.1.46](https://github.com/bytedance/syllepsis/compare/v0.1.45...v0.1.46) (2022-08-11)
 
 
