@@ -233,8 +233,8 @@ class LinkModal extends React.PureComponent<ILinkModalProps, ILinkModalState> {
       <Modal isOpen={this.state.open} onClose={this.handleClose}>
         <ModalTitle>
           {insertType === InsertType.Replace
-            ? locale.editLinkTitle || '插入链接'
-            : locale.insertLinkTitle || '修改链接'}
+            ? locale.editLinkTitle || '修改链接'
+            : locale.insertLinkTitle || '插入链接'}
         </ModalTitle>
         <ModalContent>
           <input
