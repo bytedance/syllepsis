@@ -1,3 +1,10 @@
+## [0.1.48](https://github.com/bytedance/syllepsis/compare/v0.1.47...v0.1.48) (2022-08-16)
+
+
+### 🐞 Bug Fixers
+
+* **LinkPlugin:** The default title of the `Link Modal` is revsersed when editing and inserting
+
 ## [0.1.47](https://github.com/bytedance/syllepsis/compare/v0.1.46...v0.1.47) (2022-08-15)
 
 
