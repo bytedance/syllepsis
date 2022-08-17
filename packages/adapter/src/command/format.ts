@@ -422,11 +422,29 @@ const checkAndMergeNestedItems = (nestedItems: ProseMirrorNode[], nodeType: Node
       }
     } else if (typeof start === 'number' && typeof end === 'number') {
       // combine all previous child nodes into one node
-      const deleteCount = end - start + 1;
+      let deleteCount = end - start + 1;
+      const canNestedSelf = nodeType.contentMatch.matchType(nodeType);
+      const defaultContentType = nodeType.contentMatch.defaultType;
+      let children = nestedItems.slice(start, end + 1);
+      if (defaultContentType) {
+        // if it can not nest itself, just fallback to the default content type
+        if (!canNestedSelf) {
+          children = children.map(node => defaultContentType.create(node.attrs, node.content, node.marks));
+          deleteCount = 1;
+        } else {
+          children = children.map(node => {
+            if (!nodeType.contentMatch.matchType(node.type)) {
+              return defaultContentType.create(node.attrs, node.content, node.marks);
+            }
+            return node;
+          });
+        }
+      }
+
       nestedItems.splice(
         start,
         deleteCount,
-        nodeType.createAndFill({}, nestedItems.slice(start, end + 1))!,
+        ...(canNestedSelf ? [nodeType.createAndFill({}, children)!] : children),
         ...new Array(deleteCount - 1),
       );
       i = start + 1;
@@ -568,6 +586,16 @@ const formatNodeType = (
   }
 
   const rootNodeType: NodeType = isNestedNodeType ? targetNodeType : state.schema.nodes.doc; // dummy root
+
+  const defaultRootNodeContentType = rootNodeType.contentMatch.defaultType;
+  // make sure the content node is accept by rootNode
+  if (defaultRootNodeContentType) {
+    newNodes.forEach((node, idx) => {
+      if (!rootNodeType.contentMatch.matchType(node.type)) {
+        newNodes[idx] = defaultRootNodeContentType.create(node.attrs, node.content, node.marks);
+      }
+    });
+  }
 
   const root = rootNodeType.createAndFill(attributes, newNodes)!;
 
