@@ -1,3 +1,10 @@
+## [0.1.50](https://github.com/bytedance/syllepsis/compare/v0.1.49...v0.1.50) (2022-08-18)
+
+
+### 🐞 Bug Fixers
+
+* **SylApi:** Duplicate nodes when toggle nested nodes
+
 ## [0.1.49](https://github.com/bytedance/syllepsis/compare/v0.1.48...v0.1.49) (2022-08-18)
 
 
