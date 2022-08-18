@@ -551,6 +551,81 @@ describe('Clear Format - Node Type - List', () => {
     expect(res.html).toBe('<ul><li>1</li><ul><li>2</li><ul><li>3</li></ul></ul><li>4</li><li>5</li><li>6</li></ul>');
     expect(res.selection).toMatchObject({ index: 2, length: 20 });
   });
+
+  test('toggle between nodes that can and cannot nest themselves', async () => {
+    const res = await page.evaluate(() => {
+      editor.setHTML(
+        `
+        <ul>
+          <li>1</li>
+          <li>2</li>
+          <li>3</li>
+        </ul>
+        `,
+      );
+      editor.setSelection({
+        index: 5,
+        length: 0,
+      });
+      editor.setFormat({ block_quote: true });
+      return {
+        html: editor.getHTML(),
+        selection: editor.getSelection(),
+      };
+    });
+
+    expect(res.html).toBe('<ul><li>1</li></ul><blockquote><p>2</p></blockquote><ul><li>3</li></ul>');
+    expect(res.selection).toMatchObject({ index: 7, length: 0 });
+
+    const res1 = await page.evaluate(() => {
+      editor.setHTML(
+        `
+        <ul>
+          <li>1</li>
+          <li>2</li>
+          <li>3</li>
+        </ul>
+        `,
+      );
+      editor.setSelection({
+        index: 2,
+        length: 6,
+      });
+      editor.setFormat({ block_quote: true });
+      return {
+        html: editor.getHTML(),
+        selection: editor.getSelection(),
+      };
+    });
+
+    expect(res1.html).toBe('<blockquote><p>1</p><p>2</p><p>3</p></blockquote>');
+    expect(res1.selection).toMatchObject({ index: 2, length: 6 });
+
+    const res2 = await page.evaluate(() => {
+      editor.setHTML(
+        `
+        <ul>
+          <li>1</li>
+          <ul><li>2</li></ul>
+          <li>3</li>
+          <ul><li>4</li></ul>
+        </ul>
+        `,
+      );
+      editor.setSelection({
+        index: 2,
+        length: 16,
+      });
+      editor.setFormat({ block_quote: true });
+      return {
+        html: editor.getHTML(),
+        selection: editor.getSelection(),
+      };
+    });
+
+    expect(res2.html).toBe('<blockquote><p>1</p><p>2</p><p>3</p><p>4</p></blockquote>');
+    expect(res2.selection).toMatchObject({ index: 2, length: 14 });
+  });
 });
 
 describe('setFormat - isolating node', () => {
