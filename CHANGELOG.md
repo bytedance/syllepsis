@@ -1,3 +1,10 @@
+## [0.1.49](https://github.com/bytedance/syllepsis/compare/v0.1.48...v0.1.49) (2022-08-18)
+
+
+### 🐞 Bug Fixers
+
+* **SylApi:** Can't toggle between nodes that can and cannot nest themselves, closes [#167](https://github.com/bytedance/syllepsis/issues/167)
+
 ## [0.1.48](https://github.com/bytedance/syllepsis/compare/v0.1.47...v0.1.48) (2022-08-16)
 
 
