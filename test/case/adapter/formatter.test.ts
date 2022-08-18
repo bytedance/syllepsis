@@ -625,6 +625,33 @@ describe('Clear Format - Node Type - List', () => {
 
     expect(res2.html).toBe('<blockquote><p>1</p><p>2</p><p>3</p><p>4</p></blockquote>');
     expect(res2.selection).toMatchObject({ index: 2, length: 14 });
+
+    const res3 = await page.evaluate(() => {
+      editor.setHTML(
+        `
+        <ul>
+          <li>abc</li>
+          <ul>
+            <li>abc</li>
+            <li>abc</li>
+          </ul>
+          <li>abc</li>
+        </ul>
+        `,
+      );
+      editor.setSelection({
+        index: 9,
+        length: 6,
+      });
+      editor.setFormat({ block_quote: true });
+      return {
+        html: editor.getHTML(),
+        selection: editor.getSelection(),
+      };
+    });
+
+    expect(res3.html).toBe('<ul><li>abc</li></ul><blockquote><p>abc</p><p>abc</p></blockquote><ul><li>abc</li></ul>');
+    expect(res3.selection).toMatchObject({ index: 10, length: 6 });
   });
 });
 

@@ -420,9 +420,8 @@ const checkAndMergeNestedItems = (nestedItems: ProseMirrorNode[], nodeType: Node
       } else if (typeof end === 'number') {
         end++;
       }
+      // combine or reMarkup or keep all previous child nodes into one node
     } else if (typeof start === 'number' && typeof end === 'number') {
-      // combine all previous child nodes into one node
-      let deleteCount = end - start + 1;
       const canNestedSelf = nodeType.contentMatch.matchType(nodeType);
       const defaultContentType = nodeType.contentMatch.defaultType;
       let children = nestedItems.slice(start, end + 1);
@@ -430,7 +429,6 @@ const checkAndMergeNestedItems = (nestedItems: ProseMirrorNode[], nodeType: Node
         // if it can not nest itself, just fallback to the default content type
         if (!canNestedSelf) {
           children = children.map(node => defaultContentType.create(node.attrs, node.content, node.marks));
-          deleteCount = 1;
         } else {
           children = children.map(node => {
             if (!nodeType.contentMatch.matchType(node.type)) {
@@ -440,14 +438,9 @@ const checkAndMergeNestedItems = (nestedItems: ProseMirrorNode[], nodeType: Node
           });
         }
       }
-
-      nestedItems.splice(
-        start,
-        deleteCount,
-        ...(canNestedSelf ? [nodeType.createAndFill({}, children)!] : children),
-        ...new Array(deleteCount - 1),
-      );
-      i = start + 1;
+      const newItems = canNestedSelf ? [nodeType.createAndFill({}, children)!] : children;
+      nestedItems.splice(start, children.length, ...newItems, ...new Array(children.length - newItems.length));
+      i = start + newItems.length;
       start = null;
       end = null;
     }
