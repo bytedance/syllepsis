@@ -18,7 +18,10 @@ interface IAudioAttrs {
 }
 
 interface IAudioProps {
-  uploader: (file: File, editor: SylApi) => Promise<{ src: string; width?: number; height?: number }>;
+  uploader: (
+    file: File,
+    editor: SylApi,
+  ) => Promise<{ src: string; width?: number; height?: number; [key: string]: any }>;
   uploadBeforeInsert?: boolean;
   addAttributes?: IUserAttrsConfig;
   accept?: string;

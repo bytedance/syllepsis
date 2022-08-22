@@ -11,7 +11,10 @@ import {
 } from '../../utils';
 
 interface IVideoProps {
-  uploader: (file: File, editor: SylApi) => Promise<{ src: string; width?: number; height?: number }>;
+  uploader: (
+    file: File,
+    editor: SylApi,
+  ) => Promise<{ src: string; width?: number; height?: number; [key: string]: any }>;
   accept?: string;
   addAttributes?: IUserAttrsConfig;
   uploadBeforeInsert?: boolean;
