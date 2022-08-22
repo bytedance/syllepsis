@@ -1,3 +1,10 @@
+## [0.1.51](https://github.com/bytedance/syllepsis/compare/v0.1.50...v0.1.51) (2022-08-22)
+
+
+### 🐞 Bug Fixers
+
+* **VideoPluign/AudioPlugin:** The return type validation of `uploader` doesn't accept values other t
+
 ## [0.1.50](https://github.com/bytedance/syllepsis/compare/v0.1.49...v0.1.50) (2022-08-18)
 
 
