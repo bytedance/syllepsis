@@ -1,3 +1,10 @@
+## [0.1.52](https://github.com/bytedance/syllepsis/compare/v0.1.51...v0.1.52) (2022-09-20)
+
+
+### 🐞 Bug Fixers
+
+* **ImagePlugin:** Upload handler isn't triggered when pasting files (#187), closes [#187](https://github.com/bytedance/syllepsis/issues/187)
+
 ## [0.1.51](https://github.com/bytedance/syllepsis/compare/v0.1.50...v0.1.51) (2022-08-22)
 
 
