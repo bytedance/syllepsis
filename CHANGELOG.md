@@ -1,3 +1,10 @@
+## [0.1.53](https://github.com/bytedance/syllepsis/compare/v0.1.52...v0.1.53) (2022-09-21)
+
+
+### 🐞 Bug Fixers
+
+* **ImagePlugin:** Sometimes it uploads twice after insert (#188), closes [#188](https://github.com/bytedance/syllepsis/issues/188)
+
 ## [0.1.52](https://github.com/bytedance/syllepsis/compare/v0.1.51...v0.1.52) (2022-09-20)
 
 
