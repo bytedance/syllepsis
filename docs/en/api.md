@@ -482,7 +482,6 @@ Used to unregister `Controller`。
 ```typescript
 EventChannel: {
   LocalEvent: {
-    EDITOR_CREATED:'editor-created', // The editor is instantiated
     TEXT_CHANGE:'text-change', // The content has changed
     SELECTION_CHANGED:'selection-change', // editor selection change
     ON_BLUR:'blur', // lose focus

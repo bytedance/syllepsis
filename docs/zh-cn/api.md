@@ -480,7 +480,6 @@ type TKeymapHandler = (
 ```typescript
 EventChannel: {
   LocalEvent: {
-    EDITOR_CREATED: 'editor-created', // 编辑器实例化完成
     TEXT_CHANGE: 'text-change', // 内容发生变化
     SELECTION_CHANGED: 'selection-change', // 编辑器选区变化
     ON_BLUR: 'blur', // 失去焦点
