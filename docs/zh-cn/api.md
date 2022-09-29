@@ -266,7 +266,7 @@ nodesBetween: (
 
 `setFormat: (format: { [key: string]: boolean | object }, { focus?: boolean, index?: number, length?: number }) => void`
 
-设置选区内容行内样式，粗体，标题，列表等。`key`为样式名，`value`是样式的属性值，如果没有可通过`boolean`控制应用和取消。
+设置选区内容样式，粗体，标题，列表等。`key`为块级样式或者行内样式名称，`value`是其所支持的属性，如果没有可通过`boolean`控制应用和取消。
 
 如设置粗体样式，粗体对应的`name`为`bold`，没有`attr`，可以通过执行`editor.setFormat({ bold: true })`对选区设置加粗样式。`editor.setFormat({ bold: false })`清空选区中的加粗样式。
 

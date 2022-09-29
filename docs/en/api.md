@@ -268,7 +268,7 @@ Delete the card and input the location information of the card.
 
 `setFormat: (format: {[key: string]: boolean | object }, {focus?: boolean, index?: number, length?: number }) => void`
 
-Set the inline style, bold, title, list, etc. of the selection content. `key` is the name of the style, `value` is the attribute value of the style, if not, the application and cancellation can be controlled by `boolean`.
+Set the style of the content of the selection area, bold, title, list, etc. `key` is the name of the block nodes or inline marks, `value` is the supported attribute of the style, if not, the application and cancellation can be controlled by `boolean`.
 
 If you set the bold style, the corresponding `name` of the bold is `bold`, and there is no `attr`, you can set the bold style for the selection by executing `editor.setFormat({ bold: true })`. `editor.setFormat({ bold: false })` clears the bold style in the selection.
 
