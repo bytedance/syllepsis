@@ -517,10 +517,8 @@ describe('Clear Format - Node Type - List', () => {
       '<ul><li>1</li><ul><li>2</li><ul><li>3</li></ul></ul><li>4</li><li>5</li><ul><li>6</li></ul></ul>',
     );
     expect(res.selection).toMatchObject({ index: 2, length: 24 });
-  });
 
-  test('can keep nested level while range contains more than list node', async () => {
-    const res = await page.evaluate(() => {
+    const res1 = await page.evaluate(() => {
       editor.setHTML(
         `
         <ol>
@@ -548,8 +546,8 @@ describe('Clear Format - Node Type - List', () => {
       };
     });
 
-    expect(res.html).toBe('<ul><li>1</li><ul><li>2</li><ul><li>3</li></ul></ul><li>4</li><li>5</li><li>6</li></ul>');
-    expect(res.selection).toMatchObject({ index: 2, length: 20 });
+    expect(res1.html).toBe('<ul><li>1</li><ul><li>2</li><ul><li>3</li></ul></ul><li>4</li><li>5</li><li>6</li></ul>');
+    expect(res1.selection).toMatchObject({ index: 2, length: 20 });
   });
 
   test('toggle between nodes that can and cannot nest themselves', async () => {
@@ -652,6 +650,19 @@ describe('Clear Format - Node Type - List', () => {
 
     expect(res3.html).toBe('<ul><li>abc</li></ul><blockquote><p>abc</p><p>abc</p></blockquote><ul><li>abc</li></ul>');
     expect(res3.selection).toMatchObject({ index: 10, length: 6 });
+  });
+
+  test('can preserve node type which is acceptable', async () => {
+    await page.evaluate(() => {
+      editor.setHTML('<h1>123</h1>');
+      editor.setSelection({
+        index: 1,
+        length: 0,
+      });
+      editor.setFormat({ block_quote: true });
+    });
+    const html = await page.evaluate(() => editor.getHTML());
+    expect(html).toEqual('<blockquote><h1>123</h1></blockquote>');
   });
 });
 
