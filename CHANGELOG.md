@@ -1,3 +1,10 @@
+## [0.1.55](https://github.com/bytedance/syllepsis/compare/v0.1.54...v0.1.55) (2022-09-30)
+
+
+### 🐞 Bug Fixers
+
+* **SylApi:** `setFormat` doesn't prevserve the acceptable nodes (#193), closes [#193](https://github.com/bytedance/syllepsis/issues/193) [#191](https://github.com/bytedance/syllepsis/issues/191)
+
 ## [0.1.53](https://github.com/bytedance/syllepsis/compare/v0.1.52...v0.1.53) (2022-09-21)
 
 
@@ -458,12 +465,13 @@
 
 * **access-react:** toolbar button setFormat by mistake  when attrs is false and format is not activa, closes [#56](https://github.com/bytedance/syllepsis/issues/56)
 
-## [0.0.17](https://github.com/bytedance/syllepsis/compare/v0.0.16...v0.0.17) (2021-09-17)
+## [0.0.17](https://github.com/bytedance/syllepsis/compare/v0.0.15...v0.0.17) (2021-09-17)
 
 
 ### 🎉 Features
 
 * **adapter:** SylApi: support `dispatchEvent` for triggering events, closes [#49](https://github.com/bytedance/syllepsis/issues/49)
+* **adapter:** SylApi: support `pasteContent` to simulate paste behavior, closes [#43](https://github.com/bytedance/syllepsis/issues/43)
 * support `eventHandler` props to register `eventHandler`, closes [#44](https://github.com/bytedance/syllepsis/issues/44)
 * support `keymap` props to register `keymap`, closes [#52](https://github.com/bytedance/syllepsis/issues/52)
 * support config `scrollThreshold` and `scrollMargin`, closes [#54](https://github.com/bytedance/syllepsis/issues/54)
@@ -472,17 +480,6 @@
 ### 🔨 Refactor
 
 * **adapter:** change collect handler of custrom ctrl
-
-## [0.0.16](https://github.com/bytedance/syllepsis/compare/v0.0.15...v0.0.16) (2021-09-15)
-
-
-### 🎉 Features
-
-* **adapter:** SylApi: support `pasteContent` to simulate paste behavior, closes [#43](https://github.com/bytedance/syllepsis/issues/43)
-
-
-### 🔨 Refactor
-
 * add `sourcesContent` to `.map` files, closes [#45](https://github.com/bytedance/syllepsis/issues/45)
 * **plugin-basic:** add `ignoretag` to attrs when there are no other attrs
 
