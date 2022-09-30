@@ -571,7 +571,7 @@ const formatNodeType = (
       newNodes.push(...createNestedNode(nestedContentNodes, targetNodeType));
     } else {
       let addNode = node;
-      if (!addNode.isLeaf) {
+      if (!addNode.isLeaf && !targetNodeType.contentMatch.matchType(addNode.type)) {
         addNode = createNode(contentNodeType, node, contentNodeType === targetNodeType && attributes)!;
       }
       addNode && newNodes.push(addNode);
