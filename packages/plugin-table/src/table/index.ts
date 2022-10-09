@@ -8,6 +8,7 @@ import { NodeView } from 'prosemirror-view';
 import { tableCellSelfResizing } from './cell-self-resizing';
 import { BUTTON_DEFAULT_CONFIG, IMenuConfig } from './component/menu-button';
 import { ITableProps, TABLE_CONFIG } from './const';
+import { defaultTableMenus, TContextMenu } from './menu-helper';
 import { createTableCellPlugin } from './table-cell';
 import { createTableHeaderPlugin } from './table-header';
 import { TableHelperPlugin } from './table-helper';
@@ -18,6 +19,7 @@ interface ITablePluginProps {
   columnResize?: { handleWidth?: number; cellMinWidth?: number; View?: NodeView<any>; lastColumnResizable?: boolean };
   table?: Partial<ITableProps>;
   button?: IMenuConfig;
+  menus?: TContextMenu[];
 }
 
 const DEFAULT_PROPS = {
@@ -32,6 +34,7 @@ class TablePlugin extends SylUnionPlugin<ITablePluginProps> {
 
   public init(editor: SylApi, props: ITablePluginProps) {
     const config = merge({}, DEFAULT_PROPS, props);
+    const menus = config.menus || defaultTableMenus;
     const sylPlugins = [
       { plugin: createTableCellPlugin(config.table) },
       { plugin: createTableRowPlugin(config.table) },
@@ -41,7 +44,7 @@ class TablePlugin extends SylUnionPlugin<ITablePluginProps> {
     if (config.table.useTableHeader) sylPlugins.push({ plugin: createTableHeaderPlugin(config.table) });
 
     return {
-      nativePlugins: [columnResizing(config.columnResize), tableEditing(config.table), TableHelperPlugin(editor), tableCellSelfResizing()],
+      nativePlugins: [columnResizing(config.columnResize), tableEditing(config.table), TableHelperPlugin(editor, menus), tableCellSelfResizing()],
       sylPlugins,
     };
   }

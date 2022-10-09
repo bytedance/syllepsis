@@ -42,6 +42,7 @@ import {
 } from '@syllepsis/plugin-basic';
 import { CodeBlockPlugin } from '@syllepsis/plugin-code-block';
 import { TablePlugin } from '@syllepsis/plugin-table';
+import { tableOperation } from '@syllepsis/plugin-table/dist/es/table/utils';
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
@@ -110,6 +111,8 @@ const RichEditor = () => {
       button: {
         activeColor: '#FF0F0F',
         trigger: 'click',
+        row: 5,
+        column: 5,
       },
       columnResize: { handleWidth: 5, cellMinWidth: 24 },
       table: {
@@ -117,6 +120,80 @@ const RichEditor = () => {
         defaultCellWidth: 100,
         useTableHeader: false,
       },
+      menus: [
+        {
+          name: '剪切',
+          key: 'cut',
+          disable: false,
+          callback: (editor)=>{
+            // custom callback
+            tableOperation.cut(editor);
+          },
+        },
+        {
+          name: '复制',
+          key: 'copy',
+          disable: ()=> true,
+          callback: tableOperation.copy,
+        },
+        {
+          name: 'paste',
+          key: 'paste',
+          disable: (editor) => false,
+          tip: `请使用 <b>${/Mac/.test(navigator.platform) ? '⌘+V' : 'Ctrl+V'}</b> 粘贴`,
+          callback: () => {},
+        },
+        '|',
+        {
+          name: 'mergeCells',
+          disable: true,
+          key: 'mergeCells',
+          tip: 'merge cell',
+          callback: tableOperation.mergeCells,
+        },
+        {
+          name: 'splitCell',
+          key: 'splitCell',
+          callback: tableOperation.splitCells,
+        },
+        '|',
+        {
+          name: 'addColumnBefore',
+          key: 'addColumnBefore',
+          callback: tableOperation.addColumnBefore,
+        },
+        {
+          name: 'addColumnAfter',
+          key: 'addColumnAfter',
+          callback: tableOperation.addColumnAfter,
+        },
+        {
+          name: 'addRowBefore',
+          key: 'addRowBefore',
+          callback: tableOperation.addRowBefore,
+        },
+        {
+          name: 'addRowAfter',
+          key: 'addRowAfter',
+          callback: tableOperation.addRowAfter,
+        },
+        '|',
+        {
+          name: 'deleteRow',
+          key: 'deleteRow',
+          callback: tableOperation.deleteRow,
+        },
+        {
+          name: 'deleteColumn',
+          key: 'deleteColumn',
+          callback: tableOperation.deleteColumn,
+        },
+        {
+          name: 'deleteTable',
+          key: 'deleteTable',
+          callback: tableOperation.deleteTable,
+        },
+      ]
     }),
     new ImagePlugin({
       // allowDomains: [],

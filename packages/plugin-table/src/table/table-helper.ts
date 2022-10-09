@@ -4,6 +4,7 @@ import { AllSelection, EditorState, Plugin, PluginKey, TextSelection, Transactio
 import { CellSelection } from 'prosemirror-tables';
 
 import { NODE_NAME } from './const';
+import { TContextMenu } from './menu-helper';
 import { TableContextMenu } from './table-context-menu';
 import { closestCell, judgeSelectAllTable } from './utils';
 
@@ -26,10 +27,10 @@ const getCellPosInTable = (table: ProseMirrorNode, anchorCell: ProseMirrorNode, 
   };
 };
 
-const TableHelperPlugin = (editor: SylApi) =>
+const TableHelperPlugin = (editor: SylApi, menus: TContextMenu[]) =>
   new Plugin({
     key: KEY,
-    view: view => new TableContextMenu(editor, view),
+    view: view => new TableContextMenu(editor, view, menus),
     props: {
       handleDOMEvents: {
         cut(view, event) {
