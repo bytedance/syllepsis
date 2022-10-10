@@ -1,3 +1,15 @@
+## [0.1.56](https://github.com/bytedance/syllepsis/compare/v0.1.55...v0.1.56) (2022-10-10)
+
+
+### 🎉 Features
+
+* **TablePlugin:** Support `menus` to configure custom context menu (#194), closes [#194](https://github.com/bytedance/syllepsis/issues/194)
+
+
+### 🐞 Bug Fixers
+
+* **Toolbar:** The `enable` state of the toolbar is out of sync with the initial `disable` props
+
 ## [0.1.55](https://github.com/bytedance/syllepsis/compare/v0.1.54...v0.1.55) (2022-09-30)
 
 
