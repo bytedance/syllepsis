@@ -589,6 +589,13 @@ describe('insert API test', () => {
       return editor.getHTML();
     });
     expect(html).toBe(`<blockquote><p>123</p>${CardView()}</blockquote>`);
+
+    const html1 = await page.evaluate(() => {
+      editor.setHTML('<blockquote><p>123</p></blockquote>');
+      editor.insert({ type: 'doc', content: [{ type: 'card' }] }, 2);
+      return editor.getHTML();
+    });
+    expect(html1).toBe(`<blockquote><p>123</p>${CardView()}</blockquote>`);
   });
 
   test('insert support addToHistory config', async () => {

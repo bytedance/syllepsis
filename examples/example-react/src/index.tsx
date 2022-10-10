@@ -125,7 +125,7 @@ const RichEditor = () => {
           name: '剪切',
           key: 'cut',
           disable: false,
-          callback: (editor)=>{
+          callback: editor => {
             // custom callback
             tableOperation.cut(editor);
           },
@@ -133,13 +133,13 @@ const RichEditor = () => {
         {
           name: '复制',
           key: 'copy',
-          disable: ()=> true,
+          disable: () => true,
           callback: tableOperation.copy,
         },
         {
           name: 'paste',
           key: 'paste',
-          disable: (editor) => false,
+          disable: editor => false,
           tip: `请使用 <b>${/Mac/.test(navigator.platform) ? '⌘+V' : 'Ctrl+V'}</b> 粘贴`,
           callback: () => {},
         },
@@ -193,7 +193,7 @@ const RichEditor = () => {
           key: 'deleteTable',
           callback: tableOperation.deleteTable,
         },
-      ]
+      ],
     }),
     new ImagePlugin({
       // allowDomains: [],

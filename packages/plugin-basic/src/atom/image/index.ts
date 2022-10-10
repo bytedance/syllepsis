@@ -116,15 +116,11 @@ const insertImageInEditor = (
 ) => {
   const { state } = editor.view;
   const pos = state.selection.from;
-  const $pos = state.doc.resolve(pos);
+
   const imageType = state.schema.nodes?.image;
   const images = [...dataInfos];
   const insertNodes = { type: 'doc', content: [] as INodeInfo[] };
   // when depth >= 2 and contained in table, inserting images will not update the selection,causes it to be inserted in reverse order
-  const isInTable = $pos.node(1)?.type?.name === 'table' && $pos.depth >= 2;
-  if (isInTable) {
-    images.reverse();
-  }
   images.forEach(({ image, attrs }) => {
     if (!image || !attrs) return;
     const imageAttrs: Partial<ImageAttrs> = {
@@ -134,13 +130,9 @@ const insertImageInEditor = (
       align: imageType?.attrs?.align?.default || 'center',
       ...attrs,
     };
-    if (isInTable) {
-      editor.insert({ type: PLUGIN_NAME, attrs: imageAttrs });
-    } else {
-      insertNodes.content.push({ type: PLUGIN_NAME, attrs: imageAttrs });
-    }
+    insertNodes.content.push({ type: PLUGIN_NAME, attrs: imageAttrs });
   });
-  if (insertNodes.content.length && !isInTable) editor.insert(insertNodes, pos);
+  if (insertNodes.content.length) editor.insert(insertNodes, pos);
 };
 
 // get the picture file and judge whether to upload it in advance

@@ -3,7 +3,7 @@ import { Mark, MarkType, Node as ProsemirrorNode, NodeType } from 'prosemirror-m
 import { NodeSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 
-import { tryReplaceEmpty, Types } from '../libs';
+import { tryReplaceEmpty, Types, validateNodeContent } from '../libs';
 
 interface IGeneralOption {
   addToHistory?: boolean;
@@ -142,7 +142,6 @@ const insert = (view: EditorView, nodeInfo: INodeInfo | string, index?: InsertOp
 
   const { index: pos, scrollIntoView, deleteSelection, addToHistory } = userConfig;
   const $from = state.doc.resolve(pos);
-
   const newNode = generateNode(view, nodeInfo);
   if (!newNode) return;
 
@@ -166,16 +165,13 @@ const insert = (view: EditorView, nodeInfo: INodeInfo | string, index?: InsertOp
     // insert inline node directly
     if (isInlineNode) {
       tr.insert(pos, newNode);
-    } else {
+    } else if (!tryReplaceEmpty(tr, $from, newNode)) {
       const $pos = tr.doc.resolve(pos);
       let depth = $pos.depth;
       // find the parent node that can be inserted into the block node to avoid tearing the node after insertion
       while (depth >= 0) {
         const higherNode = $pos.node(depth);
-        if (
-          higherNode.canReplaceWith(higherNode.childCount, higherNode.childCount, newNode.type) ||
-          higherNode.type === state.doc.type
-        ) {
+        if (validateNodeContent(higherNode, newNode)) {
           tr.insert($pos.after(depth + 1), newNode);
           break;
         }
