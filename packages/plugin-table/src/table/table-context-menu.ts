@@ -13,7 +13,7 @@ interface IRect {
   height: number;
 }
 interface IOptions {
-  menus?: TContextMenu[];
+  menus: TContextMenu[];
   editor: SylApi;
   editorView: EditorView;
 }
@@ -24,11 +24,11 @@ const isInCellSelection = (sel: CellSelection, pos: number) =>
 class ContextMenuComponent {
   $container: HTMLElement;
   props: IOptions;
-
+  originMenus: TContextMenu[];
   constructor(options: IOptions) {
     this.$container = document.createElement('div');
     this.props = options;
-
+    this.originMenus = options.menus;
     this.bindEvent();
   }
 
@@ -41,8 +41,10 @@ class ContextMenuComponent {
   }
 
   updateMenu() {
+    const localeConfig = this.props.editor.configurator.getLocaleValue('table');
+
     this.updateProps({
-      menus: formatMenu(this.props.editor, createMenu(this.props.editor.configurator.getLocaleValue('table'))),
+      menus: formatMenu(this.props.editor, createMenu({ localeConfig, menus: this.originMenus })),
       editorView: this.props.editorView,
     });
   }
@@ -113,7 +115,8 @@ class ContextMenuComponent {
         if (typeof menu !== 'string') {
           const { name, callback, disable, tip } = menu;
           child.textContent = name;
-          if (disable) {
+          const disableFn = typeof disable === 'function' ? disable : () => disable;
+          if (disableFn(editor)) {
             child.setAttribute('disable', '1');
           }
           if (tip) {
@@ -184,13 +187,14 @@ class TableContextMenu {
   $contextMenuComponent: ContextMenuComponent;
   type: NodeType;
 
-  constructor(editor: SylApi, editorView: EditorView) {
+  constructor(editor: SylApi, editorView: EditorView, menus: TContextMenu[]) {
     this.editor = editor;
     this.view = editorView;
     this.type = editorView.state.schema.nodes[NODE_NAME.TABLE];
     this.$contextMenuComponent = new ContextMenuComponent({
       editor,
       editorView,
+      menus,
     });
 
     this.view.dom.addEventListener('click', this.$contextMenuComponent.hide);

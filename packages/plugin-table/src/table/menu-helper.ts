@@ -10,7 +10,7 @@ type TContextMenu =
   | {
       name: string;
       key: string;
-      disable?: boolean;
+      disable?: boolean | ((editor: SylApi) => boolean);
       tip?: string;
       callback: (editor: SylApi) => void;
     };
@@ -103,76 +103,92 @@ const defaultMenuLocale: ITableMenuLocale = {
   deleteTable: 'delete table', // '删除表格',
 };
 
-const createMenu = (localeConfig: ITableMenuLocale): Array<TContextMenu> => {
-  const locale = Object.assign({}, defaultMenuLocale, localeConfig);
+interface ICreateMenuOptions {
+  localeConfig?: ITableMenuLocale;
+  menus?: TContextMenu[];
+}
 
-  return [
-    {
-      name: locale.cut,
-      key: 'cut',
-      callback: tableOperation.cut,
-    },
-    {
-      name: locale.copy,
-      key: 'copy',
-      callback: tableOperation.copy,
-    },
-    {
-      name: locale.paste,
-      key: 'paste',
-      disable: true,
-      tip: `请使用 <b>${/Mac/.test(navigator.platform) ? '⌘+V' : 'Ctrl+V'}</b> 粘贴`,
-      callback: () => {},
-    },
-    '|',
-    {
-      name: locale.mergeCells,
-      key: 'mergeCells',
-      callback: tableOperation.mergeCells,
-    },
-    {
-      name: locale.splitCell,
-      key: 'splitCell',
-      callback: tableOperation.splitCells,
-    },
-    '|',
-    {
-      name: locale.addColumnBefore,
-      key: 'addColumnBefore',
-      callback: tableOperation.addColumnBefore,
-    },
-    {
-      name: locale.addColumnAfter,
-      key: 'addColumnAfter',
-      callback: tableOperation.addColumnAfter,
-    },
-    {
-      name: locale.addRowBefore,
-      key: 'addRowBefore',
-      callback: tableOperation.addRowBefore,
-    },
-    {
-      name: locale.addRowAfter,
-      key: 'addRowAfter',
-      callback: tableOperation.addRowAfter,
-    },
-    '|',
-    {
-      name: locale.deleteRow,
-      key: 'deleteRow',
-      callback: tableOperation.deleteRow,
-    },
-    {
-      name: locale.deleteColumn,
-      key: 'deleteColumn',
-      callback: tableOperation.deleteColumn,
-    },
-    {
-      name: locale.deleteTable,
-      key: 'deleteTable',
-      callback: tableOperation.deleteTable,
-    },
-  ];
+const createMenu = (options: ICreateMenuOptions): Array<TContextMenu> => {
+  const { localeConfig = defaultMenuLocale, menus = defaultTableMenus } = options;
+  const locale = Object.assign({}, defaultMenuLocale, localeConfig || {});
+
+  return menus.map(menu => {
+    if(typeof menu === 'string') return menu;
+    const menuObject = menu as Exclude<TContextMenu, string>;
+    const key = menuObject.key as keyof ITableMenuLocale;
+    return {
+      ...menu,
+      name: locale[key] || menuObject.name,
+    };
+  });
 };
 
-export { calculateMenuPosition, canSplitCell, createMenu, formatMenu, TContextMenu };
+const defaultTableMenus = [
+  {
+    name: defaultMenuLocale.cut,
+    key: 'cut',
+    callback: tableOperation.cut,
+  },
+  {
+    name: defaultMenuLocale.copy,
+    key: 'copy',
+    callback: tableOperation.copy,
+  },
+  {
+    name: defaultMenuLocale.paste,
+    key: 'paste',
+    disable: true,
+    tip: `请使用 <b>${/Mac/.test(navigator.platform) ? '⌘+V' : 'Ctrl+V'}</b> 粘贴`,
+    callback: () => {},
+  },
+  '|',
+  {
+    name: defaultMenuLocale.mergeCells,
+    key: 'mergeCells',
+    callback: tableOperation.mergeCells,
+  },
+  {
+    name: defaultMenuLocale.splitCell,
+    key: 'splitCell',
+    callback: tableOperation.splitCells,
+  },
+  '|',
+  {
+    name: defaultMenuLocale.addColumnBefore,
+    key: 'addColumnBefore',
+    callback: tableOperation.addColumnBefore,
+  },
+  {
+    name: defaultMenuLocale.addColumnAfter,
+    key: 'addColumnAfter',
+    callback: tableOperation.addColumnAfter,
+  },
+  {
+    name: defaultMenuLocale.addRowBefore,
+    key: 'addRowBefore',
+    callback: tableOperation.addRowBefore,
+  },
+  {
+    name: defaultMenuLocale.addRowAfter,
+    key: 'addRowAfter',
+    callback: tableOperation.addRowAfter,
+  },
+  '|',
+  {
+    name: defaultMenuLocale.deleteRow,
+    key: 'deleteRow',
+    callback: tableOperation.deleteRow,
+  },
+  {
+    name: defaultMenuLocale.deleteColumn,
+    key: 'deleteColumn',
+    callback: tableOperation.deleteColumn,
+  },
+  {
+    name: defaultMenuLocale.deleteTable,
+    key: 'deleteTable',
+    callback: tableOperation.deleteTable,
+  },
+];
+
+export { calculateMenuPosition, canSplitCell, createMenu, defaultTableMenus, formatMenu, TContextMenu };
