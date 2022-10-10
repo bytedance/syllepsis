@@ -60,6 +60,9 @@ class ToolbarLoader extends BaseModule<IToolbarOption> {
     if (option.className) this.$dom.classList.add(option.className);
 
     this.bridge = new option.RenderBridge(adapter, option.Component, option.mount, 'toolbar');
+    if (!adapter.editable) {
+      this.$dom.classList.add(DISABLE_CLASS);
+    }
 
     adapter.addCommand('toolbar', {
       enable: this.enable,

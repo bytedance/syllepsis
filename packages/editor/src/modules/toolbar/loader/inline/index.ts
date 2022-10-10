@@ -127,7 +127,6 @@ class ToolbarInlineLoader extends BaseModule<IToolbarInlineOption> {
     this.dom.style.display = 'none';
     this.dom.style.zIndex = `${option.zIndex || 100}`;
     this.visible = false;
-
     this.bridge = new option.RenderBridge(adapter, option.Component, this.dom, 'toolbarInline');
 
     this.bindEvent();
@@ -137,7 +136,7 @@ class ToolbarInlineLoader extends BaseModule<IToolbarInlineOption> {
       show: () => this.tracePos(undefined, true),
       hide: this.hide,
       getVisible: () => this.visible,
-      getEnable: () => this.isEnable,
+      getEnable: () => this.isEnable && this.adapter.editable,
       enable: this.enable,
       disable: this.disable,
     });
