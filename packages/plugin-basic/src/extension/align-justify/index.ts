@@ -1,6 +1,6 @@
 import { SylPlugin } from '@syllepsis/adapter';
 
-import { AlignController } from '../common';
+import { AlignController, IAlignProps } from '../common';
 
 declare module '@syllepsis/adapter' {
   interface ISylApiCommand {
@@ -14,7 +14,7 @@ class AlignJustifyController extends AlignController {
   public value = 'justify' as const;
 }
 
-class AlignJustifyPlugin extends SylPlugin {
+class AlignJustifyPlugin extends SylPlugin<IAlignProps> {
   public name = 'align_justify';
   public Controller = AlignJustifyController;
 }

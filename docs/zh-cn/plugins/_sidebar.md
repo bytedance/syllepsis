@@ -5,6 +5,7 @@
 - [模块](/zh-cn/modules/README.md)
 - [插件](/zh-cn/plugins/README.md)
   - [类型](/zh-cn/plugins/types.md)
+  - [对齐](/zh-cn/plugins/align.md)
   - [代码块](/zh-cn/plugins/code-block.md)
   - [字体大小](/zh-cn/plugins/font-size.md)
   - [格式刷](/zh-cn/plugins/format-painter.md)
