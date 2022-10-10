@@ -1,6 +1,6 @@
 {
   "name": "@syllepsis/editor",
-  "version": "0.1.55",
+  "version": "0.1.56",
   "description": "middle layer of syllepsis editor",
   "umd": "dist/umd/index.js",
   "main": "dist/lib/index.js",
