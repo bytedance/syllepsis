@@ -198,7 +198,12 @@ const removeMark = (doc: ProseMirrorNode, tr: Transaction, from: number, to: num
 
 const tryReplaceEmpty = (tr: Transaction, $from: ResolvedPos, node: ProseMirrorNode) => {
   const isInlineNode = node.type.isInline;
-  if (!isInlineNode && $from.depth && !$from.parent.childCount) {
+  if (
+    !isInlineNode &&
+    $from.depth &&
+    !$from.parent.childCount &&
+    validateNodeContent($from.node($from.depth - 1), node)
+  ) {
     const startPos = $from.before();
     tr.replaceWith(startPos, $from.after(), node);
     const $pos = tr.doc.resolve(tr.selection.$to.depth ? tr.selection.$to.after() : tr.selection.to);
@@ -213,8 +218,34 @@ const tryReplaceEmpty = (tr: Transaction, $from: ResolvedPos, node: ProseMirrorN
 const getStoreMarks = (state: EditorState) =>
   state.tr.storedMarks || (state.selection.$to.parentOffset && state.selection.$from.marks()) || [];
 
+const validateNodeContent = (parent: ProseMirrorNode, child: ProseMirrorNode) => {
+  if (child.type.name === 'doc') {
+    let isMatch = true;
+    child.content.forEach(n => {
+      if (!isMatch || !parent.type.contentMatch.matchType(n.type)) {
+        isMatch = false;
+      }
+    });
+
+    return isMatch;
+  }
+
+  return Boolean(parent.type.contentMatch.matchType(child.type));
+};
+
+const getChildTextblockType = (nodeType: NodeType) => {
+  const edgeCount = nodeType.contentMatch.edgeCount;
+  for (let i = 0; i < edgeCount; i++) {
+    const childType = nodeType.contentMatch.edge(i).type;
+    if (childType.isTextblock) {
+      return childType;
+    }
+  }
+};
+
 export {
   findCutBefore,
+  getChildTextblockType,
   getPrevNodeLastTextBlock,
   getRealSelectionInfo,
   getStoreMarks,
@@ -225,4 +256,5 @@ export {
   removeMark,
   resetUnInheritAttr,
   tryReplaceEmpty,
+  validateNodeContent,
 };

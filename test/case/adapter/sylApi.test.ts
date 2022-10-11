@@ -589,6 +589,22 @@ describe('insert API test', () => {
       return editor.getHTML();
     });
     expect(html).toBe(`<blockquote><p>123</p>${CardView()}</blockquote>`);
+
+    const html1 = await page.evaluate(() => {
+      editor.setHTML('<blockquote><p>123</p></blockquote>');
+      editor.insert({ type: 'doc', content: [{ type: 'card' }] }, 2);
+      return editor.getHTML();
+    });
+    expect(html1).toBe(`<blockquote><p>123</p>${CardView()}</blockquote>`);
+  });
+
+  test('Insert content in the isolating block, if the last node is not a text block, it will be automatically inserted at the end', async () => {
+    const html = await page.evaluate(() => {
+      editor.setHTML('<div class="isolating"><p>123</p></div>');
+      editor.insert({ type: 'card' }, 3);
+      return editor.getHTML();
+    });
+    expect(html).toBe(`<div class="isolating"><p>123</p>${CardView()}<p><br></p></div>`);
   });
 
   test('insert support addToHistory config', async () => {
