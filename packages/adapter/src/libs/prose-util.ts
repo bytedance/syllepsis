@@ -233,8 +233,19 @@ const validateNodeContent = (parent: ProseMirrorNode, child: ProseMirrorNode) =>
   return Boolean(parent.type.contentMatch.matchType(child.type));
 };
 
+const getChildTextblockType = (nodeType: NodeType) => {
+  const edgeCount = nodeType.contentMatch.edgeCount;
+  for (let i = 0; i < edgeCount; i++) {
+    const childType = nodeType.contentMatch.edge(i).type;
+    if (childType.isTextblock) {
+      return childType;
+    }
+  }
+};
+
 export {
   findCutBefore,
+  getChildTextblockType,
   getPrevNodeLastTextBlock,
   getRealSelectionInfo,
   getStoreMarks,
