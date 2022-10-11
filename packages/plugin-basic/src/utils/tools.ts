@@ -40,7 +40,7 @@ const checkParentSupportAttr = (view: EditorView, attrName: string) => {
   return isSupport;
 };
 
-const setAlign = (view: EditorView, align: 'left' | 'center' | 'right' | 'justify') => {
+const setAlign = (view: EditorView, align: 'left' | 'center' | 'right' | 'justify', inclusive = false) => {
   const { state, dispatch } = view;
   const tr = state.tr;
   const { ranges } = state.selection;
@@ -49,9 +49,9 @@ const setAlign = (view: EditorView, align: 'left' | 'center' | 'right' | 'justif
     const from = range.$from.pos;
     const to = range.$to.pos;
     state.doc.nodesBetween(from, to, (node, nodePos) => {
-      if (node.isTextblock || node.attrs.align !== undefined) {
+      if (node.attrs.align !== undefined) {
         tr.setNodeMarkup(nodePos, undefined, { ...node.attrs, align });
-        return false;
+        return inclusive;
       }
     });
   });
@@ -174,7 +174,6 @@ const simpleUploadHandler = async (config: {
   url && URL.revokeObjectURL(url);
 };
 
-
 export {
   addAttrsByConfig,
   checkMarkDisable,
@@ -189,5 +188,5 @@ export {
   keymapToggleMark,
   setAlign,
   setDOMAttrByConfig,
-  simpleUploadHandler
+  simpleUploadHandler,
 };

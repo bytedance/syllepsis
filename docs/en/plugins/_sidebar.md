@@ -4,6 +4,7 @@
 - [Module](/en/modules/README.md)
 - [Plugin](/en/plugins/README.md)
   - [Type](/en/plugins/types.md)
+  - [Align](/en/plugins/align.md)
   - [Code block](/en/plugins/code-block.md)
   - [Font size](/en/plugins/font-size.md)
   - [Format Painter](/en/plugins/format-painter.md)
