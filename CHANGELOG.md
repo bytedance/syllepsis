@@ -1,3 +1,16 @@
+## [0.1.57](https://github.com/bytedance/syllepsis/compare/v0.1.56...v0.1.57) (2022-10-11)
+
+
+### 🎉 Features
+
+* **AlignPlugin:** Support `inclusive` configuration to include related nodes (#197), closes [#197](https://github.com/bytedance/syllepsis/issues/197) [#196](https://github.com/bytedance/syllepsis/issues/196)
+* **SylApi:** When `insert` into an `isolating` node, a valid text block node will be appended to th
+
+
+### 🐞 Bug Fixers
+
+* **SylApi:** When `insert` an acceptable node type in a nested node, it was inserted in the wrong position, closes [#195](https://github.com/bytedance/syllepsis/issues/195)
+
 ## [0.1.56](https://github.com/bytedance/syllepsis/compare/v0.1.55...v0.1.56) (2022-10-10)
 
 
