@@ -1,8 +1,12 @@
 module.exports = {
   verbose: true,
   transform: {
-    '^.+\\.(j|t)sx?$': 'ts-jest'
-  }, 
+    '^.+\\.(j|t)sx?$': 'ts-jest',
+  },
   preset: 'jest-puppeteer',
-  moduleFileExtensions: ['ts', 'tsx', 'js']
+  setupFiles: ['<rootDir>/test/mock/client.js'],
+  moduleFileExtensions: ['ts', 'tsx', 'js'],
+  moduleNameMapper: {
+    '\\.(css)$': '<rootDir>/test/mock/style.js',
+  },
 };

@@ -30,11 +30,17 @@ const insertDefaultNodeWhenBlock = (view: EditorView, pos: number, event: MouseE
   // get the previous dom, check if it is the right dom;
   let fixPos = 0;
   if (pos > 0) {
-    const $dom = view.nodeDOM(pos - 1);
-    if (!$dom) return false;
+    let $dom = view.nodeDOM(pos - 1);
+    if (!$dom) {
+      const $pos = view.state.doc.resolve(pos);
+      if (!$pos.depth && $pos.nodeBefore) {
+        $dom = view.nodeDOM(pos - $pos.nodeBefore.nodeSize);
+      }
+    }
+    if (!$dom) return;
     const rect = ($dom as HTMLElement)?.getBoundingClientRect?.();
     if (!rect) return;
-    if (rect.bottom > event.clientY) fixPos = -1;
+    if (Math.floor(rect.bottom) > event.clientY) fixPos = -1;
   }
 
   const $pos = view.state.doc.resolve(pos + fixPos);
@@ -45,7 +51,7 @@ const insertDefaultNodeWhenBlock = (view: EditorView, pos: number, event: MouseE
       const $dom = view.nodeDOM($pos.pos);
       if (!$dom) return;
       const rect = ($dom as HTMLElement)?.getBoundingClientRect?.();
-      if (!rect || rect.top < event.clientY) return;
+      if (!rect || Math.ceil(rect.top) < event.clientY) return;
 
       const { dispatch, state } = view;
       let tr = state.tr.insert($pos.pos, defaultType.create());
