@@ -1,41 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Syl Test Editor</title>
+    <style>
+      #editor .ProseMirror {
+        min-height: 300px;
+        padding: 16px;
+        overflow: hidden;
+        min-height: 300px;
+        padding: 16px;
+        overflow: hidden;
+        border: 1px solid grey;
+        border-radius: 4px;
+      }
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Syl Test Editor</title>
-  <style>
-    #editor .ProseMirror {
-      min-height: 300px;
-      padding: 16px;
-      overflow: hidden;
-      min-height: 300px;
-      padding: 16px;
-      overflow: hidden;
-      border: 1px solid grey;
-      border-radius: 4px;
-    }
+      #editor .ProseMirror p {
+        margin: 0;
+      }
 
-    #editor .ProseMirror p {
-      margin: 0
-    }
+      #editor .ProseMirror div {
+        margin-bottom: 8px;
+      }
 
-    #editor .ProseMirror div {
-      margin-bottom: 8px;
-    }
+      #editor .ProseMirror:focus {
+        outline: none;
+      }
 
-    #editor .ProseMirror:focus {
-      outline: none;
-    }
-  </style>
-</head>
+      #editor table {
+        margin-left: 8px;
+        margin-top: 8px;
+        overflow-x: auto;
+      }
 
-<body>
-  <h1>Syl Test</h1>
-  <div id="editor" style="white-space: pre-wrap;"></div>
-  <script type="module" src="./index.ts"></script>
-</body>
+      #editor table th,
+      #editor table td {
+        position: relative;
+        min-width: 1em;
+        border: 1px solid #d8d8d8;
+        padding: 3px 5px;
+        vertical-align: top;
+        box-sizing: border-box;
+        text-align: left;
+      }
+    </style>
+  </head>
 
+  <body>
+    <h1>Syl Test</h1>
+    <div id="editor" style="white-space: pre-wrap;"></div>
+    <script type="module" src="./index.ts"></script>
+  </body>
 </html>

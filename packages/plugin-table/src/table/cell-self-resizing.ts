@@ -3,7 +3,8 @@ import { Plugin, PluginKey } from 'prosemirror-state';
 import { isInTable, TableMap } from 'prosemirror-tables';
 
 const key = new PluginKey('tableCellSelfResizing');
-const tableCellSelfResizing = () => new Plugin({
+const tableCellSelfResizing = () =>
+  new Plugin({
     key,
     appendTransaction(trs, oldState, state) {
       const { tr, selection } = state;
@@ -49,14 +50,18 @@ const tableCellSelfResizing = () => new Plugin({
 
             if (currentWidth < width) {
               const $cell = state.doc.resolve(cell);
-              const table = $cell.node(-1), map = TableMap.get(table), start = $cell.start(-1);
-              if (!$cell || !$cell.nodeAfter) return
+              const table = $cell.node(-1),
+                map = TableMap.get(table),
+                start = $cell.start(-1);
+              if (!$cell || !$cell.nodeAfter) return;
               const col = map.colCount($cell.pos - start) + $cell.nodeAfter.attrs.colspan - 1;
               for (let row = 0; row < map.height; row++) {
                 const mapIndex = row * map.width + col;
                 if (row && map.map[mapIndex] === map.map[mapIndex - map.width]) continue;
-                // @ts-ignore
-                const pos = map.map[mapIndex], { attrs } = table.nodeAt(pos);
+                const pos = map.map[mapIndex];
+                const node = table.nodeAt(pos);
+                if (!node) continue;
+                const { attrs } = node;
                 const index = attrs.colspan === 1 ? 0 : col - map.colCount(pos);
                 if (attrs.colwidth && attrs.colwidth[index] === width) continue;
                 const colwidth = attrs.colwidth ? attrs.colwidth.slice() : zeroes(attrs.colspan);
@@ -77,13 +82,13 @@ const zeroes = (n: number) => {
   const result = [];
   for (let i = 0; i < n; i++) result.push(0);
   return result;
-}
+};
 
-const setAttr = (attrs: { [key: string]: any }, name: string, value: number) =>{
+const setAttr = (attrs: { [key: string]: any }, name: string, value: number) => {
   const result: any = {};
   for (const prop in attrs) result[prop] = attrs[prop];
   result[name] = value;
   return result;
-}
+};
 
 export { key, tableCellSelfResizing };

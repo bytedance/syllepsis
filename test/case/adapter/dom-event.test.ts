@@ -361,8 +361,28 @@ describe('Test DOM Event', () => {
     });
     expect(html).toEqual('<div>Card</div><p><br></p><div>Card</div>');
   });
+
+  test('Click insert Paragraph in sibling nested isolating blocks', async () => {
+    const { x, y } = await page.evaluate(() => {
+      editor.setHTML('');
+      editor.command.table.insert(2, 2);
+      const rect = editor.view.nodeDOM(0)?.getBoundingClientRect();
+      if (!rect) return { x: -1, y: -1 };
+      editor.setSelection({ index: 23 });
+      editor.command.table.insert(2, 2);
+      return { x: rect.x + 10, y: rect.bottom + 2 };
+    });
+    if (x < 0 && y < 0) {
+      expect(false).toBe(true);
+    }
+    await page.mouse.click(x, y);
+    const nodeName = await page.evaluate(() => {
+      return editor.view.state.doc.resolve(23).node().type.name;
+    });
+    expect(nodeName).toEqual('paragraph');
+  });
   /**
-   * 零宽字符
+   * Zero width char
    */
   test('ArrowLeft pass all zero width char', async () => {
     await page.evaluate(() => {
