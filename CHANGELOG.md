@@ -1,3 +1,10 @@
+## [0.1.58](https://github.com/bytedance/syllepsis/compare/v0.1.57...v0.1.58) (2022-11-11)
+
+
+### 🐞 Bug Fixers
+
+* **BasicCtrl:** Difficulty triggering auto-insert paragraph when clicking between tables (#203), closes [#203](https://github.com/bytedance/syllepsis/issues/203) [#201](https://github.com/bytedance/syllepsis/issues/201)
+
 ## [0.1.57](https://github.com/bytedance/syllepsis/compare/v0.1.56...v0.1.57) (2022-10-11)
 
 
