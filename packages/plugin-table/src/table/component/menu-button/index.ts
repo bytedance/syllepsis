@@ -12,6 +12,7 @@ interface IMenuConfig {
   cellWith?: number;
   margin?: number;
   defaultColor?: string;
+  direction?: 'rtl' | 'ltr';
   activeColor?: string;
   trigger?: 'click' | 'hover';
 }
@@ -30,6 +31,7 @@ const DEFAULT_CONFIG: Required<IMenuConfig> = {
   defaultColor: '#F2F2F2',
   activeColor: '#B2D1FF',
   trigger: 'hover',
+  direction: 'ltr',
 };
 
 const Cell = (color = '#b2d1ff', width = 16, margin: number) => {
@@ -132,7 +134,7 @@ class TableButton {
     this.$cover.style.height = `${row * this.blockWidth}px`;
     this.$cover.style.width = `${column * this.blockWidth}px`;
 
-    if (row && column) this.$size.innerText = `${row} x ${column}`;
+    if (row && column) this.$size.innerText = `${row}x${column}`;
     else this.$size.innerText = '';
 
     this._selectedArea = { row, column };
@@ -177,9 +179,14 @@ class TableButton {
   private onMouseMove = (e: MouseEvent) => {
     if (!this.visible) return;
     const { offsetX, offsetY } = e;
+    let originColumn = offsetX;
+    if (this.menuConfig.direction === 'rtl') {
+      originColumn = this.$cellList.clientWidth - offsetX;
+    }
+    originColumn = originColumn / this.blockWidth
     this.selectedArea = {
       row: Math.ceil(offsetY / this.blockWidth),
-      column: Math.ceil(offsetX / this.blockWidth),
+      column: Math.ceil(originColumn),
     };
   };
 

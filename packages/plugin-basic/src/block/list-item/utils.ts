@@ -42,7 +42,7 @@ const checkAndMergeList = (tr: Transaction, pos: number) => {
   let beforeNodePos = 0;
   if (beforeNode) beforeNodePos = beforePos - beforeNode.nodeSize;
 
-  if (beforeNode && beforeNodeAfter && beforeNode.type === beforeNodeAfter.type && canJoin(tr.doc, beforePos)) {
+  if (beforeNode && beforeNodeAfter && beforeNode.type === beforeNodeAfter.type && !beforeNode.type.spec.isolating && canJoin(tr.doc, beforePos)) {
     tr.join(beforePos);
     const nodeBefore = tr.doc.nodeAt(beforeNodePos);
     if (nodeBefore) afterPos = beforeNodePos + nodeBefore.nodeSize;
@@ -53,7 +53,7 @@ const checkAndMergeList = (tr: Transaction, pos: number) => {
   const afterNode = $after.nodeBefore;
   const afterNodeAfter = $after.nodeAfter;
 
-  if (afterNode && afterNodeAfter && afterNode.type === afterNodeAfter.type && canJoin(tr.doc, afterPos)) {
+  if (afterNode && afterNodeAfter && afterNode.type === afterNodeAfter.type && !afterNode.type.spec.isolating && canJoin(tr.doc, afterPos)) {
     tr.join(afterPos);
     res = true;
   }
