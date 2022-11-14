@@ -1,3 +1,10 @@
+## [0.1.59](https://github.com/bytedance/syllepsis/compare/v0.1.58...v0.1.59) (2022-11-14)
+
+
+### 🐞 Bug Fixers
+
+* **ListItemPlugin:** Error merging adjacent isolating nodes(#204), closes [#204](https://github.com/bytedance/syllepsis/issues/204)
+
 ## [0.1.58](https://github.com/bytedance/syllepsis/compare/v0.1.57...v0.1.58) (2022-11-11)
 
 
