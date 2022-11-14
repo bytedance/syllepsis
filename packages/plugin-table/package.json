@@ -2,7 +2,7 @@
   "name": "@syllepsis/plugin-table",
   "author": "wangmou <wangmou@bytedance.com>",
   "description": "table plugin of syllepsis editor",
-  "version": "0.1.58",
+  "version": "0.1.59",
   "main": "dist/lib/index.js",
   "module": "dist/es/index.js",
   "umd": "dist/umd/index.js",
