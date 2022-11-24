@@ -1,5 +1,5 @@
 import { BlockAtom, getPx, INodeInfo, SylApi, SylController, SylPlugin } from '@syllepsis/adapter';
-import { DOMOutputSpecArray, Node, Node as ProsemirrorNode } from 'prosemirror-model';
+import { DOMOutputSpec, Node, Node as ProsemirrorNode } from 'prosemirror-model';
 import { NodeSelection, TextSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 
@@ -65,15 +65,16 @@ const parseSylDOM = (
     width = maxWidth;
   }
 
+  const name = image.getAttribute('name') || '';
+  const attrs: ImageAttrs = { src, alt, width, height, name };
   let align: ImageAttrs['align'] = dom.getAttribute('align') as ImageAttrs['align'];
   if (!align && fixer) {
     const className = fixer.className;
     if (className.includes('left')) align = 'left';
     else if (className.includes('right')) align = 'right';
   }
+  if (align) attrs.align = align;
 
-  const name = image.getAttribute('name') || '';
-  const attrs: ImageAttrs = { src, alt, width, height, align, name };
   addAttributes && getFromDOMByConfig(addAttributes, dom, attrs);
 
   return attrs;
@@ -127,7 +128,7 @@ const insertImageInEditor = (
       width: config.uploadMaxWidth ? Math.min(image.naturalWidth, config.uploadMaxWidth) : image.naturalWidth,
       name: image.getAttribute('name') || '',
       alt: '',
-      align: imageType?.attrs?.align?.default || 'center',
+      align: imageType?.spec?.attrs?.align.default || 'center',
       ...attrs,
     };
     insertNodes.content.push({ type: PLUGIN_NAME, attrs: imageAttrs });
@@ -348,14 +349,15 @@ class Image extends BlockAtom<ImageAttrs> {
           width = maxWidth;
         }
 
-        const formattedAttrs = {
+        const formattedAttrs: ImageAttrs = {
           src: dom.getAttribute('src') || '',
           alt: dom.getAttribute('alt') || '',
           name: dom.getAttribute('name') || '',
-          align: (dom.getAttribute('align') || undefined) as any,
           width,
           height,
         };
+        const align = dom.getAttribute('align');
+        if (align) formattedAttrs.align = align as any;
 
         getFromDOMByConfig(this.props.addAttributes, dom, formattedAttrs);
 
@@ -364,19 +366,20 @@ class Image extends BlockAtom<ImageAttrs> {
     },
   ];
   public toDOM = (node: Node) => {
-    const { align, width, height, ...attrs } = node.attrs;
+    const { align, width, height, ...rest } = node.attrs;
+    const attrs = { ...rest };
     setDOMAttrByConfig(this.props.addAttributes, node, attrs);
 
     if (width) attrs.width = getFixSize(width);
     if (height) attrs.height = getFixSize(height);
 
-    const renderSpec = ['img', attrs] as DOMOutputSpecArray;
+    const renderSpec = ['img', attrs] as DOMOutputSpec;
     if (this.inline) return renderSpec;
 
     const alignAttrs = this.props.disableAlign ? {} : { align: align || 'center' };
     const outputArray = ['div', { class: 'syl-image-wrapper', ...alignAttrs }, renderSpec];
     attrs.alt && outputArray.push(['p', { class: 'syl-image-caption' }, attrs.alt]);
-    return (outputArray as unknown) as DOMOutputSpecArray;
+    return (outputArray as unknown) as DOMOutputSpec;
   };
 
   public attrs = {

@@ -1,7 +1,6 @@
 import { Block, findCutBefore, SylApi, SylController, SylPlugin } from '@syllepsis/adapter';
 import { DOMOutputSpec } from 'prosemirror-model';
-import { EditorState, NodeSelection, TextSelection } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
+import { NodeSelection, TextSelection } from 'prosemirror-state';
 
 import { IMenuConfig, TableButton } from './component/menu-button';
 import { ITableProps, NODE_NAME } from './const';
@@ -96,10 +95,10 @@ class TableItemController extends SylController<ITableItemProps> {
     },
   };
 
-  public keymap = {
-    Tab: (editor: SylApi) => this.command.goNextCell(editor),
-    'Shift-Tab': (editor: SylApi) => this.command.goPrevCell(editor),
-    Backspace: (editor: SylApi, state: EditorState, dispatch: EditorView['dispatch']) => {
+  public keymap: SylController['keymap'] = {
+    Tab: editor => this.command.goNextCell(editor),
+    'Shift-Tab': editor => this.command.goPrevCell(editor),
+    Backspace: (editor, state, dispatch) => {
       const { $anchor, from, to } = state.selection;
       const tr = state.tr;
       if (judgeSelectAllTable(editor)) {
@@ -107,7 +106,7 @@ class TableItemController extends SylController<ITableItemProps> {
         const node = $pos.node(1);
         if (node.type.spec.tableRole !== 'table') return false;
         tr.setSelection(TextSelection.create(tr.doc, $pos.before(1), $pos.after(1))).deleteSelection();
-        dispatch(tr);
+        dispatch?.(tr);
         return true;
       }
       if (from !== to) return false;
@@ -117,7 +116,7 @@ class TableItemController extends SylController<ITableItemProps> {
       // currently empty, the previous is the node is table
       if (!before || before.type.spec.tableRole !== 'table' || $cut.pos !== from - 1) return false;
       tr.setSelection(NodeSelection.create(state.doc, $cut.pos - before.nodeSize));
-      dispatch(tr);
+      dispatch?.(tr);
       return true;
     },
   };

@@ -1,7 +1,6 @@
 import { Block, getTypesetDOMStyle, parseTypesetStyle, SylApi, SylController, SylPlugin } from '@syllepsis/adapter';
-import { DOMOutputSpecArray, Fragment, Node as ProseMirrorNode, Slice } from 'prosemirror-model';
-import { EditorState, Transaction } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
+import { DOMOutputSpec, Fragment, Node as ProseMirrorNode, Slice } from 'prosemirror-model';
+import { Transaction } from 'prosemirror-state';
 
 import {
   addAttrsByConfig,
@@ -155,7 +154,7 @@ class ListItem extends Block<IListItemAttrs> {
     }
     setDOMAttrByConfig(this.props.addAttributes, node, attrs);
 
-    return ['li', attrs, 0] as DOMOutputSpecArray;
+    return ['li', attrs, 0] as DOMOutputSpec;
   };
 }
 
@@ -169,7 +168,7 @@ class ListItemController extends SylController<IListItemProps> {
         // hack when paste at start of list_item
         const listNode = getListItem(slice);
         if (!listNode) return slice;
-        slice.openStart += 1;
+        Object.assign(slice, { openStart: slice.openStart + 1 });
         if (!slice.size) return new Slice(Fragment.from(listNode), 1, 1);
       }
       return slice;
@@ -183,10 +182,10 @@ class ListItemController extends SylController<IListItemProps> {
     sinkItem: (editor: SylApi) => sinkListItem(editor.view.state, editor.view.dispatch),
   };
 
-  public keymap = {
+  public keymap: SylController['keymap'] = {
     Enter: filterKeymap(splitListItemKeepMarks),
     'Shift-Tab': filterKeymap(liftListItem),
-    Tab: (editor: SylApi, state: EditorState, dispatch: EditorView['dispatch']) =>
+    Tab: (editor, state, dispatch) =>
       sinkListItem(state, dispatch, () => checkOutMaxNestedLevel(state, this.props.maxNestedLevel)),
     Backspace: filterKeymap(liftListItemAtHead),
   };

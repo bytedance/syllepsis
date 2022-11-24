@@ -1,5 +1,5 @@
 import { Block, SylApi, SylController, SylPlugin } from '@syllepsis/adapter';
-import { Node as ProseMirrorNode } from 'prosemirror-model';
+import { DOMOutputSpec, Node as ProseMirrorNode } from 'prosemirror-model';
 
 import { addAttrsByConfig, getFromDOMByConfig, IUserAttrsConfig, setDOMAttrByConfig } from '../../utils';
 
@@ -61,7 +61,7 @@ class Header extends Block<IHeaderStructure> {
   public toDOM = (node: ProseMirrorNode) => {
     const attrs = { ...node.attrs };
     setDOMAttrByConfig(this.props.addAttributes, node, attrs);
-    return [`h${attrs.level}`, attrs, 0] as const;
+    return [`h${attrs.level}`, attrs, 0] as DOMOutputSpec;
   };
 }
 

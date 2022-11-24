@@ -68,7 +68,7 @@ const getNodeType = (view: EditorView, nodeName: string) => {
   if (nodeName === 'text') {
     return {
       name: 'text',
-      create: (attrs, content, marks) => view.state.schema.text(content, marks),
+      create: (attrs, content, marks) => view.state.schema.text((content as unknown) as string, marks),
     } as NodeType;
   }
   return node;
@@ -153,11 +153,11 @@ const insert = (view: EditorView, nodeInfo: INodeInfo | string, index?: InsertOp
 
   const isInlineNode = newNode.type.isInline;
   if (isInlineNode && userConfig.inheritMarks) {
-    let curMarks: Mark[] = view.state.storedMarks || [];
-    if (!curMarks.length) curMarks = $from.marks();
+    let curMarks: Mark[] = view.state.storedMarks?.slice() || [];
+    if (!curMarks.length) curMarks = $from.marks().slice();
     if (curMarks.length) {
       curMarks.push(...newNode.marks);
-      newNode.marks = curMarks;
+      Object.assign(newNode, { marks: curMarks });
     }
   }
 
@@ -263,7 +263,7 @@ const replace = (view: EditorView, nodeInfo: INodeInfo | string, replaceOption?:
   if (config.inheritMarks) {
     ($from.marksAcross($to) || []).forEach(mark => {
       if (!newNode.marks.some(({ type }) => type === mark.type)) {
-        newNode.marks = mark.addToSet(newNode.marks);
+        Object.assign(newNode, { marks: mark.addToSet(newNode.marks) });
       }
     });
   }

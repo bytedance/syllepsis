@@ -217,7 +217,7 @@ class ToolbarInlineLoader extends BaseModule<IToolbarInlineOption> {
         // display at the top when in table
         // @ts-ignore
       } else if (state.selection.$anchorCell) {
-        const ranges = state.selection.ranges.sort((a, b) => a.$from.pos - b.$from.pos);
+        const ranges = state.selection.ranges.slice().sort((a, b) => a.$from.pos - b.$from.pos);
         $anchor = ranges[0].$from;
         $head = ranges[0].$to;
       }

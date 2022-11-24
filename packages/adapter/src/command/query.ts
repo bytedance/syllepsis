@@ -12,7 +12,7 @@ type nodesWalker = (
   resList: Array<IMappingNode>,
   node: ProsemirrorNode,
   pos: number,
-  parent: ProsemirrorNode,
+  parent: ProsemirrorNode | null,
   index: number,
 ) => boolean;
 
@@ -65,10 +65,10 @@ const constructText = (node: ProsemirrorNode) => {
 };
 
 const getExistMarks = (state: EditorState, markName: string) => {
-  const markType = state.schema.marks[markName] as Mark;
+  const markType = state.schema.marks[markName];
   if (!markType) return [];
-  let prevParent: ProsemirrorNode | undefined;
-  let prevMark: Mark<any> | undefined;
+  let prevParent: ProsemirrorNode | null;
+  let prevMark: Mark | null;
   const walker: nodesWalker = (res, curNode, pos, parent) => {
     const cMark = curNode.marks.find(mark => mark.type.name === markName);
     if (curNode.isLeaf && curNode.marks.length && markType.isInSet(curNode.marks)) {

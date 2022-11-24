@@ -22,9 +22,9 @@ interface IControllerCommand {
 }
 
 interface IEventHandler {
-  handleKeyDown?: (editor: SylApi, view: EditorView, event: KeyboardEvent) => boolean;
-  handleKeyPress?: (editor: SylApi, view: EditorView, event: KeyboardEvent) => boolean;
-  handleTextInput?: (editor: SylApi, view: EditorView, from: number, to: number, text: string) => boolean;
+  handleKeyDown?: (editor: SylApi, view: EditorView, event: KeyboardEvent) => boolean | void;
+  handleKeyPress?: (editor: SylApi, view: EditorView, event: KeyboardEvent) => boolean | void;
+  handleTextInput?: (editor: SylApi, view: EditorView, from: number, to: number, text: string) => boolean | void;
   handleClickOn?: (
     editor: SylApi,
     view: EditorView,
@@ -33,8 +33,8 @@ interface IEventHandler {
     nodePos: number,
     event: MouseEvent,
     direct: boolean,
-  ) => boolean;
-  handleClick?: (editor: SylApi, view: EditorView, pos: number, event: MouseEvent) => boolean;
+  ) => boolean | void;
+  handleClick?: (editor: SylApi, view: EditorView, pos: number, event: MouseEvent) => boolean | void;
   handleDoubleClickOn?: (
     editor: SylApi,
     view: EditorView,
@@ -43,8 +43,8 @@ interface IEventHandler {
     nodePos: number,
     event: MouseEvent,
     direct: boolean,
-  ) => boolean;
-  handleDoubleClick?: (editor: SylApi, view: EditorView, pos: number, event: MouseEvent) => boolean;
+  ) => boolean | void;
+  handleDoubleClick?: (editor: SylApi, view: EditorView, pos: number, event: MouseEvent) => boolean | void;
   handleTripleClickOn?: (
     editor: SylApi,
     view: EditorView,
@@ -53,25 +53,25 @@ interface IEventHandler {
     nodePos: number,
     event: MouseEvent,
     direct: boolean,
-  ) => boolean;
-  handleTripleClick?: (editor: SylApi, view: EditorView, pos: number, event: MouseEvent) => boolean;
-  handlePaste?: (editor: SylApi, view: EditorView, event: Event, slice: Slice) => boolean;
-  handleDrop?: (editor: SylApi, view: EditorView, event: Event, slice: Slice, moved: boolean) => boolean;
-  handleScrollToSelection?: (editor: SylApi, view: EditorView) => boolean;
+  ) => boolean | void;
+  handleTripleClick?: (editor: SylApi, view: EditorView, pos: number, event: MouseEvent) => boolean | void;
+  handlePaste?: (editor: SylApi, view: EditorView, event: Event, slice: Slice) => boolean | void;
+  handleDrop?: (editor: SylApi, view: EditorView, event: Event, slice: Slice, moved: boolean) => boolean | void;
+  handleScrollToSelection?: (editor: SylApi, view: EditorView) => boolean | void;
   transformPastedHTML?: (editor: SylApi, html: string) => string;
   transformPastedText?: (editor: SylApi, text: string) => string;
   transformPasted?: (editor: SylApi, p: Slice) => Slice;
   clipboardTextSerializer?: (editor: SylApi, p: Slice) => string;
   handleDOMEvents?: Partial<
-    Record<keyof HTMLElementEventMap, (editor: SylApi, view: EditorView, event: any) => boolean>
+    Record<keyof HTMLElementEventMap, (editor: SylApi, view: EditorView, event: any) => boolean | void>
   >;
 }
 
 type TKeymapHandler = (
   editor: SylApi,
   state: EditorState,
-  dispatch: EditorView['dispatch'],
-  view: EditorView,
+  dispatch: EditorView['dispatch'] | undefined,
+  view: EditorView | undefined,
 ) => boolean;
 
 class SylController<T extends Types.StringMap<any> = any> {

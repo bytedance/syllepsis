@@ -12,7 +12,7 @@ interface ICtrlPlugin<T> extends Plugin {
 
 const createCtrlPlugin = <T>(spec: Plugin['spec'], ctrlCenter: ICtrlPluginCtrl<T>) => {
   const ctrlPlugin = new Plugin(spec) as ICtrlPlugin<T>;
-  ctrlPlugin.props = spec.props!;
+  Object.assign(ctrlPlugin, { props: spec.props });
   ctrlPlugin.registerProps = (props: T, prioritized?: boolean) => ctrlCenter.register(props, prioritized);
   ctrlPlugin.unregisterProps = (props: T) => ctrlCenter.unregister(props);
 
