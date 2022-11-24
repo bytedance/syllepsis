@@ -128,7 +128,7 @@ class CodeBlockView {
       const tr = this.view.state.tr.replaceWith(
         start + change.from,
         start + change.to,
-        change.text ? this.view.state.schema.text(change.text) : null,
+        change.text ? this.view.state.schema.text(change.text) : [],
       );
       this.updateTemplValue();
       this.view.dispatch(tr);

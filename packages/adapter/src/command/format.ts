@@ -76,7 +76,7 @@ const getFormat = (view: EditorView, range?: Types.IRangeStatic) => {
       });
       if (node.isTextblock) {
         // maybe nested node
-        if (parent.type.name !== docName) {
+        if (parent && parent.type.name !== docName) {
           res[parent.type.name] = parent.attrs;
         } else if (node.type.name !== paragraphName) {
           res[node.type.name] = node.attrs;
@@ -130,7 +130,7 @@ const replaceMark = (markType: MarkType, attrs: { [key: string]: any }, nTr: Tra
   return nTr;
 };
 
-const markApplies = (doc: ProseMirrorNode, ranges: SelectionRange<any>[], type: MarkType) => {
+const markApplies = (doc: ProseMirrorNode, ranges: readonly SelectionRange[], type: MarkType) => {
   const loop = (i: number) => {
     const ref = ranges[i];
     const $from = ref.$from;
@@ -155,12 +155,7 @@ const markApplies = (doc: ProseMirrorNode, ranges: SelectionRange<any>[], type: 
   return false;
 };
 
-const toggleMark = (
-  markType: MarkType<any>,
-  attrs: boolean,
-  nTr: Transaction,
-  storedMarks: undefined | null | Mark[],
-) => {
+const toggleMark = (markType: MarkType, attrs: boolean, nTr: Transaction, storedMarks: undefined | null | Mark[]) => {
   const { empty, $cursor, ranges } = nTr.selection as TextSelection;
 
   if ((empty && !$cursor) || !markApplies(nTr.doc, ranges, markType)) {
@@ -237,7 +232,7 @@ const containsIsolatingNode = (ranges: SelectionRange[]) => {
 const getSelectedInfos = ({ doc, selection }: Transaction) => {
   const selectedInfos: Array<TSelectedInfos> = [];
 
-  const ranges = selection.ranges.sort((a, b) => a.$from.pos - b.$from.pos);
+  const ranges = selection.ranges.slice().sort((a, b) => a.$from.pos - b.$from.pos);
   // the location to start collecting, mainly used for isolating nodes
   let startPos = selection.$from.depth ? ranges[0].$from.before(1) : 0;
 
@@ -286,7 +281,7 @@ const getSelectedInfos = ({ doc, selection }: Transaction) => {
         const $pos = doc.resolve(nodePos + 1);
         if (!$from) $from = $pos;
         let blockRange = $pos.blockRange();
-        if (!blockRange) blockRange = { start: nodePos, end: nodePos } as NodeRange<any>;
+        if (!blockRange) blockRange = { start: nodePos, end: nodePos } as NodeRange;
 
         if (!selectedNodes.some(({ node }) => node === curNode)) {
           selectedNodes.push({
@@ -298,7 +293,7 @@ const getSelectedInfos = ({ doc, selection }: Transaction) => {
         let fixFrom = extendedFrom;
         let fixTo = extendedTo;
         // fix the problem of incorrect range selection when selecting nodes, and stop when meet an `isolating` parent node
-        if ($pos.depth > 1 && !parent.type.spec.isolating) {
+        if ($pos.depth > 1 && parent && !parent.type.spec.isolating) {
           if (parent.firstChild === curNode) {
             fixFrom = $pos.before(-1);
           }
@@ -314,7 +309,7 @@ const getSelectedInfos = ({ doc, selection }: Transaction) => {
       } else if (curNode.isLeaf) {
         selectedNodes.push({
           node: curNode,
-          nodeRange: { start: nodePos, end: nodePos } as NodeRange<any>,
+          nodeRange: { start: nodePos, end: nodePos } as NodeRange,
         });
       }
 
@@ -550,7 +545,7 @@ const formatNodeType = (
     wrappingRange,
   );
 
-  const newNodes: ProseMirrorNode<any>[] = [];
+  const newNodes: ProseMirrorNode[] = [];
   for (let i = 0; i < selectedNodes.length; i++) {
     const { node, originDepth } = selectedNodes[i];
     if (node.isTextblock && originDepth && isNestedNodeType) {
@@ -640,7 +635,7 @@ const formatSelection = (
 
   if (schema.marks[formatType]) {
     if (typeof formatValue === 'boolean') {
-      toggleMark(schema.marks[formatType], formatValue, tr, state.storedMarks);
+      toggleMark(schema.marks[formatType], formatValue, tr, state.storedMarks?.slice());
     } else {
       replaceMark(schema.marks[formatType], formatValue, tr);
     }
@@ -687,7 +682,7 @@ const formatSelection = (
       reSelect = (_tr: Transaction) => {
         if (state.selection instanceof AllSelection) return _tr.setSelection(new AllSelection(_tr.doc));
 
-        ranges.sort((a, b) => a.$from.pos - b.$from.pos);
+        ranges.slice().sort((a, b) => a.$from.pos - b.$from.pos);
         const newRange = getRangeAfterReplace(state, _tr, {
           extendedFrom: Math.min(from, resultFrom),
           extendedTo: Math.max(to, resultTo),

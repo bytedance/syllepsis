@@ -33,7 +33,7 @@ const TableHelperPlugin = (editor: SylApi, menus: TContextMenu[]) =>
     view: view => new TableContextMenu(editor, view, menus),
     props: {
       handleDOMEvents: {
-        cut(view, event) {
+        cut(view, event: Event) {
           const { state, dispatch } = view;
           const tr = state.tr;
           if (judgeSelectAllTable(editor)) {
@@ -74,7 +74,7 @@ const TableHelperPlugin = (editor: SylApi, menus: TContextMenu[]) =>
         return $div.innerHTML;
       },
     },
-    appendTransaction: (trs: Transaction[], oldState: EditorState, newState: EditorState) => {
+    appendTransaction: (trs: readonly Transaction[], oldState: EditorState, newState: EditorState) => {
       if (newState.selection instanceof CellSelection || newState.selection instanceof AllSelection) {
         return;
       }
