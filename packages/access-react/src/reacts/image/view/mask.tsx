@@ -34,7 +34,10 @@ const SylMaskImageFailed = ({ attrs, maxWidth, ...rest }: ISylMaskImageFailedPro
   );
 };
 
-class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
+class ImageMask extends React.Component<
+  IViewMapProps<ImageAttrs>,
+  { caption: string; active: boolean; isUploading: boolean; isFailed: boolean }
+> {
   public imageWrapDom: any;
   private isInline = false;
   private imageMount = false;
@@ -171,10 +174,11 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
   };
 
   public renderImage = () => {
-    const { active, isUploading } = this.state;
+    const { active, isUploading, isFailed } = this.state;
     const { attrs, editor } = this.props;
     const { src, alt, width, height } = attrs;
     const config = editor.command.image!.getConfiguration();
+    const available = active && !isFailed && !isUploading;
 
     return (
       <span className="syl-image-atom-wrapper" ref={ref => this.isInline && (this.imageWrapDom = ref)}>
@@ -189,7 +193,7 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
             });
           }}
         />
-        {editor.editable && !config.disableResize && active ? (
+        {editor.editable && !config.disableResize && available ? (
           <ImageResizeBox
             height={height}
             onResizeStart={this._onResizeStart}
@@ -218,12 +222,14 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
     const { align } = attrs;
     const locale = editor.configurator.getLocaleValue('image');
 
-    const { active } = this.state;
+    const { active, isFailed, isUploading } = this.state;
     const config = editor.command.image!.getConfiguration();
+    const available = active && !isFailed && !isUploading;
+
     return (
       <div ref={ref => (this.imageWrapDom = ref)} className={cls('syl-image-wrapper')} style={{ textAlign: align }}>
         <div className="syl-image-fixer">
-          {active && editor.editable && !config.disableAlign && (
+          {editor.editable && !config.disableAlign && available && (
             <span className="align-menu">
               <span
                 className={cls('align-icon', { active: align === 'left' })}
@@ -254,6 +260,7 @@ class ImageMask extends React.Component<IViewMapProps<ImageAttrs>, any> {
                 placeholder={config.placeholder || locale.placeholder || `图片描述(${config.maxLength}字内)`}
                 className="syl-image-caption-input"
                 draggable={true}
+                disabled={isFailed || isUploading}
                 onDragStart={e => {
                   e.preventDefault();
                   e.nativeEvent.stopImmediatePropagation();
