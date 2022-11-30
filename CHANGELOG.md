@@ -1,3 +1,10 @@
+## [0.1.60](https://github.com/bytedance/syllepsis/compare/v0.1.59...v0.1.60) (2022-11-30)
+
+
+### 🐞 Bug Fixers
+
+* **ImagePlugin:** Disable editing operations on the image until the upload is successful (#213), closes [#213](https://github.com/bytedance/syllepsis/issues/213) [#211](https://github.com/bytedance/syllepsis/issues/211)
+
 ## [0.1.59](https://github.com/bytedance/syllepsis/compare/v0.1.58...v0.1.59) (2022-11-14)
 
 
