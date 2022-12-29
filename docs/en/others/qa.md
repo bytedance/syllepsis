@@ -8,7 +8,7 @@
 
 ## Q: Clicking to set the list style has no effect?
 
-**A:** See if the `reset.css` or `nomrlize.css` has been introduced in the project to reset the styles of `ol` and `ul`, or consider introducing the `css` file provided by this document.
+**A:** See if the `reset.css` or `nomrlize.css` has been introduced in the project to reset the styles of `ol` and `ul`, or consider introducing the `css` file provided by `@syllepsis/plugin-basic/assets/style.css`.
 
 ## Q: Why can't my card be rendered?
 

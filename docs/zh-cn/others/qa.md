@@ -8,7 +8,7 @@
 
 ## Q：点击设置列表样式没有效果？
 
-**A：** 看下是不是项目中引入了`reset.css`或者`nomrlize.css`重置了`ol`和`ul`的样式，或者考虑引入这个文档提供的`css`文件。
+**A：** 看下是不是项目中引入了`reset.css`或者`nomrlize.css`重置了`ol`和`ul`的样式，或者考虑引入`@syllepsis/plugin-basic/assets/style.css`
 
 ## Q：为什么我的卡片渲染不出来？
 
