@@ -29,7 +29,7 @@ import { SylEditor } from '@syllepsis/access-react';
 
 | 配置名        | 类型                                                               | 说明                                                                                |
 | ------------- | ------------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
-| tools         | `Array<string \| '\|'>`                                            | 工具栏显示的插件，顺序对应位置<br>- 值为 plugins 的 name 属性<br>- `\|`为显示分割线 |
+| tools         | `Array<string \| '\|' | Array<string>>`                            | 工具栏显示的插件，顺序对应位置<br>- 值为 plugins 的 name 属性<br>- `\|`为显示分割线 |
 | Component     | `any`                                                              | 可选，渲染函数                                                                      |
 | tooltips      | `{ name: string }`                                                 | 可选，hover 到按钮时显示的 tip                                                      |
 | icons         | `Types.StringMap<any>`                                             | 可选，按钮的图标组件, key 为插件名称                                                |
