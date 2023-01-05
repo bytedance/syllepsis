@@ -106,23 +106,17 @@ const removeIgnoreContent = (div: HTMLElement) => {
 
 // remove <img class="ProseMirror-separator"> and .ProseMirror-trailingBreak
 const handleHackNode = (div: HTMLElement) => {
-  Array.from(div.querySelectorAll('.ProseMirror-separator')).map(
-    n => n.parentElement && n.parentElement.removeChild(n),
-  );
+  Array.from(div.querySelectorAll('.ProseMirror-separator')).map(n => n.parentElement?.removeChild?.(n));
   Array.from(div.querySelectorAll('.ProseMirror-trailingBreak')).forEach(n => n.removeAttribute('class'));
 };
 
 // when <br> after `inlineCard` is the last node, delete it
 const removeBrAfterInlineCard = (div: HTMLElement) => {
-  Array.from(div.querySelectorAll('syl-inline')).forEach(a => {
-    if (
-      a.nextElementSibling &&
-      a.parentElement &&
-      a.parentElement.lastChild === a.nextElementSibling &&
-      a.nextElementSibling.tagName === 'BR' &&
-      a.nextElementSibling.parentElement
-    ) {
-      a.parentElement.removeChild(a.nextElementSibling);
+  Array.from(div.querySelectorAll('br:last-child')).forEach(a => {
+    if (a.nextSibling || !a.previousSibling || a.previousSibling.nodeType !== 1) return;
+    const prevNode = a.previousSibling as HTMLElement;
+    if (prevNode.matches?.('syl-inline') || prevNode.querySelector?.('syl-inline')) {
+      a.parentElement?.removeChild?.(a);
     }
   });
 };

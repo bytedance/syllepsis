@@ -17,7 +17,8 @@ const inlineLeafShortcut = (
       if (!nodeType) return null;
       const attrs = getShortcutAttrs(config.handler, view, match, start, end);
       if (!attrs) return null;
-      return state.tr.replaceWith(start, end, nodeType.create(attrs));
+      const marks = view.state.selection.$from.marks();
+      return state.tr.replaceWith(start, end, nodeType.create(attrs, undefined, marks));
     },
     config,
   );
