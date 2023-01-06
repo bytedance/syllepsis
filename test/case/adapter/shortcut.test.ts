@@ -89,6 +89,21 @@ describe('inline shortcut test', () => {
     });
     expect(html).toBe('<p><a>inline_card</a></p>');
   });
+
+  test('inline_card shortcut can inherit marks', async () => {
+    await page.evaluate(() => {
+      editor.setHTML('<p><em>1</em></p>');
+      editor.setSelection({ index: 2, length: 0 });
+    });
+
+    await page.keyboard.type('{ inline_card }');
+
+    await page.keyboard.press('Space');
+    const html = await page.evaluate(() => {
+      return editor.getHTML();
+    });
+    expect(html).toBe('<p><em>1<a>inline_card</a></em></p>');
+  });
 });
 
 describe('list shortcut test', () => {

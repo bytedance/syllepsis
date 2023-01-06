@@ -66,6 +66,12 @@ describe('API.getHTML test', () => {
       return editor.getHTML();
     });
     expect(html).toBe('<p><a>inline_card</a></p>');
+
+    const html1 = await page.evaluate(() => {
+      editor.setHTML(`<p>${INLINE_CARD_HTML}1<br>2</p>`);
+      return editor.getHTML();
+    });
+    expect(html1).toBe('<p><a>inline_card</a>1<br>2</p>');
   });
 
   it('ignoretag in list', async () => {

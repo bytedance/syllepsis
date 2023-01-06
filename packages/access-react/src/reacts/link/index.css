@@ -25,3 +25,7 @@
 .syl-link {
   user-select: text;
 }
+
+*[style*='color'] .syl-link {
+  color: inherit;
+}
