@@ -1,3 +1,10 @@
+## [0.1.61](https://github.com/bytedance/syllepsis/compare/v0.1.60...v0.1.61) (2023-01-06)
+
+
+### 🐞 Bug Fixers
+
+* **Adapter:** `inline-leaf` shortcut not inheriting marks (#216), closes [#216](https://github.com/bytedance/syllepsis/issues/216) [#215](https://github.com/bytedance/syllepsis/issues/215)
+
 ## [0.1.60](https://github.com/bytedance/syllepsis/compare/v0.1.59...v0.1.60) (2022-11-30)
 
 
