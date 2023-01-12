@@ -1,3 +1,10 @@
+## [0.1.62](https://github.com/bytedance/syllepsis/compare/v0.1.61...v0.1.62) (2023-01-12)
+
+
+### 🎉 Features
+
+* **InlineToolbar:** Support for rendering custom buttons (#218), closes [#218](https://github.com/bytedance/syllepsis/issues/218)
+
 ## [0.1.61](https://github.com/bytedance/syllepsis/compare/v0.1.60...v0.1.61) (2023-01-06)
 
 
