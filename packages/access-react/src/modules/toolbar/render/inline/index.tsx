@@ -1,9 +1,10 @@
 import './style.css';
 
-import { IToolbarInlineProps, TMoreContent, TOOL_TYPE, ToolContent } from '@syllepsis/editor';
+import { IToolbarInlineProps, TCustomContent, TMoreContent, TOOL_TYPE, ToolContent } from '@syllepsis/editor';
 import cls from 'classnames';
 import React, { ReactElement } from 'react';
 
+import { CustomButton } from '../../tools';
 import { getGroupKey, renderMoreToolButton, renderSylButton } from '../../utils';
 
 class ToolbarInline extends React.Component<IToolbarInlineProps> {
@@ -30,6 +31,11 @@ class ToolbarInline extends React.Component<IToolbarInlineProps> {
               }),
             ),
         });
+      }
+      case TOOL_TYPE.CUSTOM: {
+        return (
+          <CustomButton key={`custom-${content.name}`} {...(content as TCustomContent)} editor={this.props.editor} />
+        );
       }
       default:
         return renderSylButton({
