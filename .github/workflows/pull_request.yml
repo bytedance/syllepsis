@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@master
 
       - name: init
-        run: npm i install yarn lerna typescript
+        run: npm i install yarn lerna typescript -g
 
       - name: install
         run: yarn initialize

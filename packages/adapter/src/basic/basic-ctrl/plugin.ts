@@ -21,6 +21,7 @@ interface IBasicCtrlConfig {
   keepMarks?: boolean;
   dropCursor?: TDropCursorConfig;
   keepWhiteSpace?: boolean | 'full';
+  clickSpacingToInsertLine?: boolean;
 }
 
 const BasicCtrlPlugin = (config: IBasicCtrlConfig, _editable = true) => {
@@ -76,7 +77,9 @@ const BasicCtrlPlugin = (config: IBasicCtrlConfig, _editable = true) => {
         return chainClickEvent({ node, view, pos, nodePos, event }, cardSingleClick);
       },
       handleClick(view, pos, event) {
-        insertDefaultNodeWhenBlock(view, pos, event);
+        if (config.clickSpacingToInsertLine !== false) {
+          insertDefaultNodeWhenBlock(view, pos, event);
+        }
         return false;
       },
       handleKeyDown(view, event) {

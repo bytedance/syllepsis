@@ -143,6 +143,7 @@ class SylConfigurator {
     dropCursor: {},
     placeholder: '',
     keepWhiteSpace: false,
+    clickSpacingToInsertLine: true,
   };
 
   public extraConfiguration: Required<IExtraConfig> = {
