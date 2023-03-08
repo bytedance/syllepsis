@@ -1,3 +1,10 @@
+## [0.1.63](https://github.com/bytedance/syllepsis/compare/v0.1.62...v0.1.63) (2023-03-08)
+
+
+### 🎉 Features
+
+* **Adapter:** Support `clickSpacingToInsertLine` configuration to co… (#230), closes [#230](https://github.com/bytedance/syllepsis/issues/230) [#229](https://github.com/bytedance/syllepsis/issues/229)
+
 ## [0.1.62](https://github.com/bytedance/syllepsis/compare/v0.1.61...v0.1.62) (2023-01-12)
 
 
