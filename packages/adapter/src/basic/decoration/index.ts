@@ -102,7 +102,7 @@ const DecorationPlugin = () =>
       if (newDecorations.length < oldDecorations.length) {
         oldDecorations.some(decoration => {
           if (
-            decoration.from < tr.doc.nodeSize &&
+            decoration.from <= tr.doc.content.size &&
             newDecorations.every(({ spec }) => spec.key !== decoration.spec.key)
           ) {
             const $pos = tr.doc.resolve(decoration.from);
