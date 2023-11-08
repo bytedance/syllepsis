@@ -11,7 +11,7 @@ import { Selection, TextSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 
 import { config } from './config';
-import { DEFAULT_LANGUAGE, fixCodeString, removeEmptyCodeBlock } from './utils';
+import { DEFAULT_LANGUAGE, removeEmptyCodeBlock } from './utils';
 
 type GetPos = () => number;
 // codeblock is special formats witch contains text content, behave like block
@@ -212,9 +212,16 @@ class CodeBlockView {
   }
 
   public updateTemplValue() {
-    this.templ.innerHTML = `<pre language="${this.node.attrs.language}" code_block="true"><code>${fixCodeString(
-      this.cm.getValue(),
-    )}</code></pre>`;
+    let code = this.templ.querySelector('pre>code');
+    if (!code) {
+      const pre = document.createElement('pre');
+      pre.setAttribute('language', this.node.attrs.language);
+      code = document.createElement('code');
+      pre.appendChild(code);
+      this.templ.appendChild(pre);
+    }
+    // use textContent to escape special chars
+    code.textContent = this.cm.getValue();
   }
 
   public update(node: ProseMirrorNode) {
