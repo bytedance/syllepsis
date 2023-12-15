@@ -324,7 +324,7 @@ class ToolbarInlineLoader extends BaseModule<IToolbarInlineOption> {
 
   bindEvent() {
     document.body.addEventListener('mouseup', this.handleMouseUp);
-    document.body.addEventListener('click', this.storedClick);
+    document.body.addEventListener('click', this.storedClick, { capture: true });
     this.adapter.view.dom.addEventListener('mousedown', this.handleMouseDown);
     // do not trigger `mouseUp` when drop
     this.adapter.root.addEventListener('drop', this.handleMouseUp);
@@ -349,7 +349,7 @@ class ToolbarInlineLoader extends BaseModule<IToolbarInlineOption> {
 
   public destructor() {
     document.body.removeEventListener('mouseup', this.handleMouseUp);
-    document.body.removeEventListener('click', this.storedClick);
+    document.body.removeEventListener('click', this.storedClick, { capture: true });
     this.adapter.view.dom.removeEventListener('mousedown', this.handleMouseDown);
     this.adapter.off(EventChannel.LocalEvent.ON_BLUR, this.checkHide);
     this.adapter.off(EventChannel.LocalEvent.CONFIG_PLUGIN_CHANGE, this.render);
