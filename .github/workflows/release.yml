@@ -6,10 +6,11 @@ on:
   push:
     branches:
       - chore-ci
-  # pull_request_review:
-  #   types:
-  #     - submitted
-  #   status: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
 
 # 任务，定义个changelog 的任务
 jobs:
@@ -36,3 +37,13 @@ jobs:
 
       - name: build
         run: yarn build
+
+      - uses: google-github-actions/release-please-action@v4
+        with:
+          # this assumes that you have created a personal access token
+          # (PAT) and configured it as a GitHub action secret named
+          # `MY_RELEASE_PLEASE_TOKEN` (this secret name is not important).
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # this is a built-in strategy in release-please, see "Action Inputs"
+          # for more options
+          release-type: simple
