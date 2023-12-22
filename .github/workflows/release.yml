@@ -1,0 +1,38 @@
+# 整个流程的名字
+name: Release
+
+# 触发时机，在 main 分支 push 操作触发
+on:
+  push:
+    branches:
+      - chore-ci
+  # pull_request_review:
+  #   types:
+  #     - submitted
+  #   status: {}
+
+# 任务，定义个changelog 的任务
+jobs:
+  changelog:
+    name: Changelog PR or Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 16
+
+
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch }}
+
+      - name: init
+        run: npm i install yarn lerna@^4 typescript -g
+
+      - name: install
+        run: yarn initialize
+
+      - name: build
+        run: yarn build
