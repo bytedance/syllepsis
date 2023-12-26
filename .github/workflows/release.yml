@@ -24,10 +24,10 @@ jobs:
           node-version: 16
 
 
-      - name: checkout
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.inputs.branch }}
+      # - name: checkout
+      #   uses: actions/checkout@v4
+      #   with:
+      #     ref: ${{ github.event.inputs.branch }}
 
       # - name: init
       #   run: npm i install yarn lerna@^4 typescript -g
