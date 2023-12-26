@@ -48,4 +48,4 @@ jobs:
           # for more options
           release-type: simple
 
-          target_branch: 'chore-ci'
+          target-branch: 'chore-ci'
