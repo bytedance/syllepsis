@@ -29,14 +29,14 @@ jobs:
         with:
           ref: ${{ github.event.inputs.branch }}
 
-      - name: init
-        run: npm i install yarn lerna@^4 typescript -g
+      # - name: init
+      #   run: npm i install yarn lerna@^4 typescript -g
 
-      - name: install
-        run: yarn initialize
+      # - name: install
+      #   run: yarn initialize
 
-      - name: build
-        run: yarn build
+      # - name: build
+      #   run: yarn build
 
       - uses: google-github-actions/release-please-action@v4
         with:
@@ -48,4 +48,4 @@ jobs:
           # for more options
           release-type: simple
 
-          target-branch: 'chore-ci'
+          target-branch: 'master'
