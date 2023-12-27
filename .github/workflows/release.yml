@@ -6,6 +6,20 @@ on:
   push:
     branches:
       - chore-ci
+  # pull_request:
+  #   types:
+  #     - labeled
+  #     - unlabeled
+  #     - synchronize
+  #     - opened
+  #     - edited
+  #     - ready_for_review
+  #     - reopened
+  #     - unlocked
+  # pull_request_review:
+  #   types:
+  #     - submitted
+  # status: {}
 
 permissions:
   contents: write
@@ -29,23 +43,32 @@ jobs:
       #   with:
       #     ref: ${{ github.event.inputs.branch }}
 
-      # - name: init
-      #   run: npm i install yarn lerna@^4 typescript -g
+      - name: init
+        run: npm i install yarn lerna@^4 typescript -g
 
-      # - name: install
-      #   run: yarn initialize
+      - name: install
+        run: yarn initialize
 
-      # - name: build
-      #   run: yarn build
+      - name: build
+        run: yarn build
 
-      - uses: google-github-actions/release-please-action@v4
-        with:
-          # this assumes that you have created a personal access token
-          # (PAT) and configured it as a GitHub action secret named
-          # `MY_RELEASE_PLEASE_TOKEN` (this secret name is not important).
-          token: ${{ secrets.GITHUB_TOKEN }}
-          # this is a built-in strategy in release-please, see "Action Inputs"
-          # for more options
-          release-type: simple
+      - name: prerelease
+        run: lerna version prerelease
+        env:
+          GH_RELEASE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-          target-branch: 'master'
+      - name: prepublish
+        run: lerna publish from-package
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # - uses: google-github-actions/release-please-action@v4
+      #   with:
+      #     # this assumes that you have created a personal access token
+      #     # (PAT) and configured it as a GitHub action secret named
+      #     # `MY_RELEASE_PLEASE_TOKEN` (this secret name is not important).
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     # this is a built-in strategy in release-please, see "Action Inputs"
+      #     # for more options
+      #     release-type: simple
+
+      #     target-branch: 'master'
