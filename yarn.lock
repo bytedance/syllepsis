@@ -1841,13 +1841,15 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@syllepsis/access-react@file:packages/access-react":
-  version "0.1.60"
+"@syllepsis/access-react@*":
+  version "0.1.63"
+  resolved "https://registry.npmjs.org/@syllepsis/access-react/-/access-react-0.1.63.tgz#357c35b82b4ef9fbfc764a9d48aa484ac00ffed4"
+  integrity sha512-brGnrnTuQBkssVCaan+09uAJWGNubtotLPQzb17enApISuPqW9t+TQtqG/SKBDN1rna/psP3pYkOK4P6shhr3w==
   dependencies:
     "@icon-park/react" "^1.3.3"
-    "@syllepsis/adapter" "^0.1.58"
-    "@syllepsis/editor" "^0.1.58"
-    "@syllepsis/plugin-basic" "^0.1.59"
+    "@syllepsis/adapter" "^0.1.63"
+    "@syllepsis/editor" "^0.1.63"
+    "@syllepsis/plugin-basic" "^0.1.63"
     "@types/classnames" "^2.2.6"
     "@types/emoji-mart" "<2.11.2"
     "@types/lodash.debounce" "^4.0.0"
@@ -1858,8 +1860,27 @@
     react-modal "^3.11.2"
     react-tooltip-lite "^1.12.0"
 
-"@syllepsis/adapter@file:packages/adapter":
-  version "0.1.58"
+"@syllepsis/access-react@file:packages/access-react":
+  version "0.1.64-alpha.2"
+  dependencies:
+    "@icon-park/react" "^1.3.3"
+    "@syllepsis/adapter" "^0.1.64-alpha.2"
+    "@syllepsis/editor" "^0.1.64-alpha.2"
+    "@syllepsis/plugin-basic" "^0.1.64-alpha.2"
+    "@types/classnames" "^2.2.6"
+    "@types/emoji-mart" "<2.11.2"
+    "@types/lodash.debounce" "^4.0.0"
+    "@types/react-modal" "^3.10.5"
+    classnames "^2.2.6"
+    emoji-mart "<2.11.2"
+    lodash.debounce "^4.0.0"
+    react-modal "^3.11.2"
+    react-tooltip-lite "^1.12.0"
+
+"@syllepsis/adapter@*", "@syllepsis/adapter@^0.1.63":
+  version "0.1.63"
+  resolved "https://registry.npmjs.org/@syllepsis/adapter/-/adapter-0.1.63.tgz#49edc48c5a7a98464a42c84660367bc10967ac26"
+  integrity sha512-gd7kqNAbJcbNhGECAm5CXca/H2Xn6G9DLXoblBxeSnZYWt4DGWbMRrSZrvHhiRFXa70c0E2N0Td1CPd9il7Rgw==
   dependencies:
     "@types/lodash.clonedeep" "^4.0.0"
     "@types/lodash.isequal" "^4.0.0"
@@ -1885,19 +1906,59 @@
     prosemirror-transform "^1.2.3"
     prosemirror-view "^1.13.4"
 
-"@syllepsis/editor@file:packages/editor":
-  version "0.1.58"
+"@syllepsis/adapter@file:packages/adapter":
+  version "0.1.64-alpha.2"
   dependencies:
-    "@syllepsis/adapter" "^0.1.58"
+    "@types/lodash.clonedeep" "^4.0.0"
+    "@types/lodash.isequal" "^4.0.0"
+    "@types/lodash.merge" "^4.0.0"
+    "@types/prosemirror-commands" "^1.0.1"
+    "@types/prosemirror-history" "^1.0.1"
+    "@types/prosemirror-keymap" "^1.0.1"
+    "@types/prosemirror-model" "^1.5.0"
+    "@types/prosemirror-state" "^1.2.0"
+    "@types/prosemirror-view" "^1.9.0"
+    eventemitter3 "^3.1.0"
+    lodash.clonedeep "^4.0.0"
+    lodash.isequal "^4.0.0"
+    lodash.merge "^4.0.0"
+    prosemirror-commands "^1.1.2"
+    prosemirror-history "^1.1.2"
+    prosemirror-keymap "^1.1.3"
+    prosemirror-model "^1.10.0"
+    prosemirror-schema-basic "^1.0.0"
+    prosemirror-schema-list "^1.0.0"
+    prosemirror-state "^1.3.2"
+    prosemirror-test-builder "^1.0.1"
+    prosemirror-transform "^1.2.3"
+    prosemirror-view "^1.13.4"
+
+"@syllepsis/editor@*", "@syllepsis/editor@^0.1.63":
+  version "0.1.63"
+  resolved "https://registry.npmjs.org/@syllepsis/editor/-/editor-0.1.63.tgz#8aadbeb10129d61d0ee4a65e8e9c42e9a896c9df"
+  integrity sha512-U/4DZXyWrQAMI6IhpFJ9YxvfkI4pwPd8RstMp7BlPZaqHUUHVsn02xDdtSVqWIwHhSxRrpKzqByASfOd2t6RkA==
+  dependencies:
+    "@syllepsis/adapter" "^0.1.63"
     "@types/lodash.debounce" "^4.0.0"
     "@types/lodash.throttle" "^4.0.0"
     lodash.debounce "^4.0.0"
     lodash.throttle "^4.0.0"
 
-"@syllepsis/plugin-basic@file:packages/plugin-basic":
-  version "0.1.59"
+"@syllepsis/editor@file:packages/editor":
+  version "0.1.64-alpha.2"
   dependencies:
-    "@syllepsis/adapter" "^0.1.58"
+    "@syllepsis/adapter" "^0.1.64-alpha.2"
+    "@types/lodash.debounce" "^4.0.0"
+    "@types/lodash.throttle" "^4.0.0"
+    lodash.debounce "^4.0.0"
+    lodash.throttle "^4.0.0"
+
+"@syllepsis/plugin-basic@*", "@syllepsis/plugin-basic@^0.1.63":
+  version "0.1.63"
+  resolved "https://registry.npmjs.org/@syllepsis/plugin-basic/-/plugin-basic-0.1.63.tgz#c3aaf01da8e8e10a0b4b68d82606921b7c9d6109"
+  integrity sha512-Mvn6xOx2aOssgGxUeqx461AYgWny34RxPY9pIaVHvA2dEkczGXtsA8cNnBVfJqL8opxjd22rXpiA3Ma4HriiGA==
+  dependencies:
+    "@syllepsis/adapter" "^0.1.63"
     "@types/color" "^3.0.2"
     "@types/lodash.debounce" "^4.0.0"
     "@types/lodash.isequal" "^4.0.0"
@@ -1907,30 +1968,81 @@
     lodash.isequal "^4.0.0"
     lodash.merge "^4.0.0"
 
-"@syllepsis/plugin-code-block@file:packages/plugin-code-block":
-  version "0.1.58"
+"@syllepsis/plugin-basic@file:packages/plugin-basic":
+  version "0.1.64-alpha.2"
   dependencies:
-    "@syllepsis/adapter" "^0.1.58"
+    "@syllepsis/adapter" "^0.1.64-alpha.2"
+    "@types/color" "^3.0.2"
+    "@types/lodash.debounce" "^4.0.0"
+    "@types/lodash.isequal" "^4.0.0"
+    "@types/prosemirror-model" "^1.5.0"
+    "@types/prosemirror-state" "^1.2.0"
+    color "^3.2.1"
+    lodash.isequal "^4.0.0"
+    lodash.merge "^4.0.0"
+
+"@syllepsis/plugin-code-block@*":
+  version "0.1.63"
+  resolved "https://registry.npmjs.org/@syllepsis/plugin-code-block/-/plugin-code-block-0.1.63.tgz#8b73153ee4a96256a00db8c5534c5c70a42c0cd5"
+  integrity sha512-wtif2G2EcJwbnhKuRPCLGt3Fh8R8kXS2oUrYFAcYxcI10VfRaxjlTUJQbMkvoYhI8xQ4RUEe8z+mZOMuw7Uhug==
+  dependencies:
+    "@syllepsis/adapter" "^0.1.63"
     "@types/codemirror" "^5.60.2"
     "@types/lodash.debounce" "^4.0.0"
     codemirror "^5.54.0"
     lodash.debounce "^4.0.0"
 
-"@syllepsis/plugin-placeholder@file:packages/plugin-placeholder":
-  version "0.1.59"
+"@syllepsis/plugin-code-block@file:packages/plugin-code-block":
+  version "0.1.64-alpha.2"
+  dependencies:
+    "@syllepsis/adapter" "^0.1.64-alpha.2"
+    "@types/codemirror" "^5.60.2"
+    "@types/lodash.debounce" "^4.0.0"
+    codemirror "^5.54.0"
+    lodash.debounce "^4.0.0"
+
+"@syllepsis/plugin-placeholder@*":
+  version "0.1.63"
+  resolved "https://registry.npmjs.org/@syllepsis/plugin-placeholder/-/plugin-placeholder-0.1.63.tgz#9af55aa9f4460facc357e0ea1d331e58d1ce3f4e"
+  integrity sha512-TiroHBP/hh2WnOOTLl42YADpmVORKzbOlaa+DkZPW2gMNOPc4pvUOoEg8IMp+yf9fhpc1te1OGvNvWRBNRYEpw==
   dependencies:
     "@icon-park/react" "^1.3.5"
-    "@syllepsis/adapter" "^0.1.58"
-    "@syllepsis/plugin-basic" "^0.1.59"
+    "@syllepsis/adapter" "^0.1.63"
+    "@syllepsis/plugin-basic" "^0.1.63"
     axios "^0.24.0"
     classnames "^2.3.1"
     clipboard "^2.0.8"
     lodash.debounce "^4.0.8"
 
-"@syllepsis/plugin-table@file:packages/plugin-table":
-  version "0.1.59"
+"@syllepsis/plugin-placeholder@file:packages/plugin-placeholder":
+  version "0.1.64-alpha.2"
   dependencies:
-    "@syllepsis/adapter" "^0.1.58"
+    "@icon-park/react" "^1.3.5"
+    "@syllepsis/adapter" "^0.1.64-alpha.2"
+    "@syllepsis/plugin-basic" "^0.1.64-alpha.2"
+    axios "^0.24.0"
+    classnames "^2.3.1"
+    clipboard "^2.0.8"
+    lodash.debounce "^4.0.8"
+
+"@syllepsis/plugin-table@*":
+  version "0.1.63"
+  resolved "https://registry.npmjs.org/@syllepsis/plugin-table/-/plugin-table-0.1.63.tgz#6829b4557d95c74f5ff248f9e677dd4cb7a62043"
+  integrity sha512-Jkhl3pGxc05ySFOu8RZPvGpkLt9stb8JsLETmgmMOmt3pQXzpurItw8CaIqkn5Sl61Mw1V3RthKW5rQ3i9EsGg==
+  dependencies:
+    "@syllepsis/adapter" "^0.1.63"
+    "@types/lodash.clonedeep" "^4.0.0"
+    "@types/lodash.debounce" "^4.0.0"
+    "@types/lodash.merge" "^4.0.0"
+    lodash.clonedeep "^4.0.0"
+    lodash.debounce "^4.0.0"
+    lodash.merge "^4.0.0"
+    prosemirror-tables "^1.1.1"
+
+"@syllepsis/plugin-table@file:packages/plugin-table":
+  version "0.1.64-alpha.2"
+  dependencies:
+    "@syllepsis/adapter" "^0.1.64-alpha.2"
     "@types/lodash.clonedeep" "^4.0.0"
     "@types/lodash.debounce" "^4.0.0"
     "@types/lodash.merge" "^4.0.0"
