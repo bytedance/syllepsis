@@ -1,12 +1,11 @@
 import clone from 'lodash.clonedeep';
-import OrderedMap from 'orderedmap';
 import { Schema, SchemaSpec } from 'prosemirror-model';
 
 import { Types } from '../libs';
 import { SchemaMeta } from './schema';
 
 const getSpecFromMap = (origin: SchemaSpec) => {
-  if (origin.nodes instanceof OrderedMap && origin.marks instanceof OrderedMap) {
+  if (typeof origin?.nodes?.forEach === 'function' && typeof origin?.marks?.forEach === 'function') {
     const obj: any = { nodes: {}, marks: {} };
     origin.nodes.forEach((name, spec) => (obj.nodes[name] = spec));
     origin.marks.forEach((name, spec) => (obj.marks[name] = spec));
