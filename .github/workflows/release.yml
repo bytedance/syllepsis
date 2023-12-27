@@ -36,12 +36,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 16
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GH_RELEASE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-
-      # - name: checkout
-      #   uses: actions/checkout@v4
-      #   with:
-      #     ref: ${{ github.event.inputs.branch }}
+      - name: checkout
+        uses: actions/checkout@v4
+        # with:
+        #   ref: ${{ github.event.inputs.branch }}
 
       - name: init
         run: npm i install yarn lerna@^4 typescript -g
@@ -54,13 +56,13 @@ jobs:
 
       - name: prerelease
         run: lerna version prerelease
-        env:
-          GH_RELEASE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # env:
+          # GH_RELEASE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: prepublish
         run: lerna publish from-package
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        # env:
+          # NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       # - uses: google-github-actions/release-please-action@v4
       #   with:
       #     # this assumes that you have created a personal access token
