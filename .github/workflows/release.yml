@@ -52,10 +52,13 @@ jobs:
 
       - name: build
         run: yarn build
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: prerelease
         run: lerna version prerelease
         env:
+          PM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GH_RELEASE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: prepublish
