@@ -43,7 +43,10 @@ jobs:
         #   ref: ${{ github.event.inputs.branch }}
 
       - name: init
-        run: npm i install yarn lerna@^4 typescript -g
+        run: |
+          npm i install yarn lerna@^4 typescript -g
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
       - name: install dependencies
         run: yarn initialize
