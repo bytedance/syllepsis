@@ -45,26 +45,20 @@ jobs:
       - name: init
         run: npm i install yarn lerna@^4 typescript -g
 
-      - name: install
+      - name: install dependencies
         run: yarn initialize
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: build
-        run: yarn build
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: prerelease
-        run: lerna version prerelease --no-progress
         env:
-          PM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GH_RELEASE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: lerna version prerelease --yes  --force-publish
 
       - name: prepublish
-        run: lerna publish from-package --no-progress
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
+          lerna publish from-package --pre-dist-tag alpha --yes --no-private
       # - uses: google-github-actions/release-please-action@v4
       #   with:
       #     # this assumes that you have created a personal access token
