@@ -60,7 +60,7 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          npm set //registry.npmjs.org/:_authToken $NPM_TOKEN
+          npm set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
           lerna publish from-package --pre-dist-tag alpha --yes --no-private
       # - uses: google-github-actions/release-please-action@v4
       #   with:
