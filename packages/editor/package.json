@@ -1,6 +1,6 @@
 {
   "name": "@syllepsis/editor",
-  "version": "0.1.64-alpha.1",
+  "version": "0.1.64-alpha.2",
   "description": "middle layer of syllepsis editor",
   "umd": "dist/umd/index.js",
   "main": "dist/lib/index.js",
@@ -34,7 +34,7 @@
     "prepublish": "yarn build"
   },
   "dependencies": {
-    "@syllepsis/adapter": "^0.1.64-alpha.1",
+    "@syllepsis/adapter": "^0.1.64-alpha.2",
     "@types/lodash.debounce": "^4.0.0",
     "@types/lodash.throttle": "^4.0.0",
     "lodash.debounce": "^4.0.0",
