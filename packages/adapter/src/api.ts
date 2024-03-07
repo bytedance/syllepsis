@@ -164,7 +164,7 @@ class SylApi {
   // `length` refers to the length of the text
   public getText(range?: Types.IRangeStatic) {
     try {
-      const doc = this.view.state.doc;
+      const { doc } = this.view.state;
       let from = 0;
       let to = doc.nodeSize - 2;
       let length;
@@ -181,17 +181,24 @@ class SylApi {
           node.content.forEach(_node => {
             if (startPos > from || startPos + _node.nodeSize > from) {
               let text: string = _node.isText ? _node.textContent : _node.type.spec.getText ? _node.attrs.text : '';
-              if (startPos < from) text = text.substr(from - startPos);
+              if (startPos < from) {
+                text = text.slice(from - startPos);
+              } else {
+                if (startPos > to) {
+                  return;
+                }
+                text = text.slice(0, Math.min(to - startPos, text.length));
+              }
               textRes += text;
             }
             startPos += _node.nodeSize;
           });
         }
       });
-      return textRes.substr(0, length);
-    } catch (e) {
-      console.error(e);
-      this.onError(e, arguments);
+      return textRes.slice(0, length);
+    } catch (err) {
+      console.error(err);
+      this.onError(err, arguments);
       return '';
     }
   }
